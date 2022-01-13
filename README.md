@@ -4,6 +4,7 @@
 
 -   [Lien Projet Canvas](https://canvas.supinfo.com/courses/23/assignments/6033?module_item_id=8573)
 -   [Peutetre hexagone class (rien capté)]()
+-   https://www.redblobgames.com/grids/hexagons/
 
 ---
 
