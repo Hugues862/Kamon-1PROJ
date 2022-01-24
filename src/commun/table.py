@@ -11,14 +11,12 @@ class table():
 
         self.__grid = self.initGrid(theme)
 
+    # Getters
+
     def getGrid(self):
         return [[item.getState() for item in row] for row in self.__grid]
 
-    def printGrid(self):
-        tmp = self.getGrid()
-        res = pd.DataFrame(tmp).replace(to_replace=0, value="")
-        print(res)
-        return res
+    # Methods
 
     def initGrid(self, theme):
 
@@ -83,6 +81,30 @@ class table():
             grid.append(tmp)
 
         return grid
+
+    def printGrid(self):
+        """Prints a pretty version of the grid, instead of having :
+        [[0, 0, 0, -1, 0, 16, 0, 14, 0, 33, 0, 0, 0, 0], [0, 0, 21, 0, 32, 0, 23, 0, 28, 0, 30, 0, 0, 0], ...]
+
+        we have
+
+                0   1   2   3   4   5   6   7   8   9   10  11 12 13
+        0              -1      16      14      33              
+        1          21      32      23      28      30          
+        2      13      17      31      19       3       7      
+        3  35      20       2      25       9      11      8   
+        4      27      34      22      26      18      29      
+        5           4       1      36       5      24          
+        6              15      12       6      10               
+
+        Returns:
+            [pd.DataFrame]: dataframe version of self.__grid, 0 replaced with empty str
+        """
+
+        tmp = self.getGrid()
+        res = pd.DataFrame(tmp).replace(to_replace=0, value="")
+        print(res)
+        return res
 
 
 t = table()
