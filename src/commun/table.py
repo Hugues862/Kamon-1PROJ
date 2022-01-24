@@ -18,16 +18,16 @@ class table():
         grid = []
 
         for i in range(7):
-            tmp = []
+            tmp = [0]
 
             for j in range(abs(3 - i)):
                 tmp.append(hexa(0))
 
             for j in range(7 - abs(3 - i)):
 
-                test = randint(1, 36)
+                test = randint(-1, 36)
                 while test in inside:
-                    test = randint(1, 36)
+                    test = randint(-1, 36)
                 inside.append(test)
 
                 # Assigning the cells on the board of the map, colors for borders
