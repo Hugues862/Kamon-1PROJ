@@ -1,6 +1,8 @@
 
 from hexagone import hexa
 from random import *
+import pandas as pd
+import numpy as np
 
 
 class table():
@@ -10,15 +12,21 @@ class table():
         self.__grid = self.initGrid(theme)
 
     def getGrid(self):
-        return self.__grid
+        return [[item.getState() for item in row] for row in self.__grid]
+
+    def printGrid(self):
+        tmp = self.getGrid()
+        res = pd.DataFrame(tmp).replace(to_replace=0, value="")
+        print(res)
+        return res
 
     def initGrid(self, theme):
 
-        inside = []
+        inside = [0]
         grid = []
 
         for i in range(7):
-            tmp = [0]
+            tmp = []
 
             for j in range(abs(3 - i)):
                 tmp.append(hexa(0))
@@ -78,4 +86,4 @@ class table():
 
 
 t = table()
-print(t)
+t.printGrid()
