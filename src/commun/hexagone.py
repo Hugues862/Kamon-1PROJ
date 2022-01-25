@@ -60,22 +60,22 @@ class hexa():
             self.__color = "black"
 
         if tmp > 0 and tmp <= 6:
-            self.__color = "color1"
+            self.__color = "#d97c11"
 
         if tmp > 6 and tmp <= 12:
-            self.__color = "color2"
+            self.__color = "#ed6b07"
 
         if tmp > 12 and tmp <= 18:
-            self.__color = "color3"
+            self.__color = "#117cd9"
 
         if tmp > 18 and tmp <= 24:
-            self.__color = "4"
+            self.__color = "yellow"
 
         if tmp > 24 and tmp <= 30:
-            self.__color = "5"
+            self.__color = "green"
 
         if tmp > 30 and tmp <= 36:
-            self.__color = "6"
+            self.__color = "#b84d98"
 
     def setImage(self, theme: str):
 

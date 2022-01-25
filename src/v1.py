@@ -51,7 +51,7 @@ class rootWindow():
         self.__canvas.pack()
 
     def displayHex(self):
-        def backgroundHex(*args):
+        def hex(x, y, xSpace, ySpace, color):
             """Displays Background Canvas and generates points
             """
             points = [(x, y),
@@ -66,7 +66,7 @@ class rootWindow():
 
             else:
                 self.__canvas.create_polygon(
-                    points, fill="gray", outline="black", width=2)
+                    points, fill=color, outline="black", width=2)
 
         def mainHex(points):
             """Displays the hexagones on the cells ( basically displays the players )
@@ -266,7 +266,7 @@ class rootWindow():
                     if topLeftCoords == None:
                         topLeftCoords = (x, y)
 
-                    backgroundHex(x, y, xSpace, ySpace)
+                    hex(x, y, xSpace, ySpace, grid[row][col].getColor())
 
         borders(topLeftCoords, xSpace, ySpace)
 
