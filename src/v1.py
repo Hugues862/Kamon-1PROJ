@@ -37,6 +37,7 @@ class rootWindow():
         self.__canvas.config(width=(self.__cellSize*16), height=(self.__cellSize*13),
                              highlightthickness=0, bd=0, bg="white")
         self.__canvas.bind("<Button-1>", self.mouseClick)
+        self.__canvas.bind("<Motion>", self.mouseMove)
 
     def main(self):
         # Main loop,
@@ -83,7 +84,7 @@ class rootWindow():
             x = (sum(xlist) / len(points)) - rx
             y = (sum(ylist) / len(points)) - ry
             self.__canvas.create_oval(
-                x, y, x+(xSpace*1.5), y+(ySpace*2.5), fill=color)
+                x, y, x+(xSpace*1.5), y+(ySpace*2.5), fill=color, outline="black", width=3)
 
         def borders(*args):
             """Displays the borders
@@ -275,6 +276,8 @@ class rootWindow():
         self.mousey = event.y
         print(event.x, event.y)
         self.main()
+
+    def mouseMove(self, event)
 
     def point_inside_polygon(self, x, y, poly):
         n = len(poly)
