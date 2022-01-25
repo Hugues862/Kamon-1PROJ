@@ -277,7 +277,8 @@ class rootWindow():
         print(event.x, event.y)
         self.main()
 
-    def mouseMove(self, event)
+    def mouseMove(self, event):
+        pass
 
     def point_inside_polygon(self, x, y, poly):
         n = len(poly)
