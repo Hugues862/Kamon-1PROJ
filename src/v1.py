@@ -5,7 +5,7 @@ import tkinter as tk
 
 class rootWindow():
     def __init__(self):
-        self.__cellSize = 60
+        self.__cellSize = 50
 
         self.tkInit()
 
@@ -48,8 +48,7 @@ class rootWindow():
             pass
 
         def borders(*args):
-            x = 240
-            y = 90
+            x, y = topLeftCoords
 
             def top(x, y):
                 pointsBottom = [(x+(xSpace/2), y-(ySpace/2)),
@@ -162,7 +161,6 @@ class rootWindow():
                     (pointsRight[-1][0]+(xSpace/2), pointsRight[-1][1])]
 
                 for i in range(len(pointsRight)-2, -1, -1):
-                    print(i)
                     pointsLeft.append(
                         ((pointsRight[i][0]+(xSpace/2)), (pointsRight[i][1]-(ySpace/2))))
                 pointsLeft[-1] = (pointsLeft[-1][0] -
@@ -214,12 +212,16 @@ class rootWindow():
         xCellSpace = xSpace
         yCellSpace = xSpace*1.50
 
+        topLeftCoords = None
+
         for row in range(len(grid)):
             for col in range(len(grid[row])):
 
                 if grid[row][col].getState() != 0:
                     x = (xCellSpace*col)+(xSpace)
                     y = (yCellSpace*row)+(ySpace*3)
+                    if topLeftCoords == None:
+                        topLeftCoords = (x, y)
                     points = [(x, y),
                               (x+xSpace, y-ySpace),
                               (x+(xSpace*2), y),
@@ -231,7 +233,7 @@ class rootWindow():
 
                     mainHex()
 
-        borders(xSpace, ySpace)
+        borders(topLeftCoords, xSpace, ySpace)
 
     def printCoords(self, event):
         print(event.x, event.y)
