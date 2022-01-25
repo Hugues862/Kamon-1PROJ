@@ -62,18 +62,18 @@ class rootWindow():
                       (x, y+(2*ySpace))]
 
             if self.point_inside_polygon(self.mousex, self.mousey, points):
-                mainHex(points)
+                mainHex(points, color)
 
             else:
                 self.__canvas.create_polygon(
                     points, fill=color, outline="black", width=2)
 
-        def mainHex(points):
+        def mainHex(points, color):
             """Displays the hexagones on the cells ( basically displays the players )
             """
             # Polygon
             self.__canvas.create_polygon(
-                points, fill="white", outline="black", width=2)
+                points, fill="white", outline="black", width=3)
             # Rayon
             rx = xSpace*0.75
             ry = ySpace*1.25
@@ -83,7 +83,7 @@ class rootWindow():
             x = (sum(xlist) / len(points)) - rx
             y = (sum(ylist) / len(points)) - ry
             self.__canvas.create_oval(
-                x, y, x+(xSpace*1.5), y+(ySpace*2.5), fill="gray")
+                x, y, x+(xSpace*1.5), y+(ySpace*2.5), fill=color)
 
         def borders(*args):
             """Displays the borders
