@@ -87,10 +87,10 @@ class rootWindow():
                     pointsTop.append(
                         (pointsBottom[i][0], (pointsBottom[i][1]-(ySpace))))
 
-                ''' pointsBottom[0] = (pointsTop[0][0]+(xSpace/4),
-                                   pointsTop[0][1]+(ySpace/4))
-                pointsBottom[-1] = (pointsTop[-1][0]-(xSpace/4),
-                                    pointsTop[-1][1]+(ySpace/4)) '''
+                pointsBottom[0] = (pointsBottom[0][0]-(xSpace/4),
+                                   pointsBottom[0][1]-(ySpace/4))
+                pointsBottom[-1] = (pointsBottom[-1][0]+(xSpace/4),
+                                    pointsBottom[-1][1]-(ySpace/4))
 
                 points = pointsBottom+pointsTop
                 self.__canvas.create_polygon(
@@ -111,27 +111,99 @@ class rootWindow():
                     (pointsRight[-1][0]-(xSpace/2), pointsRight[-1][1])]
 
                 for i in range(len(pointsRight)-2, -1, -1):
-                    print(i)
                     pointsLeft.append(
                         ((pointsRight[i][0]-(xSpace/2)), (pointsRight[i][1]-(ySpace/2))))
                 pointsLeft[-1] = (pointsLeft[-1][0] +
                                   (xSpace/4), pointsLeft[-1][1]-(ySpace/4))
                 points = pointsRight+pointsLeft
                 self.__canvas.create_polygon(
-                    points, fill="pink", outline="black", width=3)
+                    points, fill="yellow", outline="black", width=3)
 
-            def bottomRight():
-                pass
+            def bottomRight(x, y):
+                x = x-(xSpace*3)
+                y = y+(ySpace*10)
+                pointsRight = [(x, y),
+                               (x, y+ySpace)]
+                pointsRight.append((x+(xSpace*1), y+(ySpace*2)))
+                pointsRight.append((x+(xSpace*1), y+(ySpace*4)))
+                pointsRight.append((x+(xSpace*2), y+(ySpace*5)))
+                pointsRight.append((x+(xSpace*2), y+(ySpace*7)))
+                pointsRight.append((x+(xSpace*3), y+(ySpace*8)))
+                pointsRight.append((x+(xSpace*3), y+(ySpace*10)))
+                pointsRight.append((x+(xSpace*3.5), y+(ySpace*10.5)))
 
-            def topRight():
-                pass
+                pointsLeft = []
+                for i in range(len(pointsRight)-1, -1, -1):
+                    pointsLeft.append(
+                        ((pointsRight[i][0]-(xSpace/2)), (pointsRight[i][1]+(ySpace/2))))
 
-            def bottomLeft():
-                pass
+                pointsLeft[0] = (pointsLeft[0][0]+(xSpace/4),
+                                 pointsLeft[0][1]+(ySpace/4))
+                pointsLeft[-1] = (pointsLeft[-1][0],
+                                  pointsLeft[-1][1]-(ySpace/2))
+
+                points = pointsRight + pointsLeft
+                self.__canvas.create_polygon(
+                    points, fill="lime", outline="black", width=3)
+
+            def topRight(x, y):
+                x = x+(xSpace*8)
+                pointsRight = [(x-(xSpace/2), y-(ySpace/2)),
+                               (x, y)]
+                pointsRight.append((x, y+(ySpace*2)))
+                pointsRight.append((x+(xSpace*1), y+(ySpace*3)))
+                pointsRight.append((x+(xSpace*1), y+(ySpace*5)))
+                pointsRight.append((x+(xSpace*2), y+(ySpace*6)))
+                pointsRight.append((x+(xSpace*2), y+(ySpace*8)))
+                pointsRight.append((x+(xSpace*3), y+(ySpace*9)))
+                pointsRight.append((x+(xSpace*3), y+(ySpace*10)))
+
+                pointsLeft = [
+                    (pointsRight[-1][0]+(xSpace/2), pointsRight[-1][1])]
+
+                for i in range(len(pointsRight)-2, -1, -1):
+                    print(i)
+                    pointsLeft.append(
+                        ((pointsRight[i][0]+(xSpace/2)), (pointsRight[i][1]-(ySpace/2))))
+                pointsLeft[-1] = (pointsLeft[-1][0] -
+                                  (xSpace/4), pointsLeft[-1][1]-(ySpace/4))
+                points = pointsRight+pointsLeft
+                self.__canvas.create_polygon(
+                    points, fill="lime", outline="black", width=3)
+
+            def bottomLeft(x, y):
+                x = x+(xSpace*11)
+                y = y+(ySpace*10)
+                pointsRight = [(x, y),
+                               (x, y+ySpace)]
+                pointsRight.append((x-(xSpace*1), y+(ySpace*2)))
+                pointsRight.append((x-(xSpace*1), y+(ySpace*4)))
+                pointsRight.append((x-(xSpace*2), y+(ySpace*5)))
+                pointsRight.append((x-(xSpace*2), y+(ySpace*7)))
+                pointsRight.append((x-(xSpace*3), y+(ySpace*8)))
+                pointsRight.append((x-(xSpace*3), y+(ySpace*10)))
+                pointsRight.append((x-(xSpace*3.5), y+(ySpace*10.5)))
+
+                pointsLeft = []
+                for i in range(len(pointsRight)-1, -1, -1):
+                    pointsLeft.append(
+                        ((pointsRight[i][0]+(xSpace/2)), (pointsRight[i][1]+(ySpace/2))))
+
+                pointsLeft[0] = (pointsLeft[0][0]-(xSpace/4),
+                                 pointsLeft[0][1]+(ySpace/4))
+                pointsLeft[-1] = (pointsLeft[-1][0],
+                                  pointsLeft[-1][1]-(ySpace/2))
+
+                points = pointsRight + pointsLeft
+                self.__canvas.create_polygon(
+                    points, fill="yellow", outline="black", width=3)
 
             top(x, y)
             bottom(x, y)
             topLeft(x, y)
+            topRight(x, y)
+            bottomRight(x, y)
+            bottomLeft(x, y)
 
         # Gets Grid
         grid = self.__table.getGrid()
