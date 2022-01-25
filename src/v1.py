@@ -6,7 +6,10 @@ import tkinter as tk
 class rootWindow():
     def __init__(self):
         # Default cell size
-        self.__cellSize = 50
+        self.__cellSize = 60
+
+        self.mousex = 0
+        self.mousey = 0
 
         # Init tkinter stuff
         self.tkInit()
@@ -33,7 +36,7 @@ class rootWindow():
         self.__canvas = tk.Canvas(self.__frame)
         self.__canvas.config(width=(self.__cellSize*16), height=(self.__cellSize*13),
                              highlightthickness=0, bd=0, bg="white")
-        self.__canvas.bind("<Button-1>", self.printCoords)
+        self.__canvas.bind("<Button-1>", self.mouseClick)
 
     def main(self):
         # Main loop,
@@ -57,8 +60,13 @@ class rootWindow():
                       (x+(xSpace*2), y+(2*ySpace)),
                       (x+xSpace, y+(3*ySpace)),
                       (x, y+(2*ySpace))]
-            self.__canvas.create_polygon(
-                points, fill="red", outline="black", width=2)
+
+            if self.point_inside_polygon(self.mousex, self.mousey, points):
+                self.__canvas.create_polygon(
+                    points, fill="green", outline="black", width=2)
+            else:
+                self.__canvas.create_polygon(
+                    points, fill="red", outline="black", width=2)
 
         def mainHex():
             """Displays the hexagones on the cells ( basically displays the players )
@@ -251,8 +259,28 @@ class rootWindow():
 
         borders(topLeftCoords, xSpace, ySpace)
 
-    def printCoords(self, event):
+    def mouseClick(self, event):
+        self.mousex = event.x
+        self.mousey = event.y
         print(event.x, event.y)
+        self.main()
+
+    def point_inside_polygon(self, x, y, poly):
+        n = len(poly)
+        inside = False
+
+        p1x, p1y = poly[0]
+        for i in range(n+1):
+            p2x, p2y = poly[i % n]
+            if y > min(p1y, p2y):
+                if y <= max(p1y, p2y):
+                    if x <= max(p1x, p2x):
+                        if p1y != p2y:
+                            xinters = (y-p1y)*(p2x-p1x)/(p2y-p1y)+p1x
+                        if p1x == p2x or x <= xinters:
+                            inside = not inside
+            p1x, p1y = p2x, p2y
+        return inside
 
 
 def run():
