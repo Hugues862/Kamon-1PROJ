@@ -5,13 +5,16 @@ import tkinter as tk
 
 class rootWindow():
     def __init__(self):
+        # Default cell size
         self.__cellSize = 50
 
+        # Init tkinter stuff
         self.tkInit()
 
         # Generate new table
         self.__table = commun.table.Table()
 
+        # main loop
         self.main()
         self.__root.mainloop()
 
@@ -33,7 +36,12 @@ class rootWindow():
         self.__canvas.bind("<Button-1>", self.printCoords)
 
     def main(self):
+        # Main loop,
+
+        # Display Game
         self.displayHex()
+
+        # TK packing
         self.updateDisplay()
 
     def updateDisplay(self):
@@ -41,13 +49,24 @@ class rootWindow():
 
     def displayHex(self):
         def backgroundHex(*args):
+            """Displays Background Canvas and generates points
+            """
+            points = [(x, y),
+                      (x+xSpace, y-ySpace),
+                      (x+(xSpace*2), y),
+                      (x+(xSpace*2), y+(2*ySpace)),
+                      (x+xSpace, y+(3*ySpace)),
+                      (x, y+(2*ySpace))]
             self.__canvas.create_polygon(
                 points, fill="red", outline="black", width=2)
 
         def mainHex():
-            pass
+            """Displays the hexagones on the cells ( basically displays the players )
+            """
 
         def borders(*args):
+            """Displays the borders
+            """
             x, y = topLeftCoords
 
             def top(x, y):
@@ -212,6 +231,7 @@ class rootWindow():
         xCellSpace = xSpace
         yCellSpace = xSpace*1.50
 
+        # Gets top left coords corner position, used to draw the border
         topLeftCoords = None
 
         for row in range(len(grid)):
@@ -220,16 +240,12 @@ class rootWindow():
                 if grid[row][col].getState() != 0:
                     x = (xCellSpace*col)+(xSpace)
                     y = (yCellSpace*row)+(ySpace*3)
+
+                    # If topLeftCoords undefined, define.
                     if topLeftCoords == None:
                         topLeftCoords = (x, y)
-                    points = [(x, y),
-                              (x+xSpace, y-ySpace),
-                              (x+(xSpace*2), y),
-                              (x+(xSpace*2), y+(2*ySpace)),
-                              (x+xSpace, y+(3*ySpace)),
-                              (x, y+(2*ySpace))]
 
-                    backgroundHex(points, x, y, xSpace, ySpace)
+                    backgroundHex(x, y, xSpace, ySpace)
 
                     mainHex()
 
