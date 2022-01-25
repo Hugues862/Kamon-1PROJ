@@ -92,22 +92,26 @@ class rootWindow():
             x, y = topLeftCoords
 
             def top(x, y):
-                pointsBottom = [(x+(xSpace/2), y-(ySpace/2)),
+                xspace2 = (xSpace/2)
+                yspace2 = (ySpace/2)
+
+                pointsBottom = [(x+xspace2, y-yspace2),
                                 (x+xSpace, y-ySpace)]
                 for i in range(2, 7, 2):
                     pointsBottom.append((x+(xSpace*i), y))
                     pointsBottom.append((x+(xSpace*(i+1)), y-ySpace))
-                pointsBottom.append((x+(xSpace*7.5), y-(ySpace/2)))
+                pointsBottom.append((x+(xSpace*7.5), y-yspace2))
 
                 pointsTop = []
                 for i in range(len(pointsBottom)-1, -1, -1):
                     pointsTop.append(
                         (pointsBottom[i][0], (pointsBottom[i][1]-(ySpace))))
-
-                pointsTop[0] = (pointsTop[0][0]+(xSpace/4),
-                                pointsTop[0][1]+(ySpace/4))
-                pointsTop[-1] = (pointsTop[-1][0]-(xSpace/4),
-                                 pointsTop[-1][1]+(ySpace/4))
+                xspace4 = xSpace/4
+                yspace4 = ySpace/4
+                pointsTop[0] = (pointsTop[0][0]+(xspace4),
+                                pointsTop[0][1]+(yspace4))
+                pointsTop[-1] = (pointsTop[-1][0]-(xspace4),
+                                 pointsTop[-1][1]+(yspace4))
 
                 points = pointsBottom+pointsTop
                 self.__canvas.create_polygon(
@@ -278,7 +282,9 @@ class rootWindow():
         self.main()
 
     def mouseMove(self, event):
-        pass
+        self.mousex = event.x
+        self.mousey = event.y
+        self.main()
 
     def point_inside_polygon(self, x, y, poly):
         n = len(poly)
