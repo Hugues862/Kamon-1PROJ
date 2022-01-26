@@ -50,7 +50,7 @@ class Menus:
         # Player's name label
 
         # Player 1
-        cadre1 = LabelFrame(frame4, text='Joueur 1', font=("Helvetica", 16))
+        cadre1 = LabelFrame(frame4, text='Joueur 1', font=("Helvetica", 15))
         cadre1.pack(padx=5, pady=5)
         Label1 = Label(cadre1, text=" Pseudo :", fg='black',
                        bg='yellow', font=("Helvetica", 12))
@@ -59,7 +59,7 @@ class Menus:
         E1.pack(padx=5, pady=5, side=LEFT)
 
         # Player 2
-        cadre2 = LabelFrame(frame4, text='Joueur 2', font=("Helvetica", 16))
+        cadre2 = LabelFrame(frame4, text='Joueur 2', font=("Helvetica", 15))
         cadre2.pack(padx=5, pady=5)
         Label2 = Label(cadre2, text="Pseudo :", fg='black',
                        bg='yellow', font=("Helvetica", 12))
