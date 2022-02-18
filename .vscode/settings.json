@@ -1,5 +1,4 @@
 {
-    "cSpell.words": [
-        "hexa"
-    ]
+    "cSpell.words": ["hexa"],
+    "python.formatting.provider": "black"
 }

@@ -1,6 +1,4 @@
-
-class hexa():
-
+class hexa:
     def __init__(self, set, theme="original", side=None):
 
         self.__state = set
@@ -9,6 +7,7 @@ class hexa():
         self.__border = "black"
         self.setImage(theme)
 
+        self.__playerState = 0
         self.__last = False
         self.__selected = False
         self.__player = 0
@@ -49,6 +48,9 @@ class hexa():
         """
         return self.__src
 
+    def getPlayerState(self):
+        return self.__playerState
+
     def changeColor(self):
 
         tmp = self.__state
@@ -86,27 +88,27 @@ class hexa():
 
         if tmp - 1 % 6 == 0:
 
-            self.__src = '../assets/' + theme + '/0.png'
+            self.__src = "../assets/" + theme + "/0.png"
 
         if tmp - 1 % 6 == 1:
 
-            self.__src = '../assets/' + theme + '/1.png'
+            self.__src = "../assets/" + theme + "/1.png"
 
         if tmp - 1 % 6 == 2:
 
-            self.__src = '../assets/' + theme + '/2.png'
+            self.__src = "../assets/" + theme + "/2.png"
 
         if tmp - 1 % 6 == 3:
 
-            self.__src = '../assets/' + theme + '/3.png'
+            self.__src = "../assets/" + theme + "/3.png"
 
         if tmp - 1 % 6 == 4:
 
-            self.__src = '../assets/' + theme + '/4.png'
+            self.__src = "../assets/" + theme + "/4.png"
 
         if tmp - 1 % 6 == 5:
 
-            self.__src = '../assets/' + theme + '/5.png'
+            self.__src = "../assets/" + theme + "/5.png"
 
     def changeBorder(self):
 
