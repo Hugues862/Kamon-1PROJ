@@ -4,12 +4,10 @@ class hexa:
         self.__state = set
         self.changeColor()
         self.__side = side
-        self.__border = "black"
+        # self.__border = "None"
         self.setImage(theme)
 
-        self.__playerState = 0
-        self.__last = False
-        self.__selected = False
+        self.__last = False # Used to put Golden ring
         self.__player = 0
 
     def getState(self):
@@ -30,14 +28,23 @@ class hexa:
         """
         return self.__color
 
-    def getBorder(self):
+    # def getBorder(self):
+    #     """
+    #     Gets the color of the cell's border.
+
+    #         Returns:
+    #             str: String of the Hex color of the cell's border.
+    #     """
+    #     return self.__border
+    
+    def getSide(self):
         """
-        Gets the color of the cell's border.
+        Gets the color of the cell's side (Hex border).
 
             Returns:
-                str: String of the Hex color of the cell's border.
+                str: String of the Hex color of the cell's side.
         """
-        return self.__color
+        return self.__side
 
     def getImage(self):
         """
@@ -48,8 +55,11 @@ class hexa:
         """
         return self.__src
 
-    def getPlayerState(self):
-        return self.__playerState
+    def getPlayer(self):
+        return self.__player
+    
+    def getLast(self):
+        return self.__last
 
     def changeColor(self):
 
@@ -58,25 +68,25 @@ class hexa:
         if tmp == 0:
             self.__color = "white"
 
-        if tmp == -1:
+        elif tmp == -1:
             self.__color = "black"
 
-        if tmp > 0 and tmp <= 6:
+        elif tmp > 0 and tmp <= 6:
             self.__color = "#d97c11"
 
-        if tmp > 6 and tmp <= 12:
+        elif tmp > 6 and tmp <= 12:
             self.__color = "#ed6b07"
 
-        if tmp > 12 and tmp <= 18:
+        elif tmp > 12 and tmp <= 18:
             self.__color = "#117cd9"
 
-        if tmp > 18 and tmp <= 24:
+        elif tmp > 18 and tmp <= 24:
             self.__color = "yellow"
 
-        if tmp > 24 and tmp <= 30:
+        elif tmp > 24 and tmp <= 30:
             self.__color = "green"
 
-        if tmp > 30 and tmp <= 36:
+        elif tmp > 30 and tmp <= 36:
             self.__color = "#b84d98"
 
     def setImage(self, theme: str):
@@ -110,13 +120,13 @@ class hexa:
 
             self.__src = "../assets/" + theme + "/5.png"
 
-    def changeBorder(self):
+    # def changeBorder(self): # Not needed ?
 
-        if self.__last:
-            self.__border = "Red"
+    #     if self.__last:
+    #         self.__border = "Red"
 
-        elif self.__player == 1:
-            self.__border = "Blue"
+    #     elif self.__player == 1:
+    #         self.__border = "Blue"
 
-        elif self.__player == 2:
-            self.__border = "Green"
+    #     elif self.__player == 2:
+    #         self.__border = "Green"

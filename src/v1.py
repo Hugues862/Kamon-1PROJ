@@ -61,7 +61,7 @@ class rootWindow:
         self.__canvas.pack()
 
     def displayHex(self):
-        def hex(x, y, xSpace, ySpace, color):
+        def hex(x, y, xSpace, ySpace, color, player, last, state):
             """Displays Background Canvas and generates points"""
             points = [
                 (x, y),
@@ -73,18 +73,26 @@ class rootWindow:
             ]
 
             if self.findPointsInsidePolygon(self.__mousex, self.__mousey, points):
-                mainHex(points, color)
+                if player == 0 and state != -1:
+                    mainHex(points, color, "blue")
 
             else:
-                self.__canvas.create_polygon(
-                    points, fill=color, outline="black", width=2
-                )
+                if last:
+                    mainHex(points, color, "gold")
+                elif player == 1:
+                    mainHex(points, color, "white")
+                elif player == 2:
+                    mainHex(points, color, "black")
+                else:
+                    self.__canvas.create_polygon(
+                        points, fill=color, outline="black", width=2
+                    )
 
-        def mainHex(points, color):
+        def mainHex(points, color, border):
             """Displays the hexagones on the cells ( basically displays the players )"""
             # Polygon
             # FILL WHITE = BORDER
-            self.__canvas.create_polygon(points, fill="white", outline="black", width=3)
+            self.__canvas.create_polygon(points, fill=border, outline="black", width=3)
             # Rayon
             rx = xSpace * 0.75
             ry = ySpace * 1.25
@@ -94,7 +102,7 @@ class rootWindow:
             x = (sum(xlist) / len(points)) - rx
             y = (sum(ylist) / len(points)) - ry
 
-            # FILL COLOR = BACKGROUND
+            # FILL COLOR = Cell original color
             self.__canvas.create_oval(
                 x,
                 y,
@@ -319,7 +327,7 @@ class rootWindow:
                     if topLeftCoords == None:
                         topLeftCoords = (x, y)
 
-                    hex(x, y, xSpace, ySpace, grid[row][col].getColor())
+                    hex(x, y, xSpace, ySpace, grid[row][col].getColor(), grid[row][col].getPlayer(), grid[row][col].getLast(), grid[row][col].getState())
 
         borders(topLeftCoords, xSpace, ySpace)
 
