@@ -6,7 +6,7 @@ class hexa:
         self.__side = side
         # self.__border = "None"
         self.setImage(theme)
-
+        self.__selected = False # Used to confirm
         self.__last = False # Used to put Golden ring
         self.__player = 0
 
@@ -60,6 +60,18 @@ class hexa:
     
     def getLast(self):
         return self.__last
+    
+    def getSelected(self):
+        return self.__selected
+
+    def setPlayer(self, player):
+        self.__player = player
+
+    def setLast(self):
+        self.__last = not self.__last
+            
+    def setSelected(self):
+        self.__selected = not self.__selected
 
     def changeColor(self):
 

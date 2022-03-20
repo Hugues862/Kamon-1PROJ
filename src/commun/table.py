@@ -10,7 +10,8 @@ class Table():
     def __init__(self, theme="original"):
 
         self.__grid = self.initGrid(theme)
-        self.__lastCoord = (0, 0) # Used to remove golden ring
+        self.__selectedCoord = None # Used to remove red ring
+        self.__lastCoord = None # Used to remove golden ring
 
     # Getters
 
@@ -23,8 +24,17 @@ class Table():
     def getGrid(self):
         return self.__grid
     
+    def getSelectedCoord(self):
+        return self.__selectedCoord
+    
     def getLastCoord(self):
         return self.__lastCoord
+    
+    def setSelectedCoord(self, x, y):
+        self.__selectedCoord = (x, y)
+        
+    def setLastCoord(self, x, y):
+        self.__lastCoord = (x, y)
     
     # Methods
 
@@ -41,10 +51,10 @@ class Table():
 
             for j in range(7 - abs(3 - i)):
 
-                test = randint(-1, 36)
-                while test in inside:
-                    test = randint(-1, 36)
-                inside.append(test)
+                rdmValue = randint(-1, 36)
+                while rdmValue in inside:
+                    rdmValue = randint(-1, 36)
+                inside.append(rdmValue)
 
                 # Assigning the cells on the board of the map, colors for borders
 
@@ -84,7 +94,7 @@ class Table():
                     elif j == 7 - abs(3 - i) - 1:
                         side = "B1&Y2"
 
-                tmp.append(hexa(test, theme, side))
+                tmp.append(hexa(rdmValue, theme, side))
                 tmp.append(hexa(0))
 
             for j in range(abs(3 - i)):

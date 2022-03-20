@@ -19,8 +19,30 @@ class Game:
     def updateGame(self):
         pass
 
-    def mouseClick(self):
-        pass
+    def mouseClick(self, x, y):
+        if self.__table.getGrid()[x][y].getPlayer() == 0:
+            if not self.__table.getGrid()[y][x].getSelected():
+                self.__table.getGrid()[y][x].setSelected()
+                
+                if self.__table.getSelectedCoord() != None:
+                    lastX, lastY = self.__table.getSelectedCoord()
+                    self.__table.getGrid()[lastY][lastX].setSelected()
+                self.__table.setSelectedCoord(x, y)
+                
+            elif self.__table.getGrid()[y][x].getSelected():
+                
+                self.__table.getGrid()[y][x].setSelected()
+                self.__table.getGrid()[y][x].setLast()
+                self.__table.getGrid()[y][x].setPlayer(self.__turn + 1)
+                
+                if self.__table.getLastCoord() != None :
+                    lastX, lastY = self.__table.getLastCoord()
+                    self.__table.getGrid()[lastY][lastX].setLast()
+                self.__table.setLastCoord(x, y)
+            
+            
+            
+            
 
 
 def createGame():

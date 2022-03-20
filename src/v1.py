@@ -61,7 +61,7 @@ class rootWindow:
         self.__canvas.pack()
 
     def displayHex(self):
-        def hex(x, y, xSpace, ySpace, color, player, last, state):
+        def hex(x, y, xSpace, ySpace, color, player, last, selected, state):
             """Displays Background Canvas and generates points"""
             points = [
                 (x, y),
@@ -73,16 +73,18 @@ class rootWindow:
             ]
 
             if self.findPointsInsidePolygon(self.__mousex, self.__mousey, points):
-                if player == 0 and state != -1:
+                if player == 0 and state != -1 and not selected:
                     mainHex(points, color, "blue")
 
             else:
                 if last:
                     mainHex(points, color, "gold")
                 elif player == 1:
-                    mainHex(points, color, "white")
-                elif player == 2:
                     mainHex(points, color, "black")
+                elif player == 2:
+                    mainHex(points, color, "white")
+                elif selected:
+                    mainHex(points, color, "red")
                 else:
                     self.__canvas.create_polygon(
                         points, fill=color, outline="black", width=2
@@ -327,15 +329,14 @@ class rootWindow:
                     if topLeftCoords == None:
                         topLeftCoords = (x, y)
 
-                    hex(x, y, xSpace, ySpace, grid[row][col].getColor(), grid[row][col].getPlayer(), grid[row][col].getLast(), grid[row][col].getState())
+                    hex(x, y, xSpace, ySpace, grid[row][col].getColor(), grid[row][col].getPlayer(), grid[row][col].getLast(), grid[row][col].getSelected(), grid[row][col].getState())
 
         borders(topLeftCoords, xSpace, ySpace)
 
     def mouseClick(self, event):
-        self.__mousex = event.x
-        self.__mousey = event.y
-        print(event.x, event.y)
-        self.__game.mouseClick(self.__mousex, self.__mousey)
+        x, y = self.pixelToIndex(event.x, event.y)
+        # print(event.x, event.y)
+        self.__game.mouseClick(x, y)
         self.main()
 
     def mouseMove(self, event):
@@ -359,6 +360,10 @@ class rootWindow:
                             inside = not inside
             p1x, p1y = p2x, p2y
         return inside
+    
+    def pixelToIndex(self, xPix, yPix):
+        
+        return 3, 6
 
 
 def run():
