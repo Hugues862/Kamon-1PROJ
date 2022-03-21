@@ -1,4 +1,4 @@
-from hexagone import hexa
+from .hexagone import hexa
 from random import *
 import pandas as pd
 import numpy as np

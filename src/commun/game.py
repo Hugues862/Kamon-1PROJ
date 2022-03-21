@@ -20,7 +20,7 @@ class Game:
         pass
 
     def mouseClick(self, x, y):
-        if self.__table.getGrid()[x][y].getPlayer() == 0:
+        if self.__table.getGrid()[y][x].getPlayer() == 0:
             if not self.__table.getGrid()[y][x].getSelected():
                 self.__table.getGrid()[y][x].setSelected()
                 

@@ -11,6 +11,9 @@ class rootWindow:
 
         self.__mousex = 0
         self.__mousey = 0
+        
+        self.__indexx = 0
+        self.__indexy = 0
 
         # Init tkinter stuff
         self.tkInit()
@@ -61,7 +64,7 @@ class rootWindow:
         self.__canvas.pack()
 
     def displayHex(self):
-        def hex(x, y, xSpace, ySpace, color, player, last, selected, state):
+        def hex(x, y, xSpace, ySpace, color, player, last, selected, state, col, row):
             """Displays Background Canvas and generates points"""
             points = [
                 (x, y),
@@ -73,6 +76,8 @@ class rootWindow:
             ]
 
             if self.findPointsInsidePolygon(self.__mousex, self.__mousey, points):
+                self.__indexx = col
+                self.__indexy = row
                 if player == 0 and state != -1 and not selected:
                     mainHex(points, color, "blue")
 
@@ -329,14 +334,14 @@ class rootWindow:
                     if topLeftCoords == None:
                         topLeftCoords = (x, y)
 
-                    hex(x, y, xSpace, ySpace, grid[row][col].getColor(), grid[row][col].getPlayer(), grid[row][col].getLast(), grid[row][col].getSelected(), grid[row][col].getState())
+                    hex(x, y, xSpace, ySpace, grid[row][col].getColor(), grid[row][col].getPlayer(), grid[row][col].getLast(), grid[row][col].getSelected(), grid[row][col].getState(), col, row)
 
         borders(topLeftCoords, xSpace, ySpace)
 
     def mouseClick(self, event):
-        x, y = self.pixelToIndex(event.x, event.y)
+        # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
-        self.__game.mouseClick(x, y)
+        self.__game.mouseClick(self.__indexx, self.__indexy)
         self.main()
 
     def mouseMove(self, event):
@@ -361,9 +366,8 @@ class rootWindow:
             p1x, p1y = p2x, p2y
         return inside
     
-    def pixelToIndex(self, xPix, yPix):
-        
-        return 3, 6
+    # def pixelToIndex(self, xPix, yPix):
+        # return 3, 6
 
 
 def run():
