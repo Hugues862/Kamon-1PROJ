@@ -1,41 +1,39 @@
-
-from .hexagone import hexa
+from hexagone import hexa
 from random import *
 import pandas as pd
 import numpy as np
 
 
-class Table():
-
+class Table:
     def __init__(self, theme="original"):
 
         self.__grid = self.initGrid(theme)
-        self.__selectedCoord = None # Used to remove red ring
-        self.__lastCoord = None # Used to remove golden ring
+        self.__selectedCoord = None  # Used to remove red ring
+        self.__lastCoord = None  # Used to remove golden ring
 
     # Getters
 
     def getGridState(self):
         return [[item.getState() for item in row] for row in self.__grid]
-    
+
     def getGridSide(self):
         return [[item.getSide() for item in row] for row in self.__grid]
 
     def getGrid(self):
         return self.__grid
-    
+
     def getSelectedCoord(self):
         return self.__selectedCoord
-    
+
     def getLastCoord(self):
         return self.__lastCoord
-    
+
     def setSelectedCoord(self, x, y):
         self.__selectedCoord = (x, y)
-        
+
     def setLastCoord(self, x, y):
         self.__lastCoord = (x, y)
-    
+
     # Methods
 
     def initGrid(self, theme):
@@ -89,7 +87,7 @@ class Table():
                         side = "Y2"
 
                 elif i == 3:
-                    if j == 0: 
+                    if j == 0:
                         side = "B2&Y1"
                     elif j == 7 - abs(3 - i) - 1:
                         side = "B1&Y2"
@@ -111,13 +109,13 @@ class Table():
         we have
 
                 0   1   2   3   4   5   6   7   8   9   10  11 12 13
-        0              -1      16      14      33              
-        1          21      32      23      28      30          
-        2      13      17      31      19       3       7      
-        3  35      20       2      25       9      11      8   
-        4      27      34      22      26      18      29      
-        5           4       1      36       5      24          
-        6              15      12       6      10               
+        0              -1      16      14      33
+        1          21      32      23      28      30
+        2      13      17      31      19       3       7
+        3  35      20       2      25       9      11      8
+        4      27      34      22      26      18      29
+        5           4       1      36       5      24
+        6              15      12       6      10
 
         Returns:
             [pd.DataFrame]: dataframe version of self.__grid, 0 replaced with empty str
@@ -125,18 +123,15 @@ class Table():
 
         tmp = self.getGridState()
         res = pd.DataFrame(tmp).replace(to_replace=0, value="")
-        print(res)
         return res
-    
+
     def printSide(self):
-        """
-        """
+        """ """
 
         tmp = self.getGridSide()
-        res = pd.DataFrame(tmp).replace(to_replace=0, value="")
-        print(res)
+        res = pd.DataFrame(tmp).fillna(value="")
         return res
-    
-t = Table()
-t.printSide()
 
+
+t = Table()
+print(t.printSide())
