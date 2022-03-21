@@ -20,29 +20,26 @@ class Game:
         pass
 
     def mouseClick(self, x, y):
-        if self.__table.getGrid()[y][x].getPlayer() == 0:
-            if not self.__table.getGrid()[y][x].getSelected():
-                self.__table.getGrid()[y][x].setSelected()
-                
+        grid = self.__table.getGrid()
+        if grid[y][x].getPlayer() == 0:
+            if not grid[y][x].getSelected():
+                grid[y][x].setSelected()
+
                 if self.__table.getSelectedCoord() != None:
                     lastX, lastY = self.__table.getSelectedCoord()
-                    self.__table.getGrid()[lastY][lastX].setSelected()
+                    grid[lastY][lastX].setSelected()
                 self.__table.setSelectedCoord(x, y)
-                
-            elif self.__table.getGrid()[y][x].getSelected():
-                
-                self.__table.getGrid()[y][x].setSelected()
-                self.__table.getGrid()[y][x].setLast()
-                self.__table.getGrid()[y][x].setPlayer(self.__turn + 1)
-                
-                if self.__table.getLastCoord() != None :
+
+            elif grid[y][x].getSelected():
+
+                grid[y][x].setSelected()
+                grid[y][x].setLast()
+                grid[y][x].setPlayer(self.__turn + 1)
+
+                if self.__table.getLastCoord() != None:
                     lastX, lastY = self.__table.getLastCoord()
-                    self.__table.getGrid()[lastY][lastX].setLast()
+                    grid[lastY][lastX].setLast()
                 self.__table.setLastCoord(x, y)
-            
-            
-            
-            
 
 
 def createGame():
