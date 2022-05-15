@@ -59,7 +59,7 @@ class Game:
             
     def checkWin(self, x, y):
         
-        neighbors, sides = self.__table.checkNeighbors(x, y, self.__turn):
+        neighbors, sides = self.__table.checkNeighbors(x, y, self.__turn)
         grid = self.__table.getGrid()
 
         #Check if the 2 size colours exists
