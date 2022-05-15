@@ -9,9 +9,6 @@ class rootWindow:
         # Default cell size
         self.__cellSize = 60
 
-        self.__mousex = 0
-        self.__mousey = 0
-        
         self.__indexx = 0
         self.__indexy = 0
 
@@ -46,7 +43,6 @@ class rootWindow:
             bg="white",
         )
         self.__canvas.bind("<Button-1>", self.mouseClick)
-        self.__canvas.bind("<Motion>", self.mouseMove)
 
     def main(self):
         # Main loop,
@@ -75,25 +71,24 @@ class rootWindow:
                 (x, y + (2 * ySpace)),
             ]
 
-            if self.findPointsInsidePolygon(self.__mousex, self.__mousey, points):
+            mx = self.__root.winfo_pointerx() - self.__root.winfo_rootx()
+            my = self.__root.winfo_pointery() - self.__root.winfo_rooty()
+            if self.findPointsInsidePolygon(mx, my, points):
                 self.__indexx = col
                 self.__indexy = row
-                if player == 0 and state != -1 and not selected:
-                    mainHex(points, color, "blue")
 
+            if last:
+                mainHex(points, color, "gold")
+            elif player == 1:
+                mainHex(points, color, "black")
+            elif player == 2:
+                mainHex(points, color, "white")
+            elif selected:
+                mainHex(points, color, "red")
             else:
-                if last:
-                    mainHex(points, color, "gold")
-                elif player == 1:
-                    mainHex(points, color, "black")
-                elif player == 2:
-                    mainHex(points, color, "white")
-                elif selected:
-                    mainHex(points, color, "red")
-                else:
-                    self.__canvas.create_polygon(
-                        points, fill=color, outline="black", width=2
-                    )
+                self.__canvas.create_polygon(
+                    points, fill=color, outline="black", width=2
+                )
 
         def mainHex(points, color, border):
             """Displays the hexagones on the cells ( basically displays the players )"""
@@ -334,19 +329,27 @@ class rootWindow:
                     if topLeftCoords == None:
                         topLeftCoords = (x, y)
 
-                    hex(x, y, xSpace, ySpace, grid[row][col].getColor(), grid[row][col].getPlayer(), grid[row][col].getLast(), grid[row][col].getSelected(), grid[row][col].getState(), col, row)
+                    hex(
+                        x,
+                        y,
+                        xSpace,
+                        ySpace,
+                        grid[row][col].getColor(),
+                        grid[row][col].getPlayer(),
+                        grid[row][col].getLast(),
+                        grid[row][col].getSelected(),
+                        grid[row][col].getState(),
+                        col,
+                        row,
+                    )
 
         borders(topLeftCoords, xSpace, ySpace)
 
     def mouseClick(self, event):
         # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
-        self.__game.mouseClick(self.__indexx, self.__indexy)
         self.main()
-
-    def mouseMove(self, event):
-        self.__mousex = event.x
-        self.__mousey = event.y
+        self.__game.mouseClick(self.__indexx, self.__indexy)
         self.main()
 
     def findPointsInsidePolygon(self, x, y, poly):
@@ -365,9 +368,9 @@ class rootWindow:
                             inside = not inside
             p1x, p1y = p2x, p2y
         return inside
-    
+
     # def pixelToIndex(self, xPix, yPix):
-        # return 3, 6
+    # return 3, 6
 
 
 def run():

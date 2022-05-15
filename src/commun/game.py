@@ -20,6 +20,7 @@ class Game:
         pass
 
     def mouseClick(self, x, y):
+<<<<<<< HEAD
         
         xLast, yLast = self.__table.getLastCoord()
         
@@ -27,10 +28,18 @@ class Game:
             if not self.__table.getGrid()[y][x].getSelected():
                 self.__table.getGrid()[y][x].setSelected()
                 
+=======
+        grid = self.__table.getGrid()
+        if grid[y][x].getPlayer() == 0:
+            if not grid[y][x].getSelected():
+                grid[y][x].setSelected()
+
+>>>>>>> 0c8b64fca4a536bcb2d71d6ed685128b0acf5285
                 if self.__table.getSelectedCoord() != None:
                     lastX, lastY = self.__table.getSelectedCoord()
-                    self.__table.getGrid()[lastY][lastX].setSelected()
+                    grid[lastY][lastX].setSelected()
                 self.__table.setSelectedCoord(x, y)
+<<<<<<< HEAD
                 
             elif self.__table.getGrid()[y][x].getSelected():
                 
@@ -69,6 +78,19 @@ class Game:
         #Check if there a un boucle for the condition of win 
         # for self.checkNeighbors() in range(self.__table.getGrid()[y][x]):
             
+=======
+
+            elif grid[y][x].getSelected():
+
+                grid[y][x].setSelected()
+                grid[y][x].setLast()
+                grid[y][x].setPlayer(self.__turn + 1)
+
+                if self.__table.getLastCoord() != None:
+                    lastX, lastY = self.__table.getLastCoord()
+                    grid[lastY][lastX].setLast()
+                self.__table.setLastCoord(x, y)
+>>>>>>> 0c8b64fca4a536bcb2d71d6ed685128b0acf5285
 
             
         
