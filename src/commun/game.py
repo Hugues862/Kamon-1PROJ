@@ -20,37 +20,35 @@ class Game:
         pass
 
     def mouseClick(self, x, y):
-<<<<<<< HEAD
+        
+        grid = self.__table.getGrid()
         
         xLast, yLast = self.__table.getLastCoord()
         
-        if self.__table.getGrid()[y][x].getPlayer() == 0:
-            if not self.__table.getGrid()[y][x].getSelected():
-                self.__table.getGrid()[y][x].setSelected()
+        if grid[y][x].getPlayer() == 0:
+            if not grid[y][x].getSelected():
+                grid[y][x].setSelected()
                 
-=======
-        grid = self.__table.getGrid()
+        
         if grid[y][x].getPlayer() == 0:
             if not grid[y][x].getSelected():
                 grid[y][x].setSelected()
 
->>>>>>> 0c8b64fca4a536bcb2d71d6ed685128b0acf5285
                 if self.__table.getSelectedCoord() != None:
                     lastX, lastY = self.__table.getSelectedCoord()
                     grid[lastY][lastX].setSelected()
                 self.__table.setSelectedCoord(x, y)
-<<<<<<< HEAD
                 
-            elif self.__table.getGrid()[y][x].getSelected():
+            elif grid[y][x].getSelected():
                 
-                if self.__table.getGrid()[yLast][xLast].color() == self.__table.getGrid()[y][x].color() or self.__table.getGrid()[yLast][xLast].getImage() == self.__table.getGrid()[y][x].getImage():
-                    self.__table.getGrid()[y][x].setSelected()
-                    self.__table.getGrid()[y][x].setLast()
-                    self.__table.getGrid()[y][x].setPlayer(self.__turn + 1)
+                if grid[yLast][xLast].color() == grid[y][x].color() or grid[yLast][xLast].getImage() == grid[y][x].getImage():
+                    grid[y][x].setSelected()
+                    grid[y][x].setLast()
+                    grid[y][x].setPlayer(self.__turn + 1)
                     
                     if self.__table.getLastCoord() != None :
                         lastX, lastY = self.__table.getLastCoord()
-                        self.__table.getGrid()[lastY][lastX].setLast()
+                        grid[lastY][lastX].setLast()
                         self.__table.setLastCoord(x, y)
                 
     def turnChange(self):
@@ -78,7 +76,6 @@ class Game:
         #Check if there a un boucle for the condition of win 
         # for self.checkNeighbors() in range(self.__table.getGrid()[y][x]):
             
-=======
 
             elif grid[y][x].getSelected():
 
@@ -90,7 +87,6 @@ class Game:
                     lastX, lastY = self.__table.getLastCoord()
                     grid[lastY][lastX].setLast()
                 self.__table.setLastCoord(x, y)
->>>>>>> 0c8b64fca4a536bcb2d71d6ed685128b0acf5285
 
             
         
