@@ -30,7 +30,7 @@ class Game:
         #     if not grid[y][x].getSelected():
         #         grid[y][x].setSelected()       
         
-        if grid[y][x].getPlayer() == 0:
+        if grid[y][x].getState() != 0 and grid[y][x].getPlayer() == 0:
             if not grid[y][x].getSelected():
                 grid[y][x].setSelected()
 
@@ -39,7 +39,7 @@ class Game:
                     grid[selectY][selectX].setSelected()
                 self.__table.setSelectedCoord(x, y)
                 
-            elif grid[y][x].getSelected():
+            elif grid[y][x].getSelected() and grid[y][x].getState() != -1:
                 
                 if self.__table.getLastCoord() == None or grid[lastY][lastX].getColor() == grid[y][x].getColor() or grid[lastY][lastX].getImage() == grid[y][x].getImage():
                     grid[y][x].setSelected()
