@@ -109,28 +109,27 @@ class hexa:
             return
 
         if (tmp - 1) % 6 == 0:
-
-            self.__src = "./assets/" + theme + "/0.png"
+            self.__src = "/src/assets/" + theme + "/1.png"
 
         if (tmp - 1) % 6 == 1:
 
-            self.__src = "./assets/" + theme + "/1.png"
+            self.__src = "/src/assets/" + theme + "/2.png"
 
         if (tmp - 1) % 6 == 2:
 
-            self.__src = "./assets/" + theme + "/2.png"
+            self.__src = "/src/assets/" + theme + "/3.png"
 
         if (tmp - 1) % 6 == 3:
 
-            self.__src = "./assets/" + theme + "/3.png"
+            self.__src = "/src/assets/" + theme + "/4.png"
 
         if (tmp - 1) % 6 == 4:
 
-            self.__src = "./assets/" + theme + "/4.png"
+            self.__src = "/src/assets/" + theme + "/5.png"
 
         if (tmp - 1) % 6 == 5:
 
-            self.__src = "./assets/" + theme + "/5.png"
+            self.__src = "/src/assets/" + theme + "/6.png"
 
     # def changeBorder(self): # Not needed ?
 

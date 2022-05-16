@@ -47,6 +47,7 @@ class rootWindow:
             bg="white",
         )
         self.__canvas.bind("<Button-1>", self.mouseClick)
+        self.hexImages = {}
 
     def main(self):
         # Main loop,
@@ -317,6 +318,30 @@ class rootWindow:
             bottomRight(x, y)
             bottomLeft(x, y)
 
+        def images(x, y, xSpace, ySpace, gridElem):
+            imagePath = gridElem.getImage()
+
+            if imagePath != None:
+                # not loaded
+                if imagePath not in self.hexImages.keys():
+                    image = Image.open(str(WorkingDirectory) + imagePath)
+                    image = image.resize(
+                        (round(xSpace * 1.5), round(ySpace * 3)),
+                        Image.Resampling.LANCZOS,
+                    )
+                    img = ImageTk.PhotoImage(image)
+                    self.hexImages[imagePath] = img
+                    self.__canvas.image_names = list(self.hexImages.values())
+                # loaded
+                else:
+                    img = self.hexImages[imagePath]
+
+                self.__canvas.create_image(
+                    x + xSpace,
+                    y + ySpace,
+                    image=img,
+                )
+
         # Gets Grid
         grid = self.__game.getTable().getGrid()
 
@@ -349,12 +374,9 @@ class rootWindow:
                         col=col,
                         row=row,
                     )
-
-                    """ one = tk.PhotoImage(
-                        file=(str(WorkingDirectory) + "/src/assets/original/2.png")
+                    images(
+                        x=x, y=y, xSpace=xSpace, ySpace=ySpace, gridElem=grid[row][col]
                     )
-                    self.__canvas.image_names = one
-                    self.__canvas.create_image(x, y, image=one, anchor="nw") """
 
         borders(topLeftCoords, xSpace, ySpace)
 
