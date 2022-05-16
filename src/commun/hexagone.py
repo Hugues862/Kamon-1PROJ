@@ -6,8 +6,8 @@ class hexa:
         self.__side = side
         # self.__border = "None"
         self.setImage(theme)
-        self.__selected = False # Used to confirm
-        self.__last = False # Used to put Golden ring
+        self.__selected = False  # Used to confirm
+        self.__last = False  # Used to put Golden ring
         self.__player = 0
 
     def getState(self):
@@ -36,7 +36,7 @@ class hexa:
     #             str: String of the Hex color of the cell's border.
     #     """
     #     return self.__border
-    
+
     def getSide(self):
         """
         Gets the color of the cell's side (Hex border).
@@ -57,10 +57,10 @@ class hexa:
 
     def getPlayer(self):
         return self.__player
-    
+
     def getLast(self):
         return self.__last
-    
+
     def getSelected(self):
         return self.__selected
 
@@ -69,7 +69,7 @@ class hexa:
 
     def setLast(self):
         self.__last = not self.__last
-            
+
     def setSelected(self):
         self.__selected = not self.__selected
 
@@ -102,35 +102,35 @@ class hexa:
             self.__color = "#b84d98"
 
     def setImage(self, theme: str):
-
         tmp = self.__state
 
         if tmp == 0 or tmp == -1:
+            self.__src = None
             return
 
-        if tmp - 1 % 6 == 0:
+        if (tmp - 1) % 6 == 0:
 
-            self.__src = "../assets/" + theme + "/0.png"
+            self.__src = "./assets/" + theme + "/0.png"
 
-        if tmp - 1 % 6 == 1:
+        if (tmp - 1) % 6 == 1:
 
-            self.__src = "../assets/" + theme + "/1.png"
+            self.__src = "./assets/" + theme + "/1.png"
 
-        if tmp - 1 % 6 == 2:
+        if (tmp - 1) % 6 == 2:
 
-            self.__src = "../assets/" + theme + "/2.png"
+            self.__src = "./assets/" + theme + "/2.png"
 
-        if tmp - 1 % 6 == 3:
+        if (tmp - 1) % 6 == 3:
 
-            self.__src = "../assets/" + theme + "/3.png"
+            self.__src = "./assets/" + theme + "/3.png"
 
-        if tmp - 1 % 6 == 4:
+        if (tmp - 1) % 6 == 4:
 
-            self.__src = "../assets/" + theme + "/4.png"
+            self.__src = "./assets/" + theme + "/4.png"
 
-        if tmp - 1 % 6 == 5:
+        if (tmp - 1) % 6 == 5:
 
-            self.__src = "../assets/" + theme + "/5.png"
+            self.__src = "./assets/" + theme + "/5.png"
 
     # def changeBorder(self): # Not needed ?
 

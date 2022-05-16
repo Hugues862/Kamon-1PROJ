@@ -2,6 +2,10 @@ import commun.table
 import commun.game
 
 import tkinter as tk
+from PIL import Image, ImageTk
+import pathlib
+
+WorkingDirectory = pathlib.Path().resolve()
 
 
 class rootWindow:
@@ -60,7 +64,14 @@ class rootWindow:
         self.__canvas.pack()
 
     def displayHex(self):
-        def hex(x, y, xSpace, ySpace, color, player, last, selected, state, col, row):
+        def hex(x, y, xSpace, ySpace, hexObject, col, row):
+            color = hexObject.getColor()
+            player = hexObject.getPlayer()
+            last = hexObject.getLast()
+            selected = hexObject.getSelected()
+            state = hexObject.getState()
+            imagePath = hexObject.getImage()
+
             """Displays Background Canvas and generates points"""
             points = [
                 (x, y),
@@ -78,19 +89,19 @@ class rootWindow:
                 self.__indexy = row
 
             if last:
-                mainHex(points, color, "gold")
+                mainHex(points, color, "gold", imagePath)
             elif player == 1:
-                mainHex(points, color, "black")
+                mainHex(points, color, "black", imagePath)
             elif player == 2:
-                mainHex(points, color, "white")
+                mainHex(points, color, "white", imagePath)
             elif selected:
-                mainHex(points, color, "red")
+                mainHex(points, color, "red", imagePath)
             else:
                 self.__canvas.create_polygon(
                     points, fill=color, outline="black", width=2
                 )
 
-        def mainHex(points, color, border):
+        def mainHex(points, color, border, imagePath):
             """Displays the hexagones on the cells ( basically displays the players )"""
             # Polygon
             # FILL WHITE = BORDER
@@ -330,18 +341,20 @@ class rootWindow:
                         topLeftCoords = (x, y)
 
                     hex(
-                        x,
-                        y,
-                        xSpace,
-                        ySpace,
-                        grid[row][col].getColor(),
-                        grid[row][col].getPlayer(),
-                        grid[row][col].getLast(),
-                        grid[row][col].getSelected(),
-                        grid[row][col].getState(),
-                        col,
-                        row,
+                        x=x,
+                        y=y,
+                        xSpace=xSpace,
+                        ySpace=ySpace,
+                        hexObject=grid[row][col],
+                        col=col,
+                        row=row,
                     )
+
+                    """ one = tk.PhotoImage(
+                        file=(str(WorkingDirectory) + "/src/assets/original/2.png")
+                    )
+                    self.__canvas.image_names = one
+                    self.__canvas.create_image(x, y, image=one, anchor="nw") """
 
         borders(topLeftCoords, xSpace, ySpace)
 
