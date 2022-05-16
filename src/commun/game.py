@@ -66,13 +66,13 @@ class Game:
         if self.__turn== 0  or self.__turn == 1 :
 
             if ("G1" or "G1&Y1" or "G1&B1") and ("G2" or "G2&Y2" or "G2&B2") in sides:
-                win()
+                self.win()
 
             elif ("Y1" or "B2&Y1" or "G1&Y1") and ("Y2" or "B1&Y2" or "G2&Y2") in sides:
-                win()
+                self.win()
 
             elif ("B1" or "G1&B1" or"G1&Y1") and ("B2" or "B2&Y1" or "G2&B2") in sides:
-                win()
+                self.win()
             
         #Check if there a un boucle for the condition of win 
         # for self.checkNeighbors() in range(self.__table.getGrid()[y][x]):
