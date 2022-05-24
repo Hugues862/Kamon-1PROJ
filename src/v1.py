@@ -323,11 +323,9 @@ class rootWindow:
 
             if imagePath != None:
                 # not loaded
-               
+
                 if imagePath not in self.hexImages.keys():
-                    image = Image.open(
-                        str(str(WorkingDirectory) + imagePath)
-                    )
+                    image = Image.open(str(str(WorkingDirectory) + imagePath))
                     image = image.resize(
                         (round(xSpace * 1.5), round(ySpace * 3)),
                         Image.Resampling.LANCZOS,
