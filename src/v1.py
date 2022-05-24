@@ -1,5 +1,6 @@
 import commun.table
-import commun.game
+import commun.game  
+import win
 
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -23,7 +24,7 @@ class rootWindow:
         self.__game = commun.game.createGame()
 
         # main loop
-        self.main()
+        self.updateDisplay()
         self.__root.mainloop()
 
     def tkInit(self):
@@ -49,19 +50,15 @@ class rootWindow:
         self.__canvas.bind("<Button-1>", self.mouseClick)
         self.hexImages = {}
 
-    def main(self):
-        # Main loop,
-
+    def updateDisplay(self):
+        
         # Display Game
         self.displayHex()
 
         # Update Game
-        self.__game.updateGame()
+        # self.__game.updateGame()
 
         # TK packing
-        self.updateDisplay()
-
-    def updateDisplay(self):
         self.__canvas.pack()
 
     def displayHex(self):
@@ -384,9 +381,12 @@ class rootWindow:
     def mouseClick(self, event):
         # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
-        self.main()
+        self.updateDisplay()
         self.__game.mouseClick(self.__indexx, self.__indexy)
-        self.main()
+        self.updateDisplay()
+        
+        if self.__game.getWin():
+            self.win()
 
     def findPointsInsidePolygon(self, x, y, poly):
         n = len(poly)
@@ -408,9 +408,12 @@ class rootWindow:
     # def pixelToIndex(self, xPix, yPix):
     # return 3, 6
 
+    def win(self):
+        self.__root.destroy()
+        win.winRun(self.__game.getTurn())
+        # self.__root.destroy() # For debug and understanding win conditions
 
-def run():
-    win = rootWindow()
+def gameRun():
+    game = rootWindow()
 
-
-run()
+# gameRun()

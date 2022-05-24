@@ -1,12 +1,12 @@
 # ICI LE MENU
-"""import v1"""
+import v1
+
 from tkinter import *
 from tkinter import font
 import winsound
+import pathlib
 
-
-"""v1.run()"""
-
+WorkingDirectory = pathlib.Path().resolve()
 
 class Menus:
     def __init__(self):
@@ -15,7 +15,7 @@ class Menus:
         self.window.geometry("1300x900")
         self.window.title(' Kamon')
         bg = PhotoImage(
-            file="src/assets/original/Elements for the Menu/R-_1_.ppm")
+            file= str(str(WorkingDirectory) + "/src/assets/Elements for the Menu/R-_1_.ppm"))
         my_label = Label(self.window, image=bg)
         my_label.place(x=0, y=0)
 
@@ -32,7 +32,7 @@ class Menus:
         texte1.pack(side='top')
         # Button
         button1 = Button(frame1, text="SinglePlayer", font=('Helvetica', 20), borderwidth=(
-            20), foreground=("red"), relief='ridge', highlightthickness=(10))
+            20), foreground=("red"), relief='ridge', highlightthickness=(10), command = self.singlePlayer)
         button1.grid(row=0, column=0, pady=20, ipadx=30)
 
         button2 = Button(frame2, text="MultiPlayer", font=('Helvetica', 20), borderwidth=(
@@ -72,6 +72,14 @@ class Menus:
         frame3.pack()
         frame4.pack()
         self.window.mainloop()
+    
+    def singlePlayer(self):
+        self.window.destroy()
+        v1.gameRun()
+        
 
+def menuRun():
+    start = Menus()
 
-a = Menus()
+if __name__ == '__main__':
+    menuRun()
