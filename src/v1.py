@@ -323,9 +323,10 @@ class rootWindow:
 
             if imagePath != None:
                 # not loaded
+               
                 if imagePath not in self.hexImages.keys():
                     image = Image.open(
-                        str(str(WorkingDirectory) + imagePath).replace("\\", "/")
+                        str(str(WorkingDirectory) + imagePath).replace("/", "\\")
                     )
                     image = image.resize(
                         (round(xSpace * 1.5), round(ySpace * 3)),
