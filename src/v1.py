@@ -3,6 +3,9 @@ import commun.game
 
 import tkinter as tk
 from PIL import Image, ImageTk
+import pathlib
+
+WorkingDirectory = pathlib.Path().resolve()
 
 
 class rootWindow:
@@ -321,7 +324,9 @@ class rootWindow:
             if imagePath != None:
                 # not loaded
                 if imagePath not in self.hexImages.keys():
-                    image = Image.open(str("./" + imagePath).replace("\\", "/"))
+                    image = Image.open(
+                        str(str(WorkingDirectory) + imagePath).replace("\\", "/")
+                    )
                     image = image.resize(
                         (round(xSpace * 1.5), round(ySpace * 3)),
                         Image.Resampling.LANCZOS,
