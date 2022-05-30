@@ -1,16 +1,31 @@
+import pickle
+import threading
 import commun.table
-import commun.game  
+import commun.game
 import win
-
+import socket
 import tkinter as tk
 from PIL import Image, ImageTk
 import pathlib
+import logging
+from commun.network import *
+
+logging.basicConfig(level=logging.INFO)
 
 WorkingDirectory = pathlib.Path().resolve()
+TB = 2048 * 4
 
 
 class rootWindow:
-    def __init__(self):
+    def __init__(self, version, s=None, conn=None, addr=None):
+        self.version = version  # v1, v2, v3
+        self.s = s
+        self.conn = conn
+        self.addr = addr
+        if self.version == "v2":
+            self.id = pickle.loads(self.s.recv(TB))
+            logging.info(f"Received ID from server | {self.id}")
+
         # Default cell size
         self.__cellSize = 60
 
@@ -21,11 +36,26 @@ class rootWindow:
         self.tkInit()
 
         # Generate new table
-        self.__game = commun.game.createGame()
+        if self.version == "v1":
+            self.__game = commun.game.createGame()
+        elif self.version == "v2":
+            self.__game = pickle.loads(self.s.recv(TB)).game
+            logging.info(f"Received self.__game from server | {self.__game}")
+
+        # create server listening threading
+        self.listeningThread = threading.Thread(target=self.listeningThreadFunction)
+        self.listeningThread.start()
 
         # main loop
         self.updateDisplay()
         self.__root.mainloop()
+
+    def listeningThreadFunction(self):
+        while True:
+            data = recv_data(self.s)
+            stock = pickle.loads(data)
+            self.__game = stock.game
+            self.updateDisplay()
 
     def tkInit(self):
         """
@@ -51,7 +81,7 @@ class rootWindow:
         self.hexImages = {}
 
     def updateDisplay(self):
-        
+
         # Display Game
         self.displayHex()
 
@@ -383,8 +413,11 @@ class rootWindow:
         # print(event.x, event.y)
         self.updateDisplay()
         self.__game.mouseClick(self.__indexx, self.__indexy)
+        if self.version == "v2":
+            data = pickle.dumps(self.__game)
+            send_data(self.s, data)
         self.updateDisplay()
-        
+
         if self.__game.getWin():
             self.win()
 
@@ -413,7 +446,21 @@ class rootWindow:
         win.winRun(self.__game.getTurn())
         # self.__root.destroy() # For debug and understanding win conditions
 
-def gameRun():
-    game = rootWindow()
 
-# gameRun()
+def gameRun(version):
+    if version == "v1":
+        game = rootWindow(version)
+
+    if version == "v2":
+        HOST = "127.0.0.1"
+        PORT = 56669
+        # creating client
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            logging.info(f"Attempting to connect to server {HOST}:{PORT}")
+            s.connect((HOST, PORT))
+            logging.info(f"Connected")
+            game = rootWindow(version=version, s=s)
+
+
+gameRun("v1")
+# gameRun("v2")

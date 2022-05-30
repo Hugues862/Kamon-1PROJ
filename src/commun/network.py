@@ -1,26 +1,18 @@
+import pickle
 import socket
+import struct
 
 
-class Network:
-    def __init__(self):
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "127.0.0.1"
-        self.port = 5555
-        self.addr = (self.server, self.port)
-        self.id = self.connect()
-        self.bytes = 2048
-        print(self.id)
+def send_data(conn, data):
+    size = len(data)
+    size_in_4_bytes = struct.pack("I", size)
+    conn.send(size_in_4_bytes)
+    conn.send(data)
 
-    def connect(self):
-        try:
-            self.client.connect(self.addr)
-            return self.client.recv(self.bytes).decode()
-        except:
-            pass
 
-    def send(self, data):
-        try:
-            self.client.send(str.encode(data))
-            return self.client.recv(self.bytes).decode()
-        except socket.error as e:
-            print(e)
+def recv_data(conn):
+    size_in_4_bytes = conn.recv(4)
+    size = struct.unpack("I", size_in_4_bytes)
+    size = size[0]
+    data = conn.recv(size)
+    return data
