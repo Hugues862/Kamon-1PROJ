@@ -65,6 +65,8 @@ class Game:
                 
     def turnChange(self):
         self.__turn = (self.__turn + 1)  % 2
+
+    
            
             
     def checkWin(self, x, y):
