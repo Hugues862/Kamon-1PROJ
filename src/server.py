@@ -10,13 +10,14 @@ TB = 2048 * 2
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
-server = "127.0.0.1"
+server = "localhost"
 port = 56669
 try:
     s.bind((server, port))
     print(f"Started server {server} on port {port}")
 except socket.error as e:
     str(e)
+
 
 s.listen()
 
@@ -55,17 +56,22 @@ def threaded_client(conn, id):
 
 
 while True:
-    if len(USERS) <= 20:
-        conn, addr = s.accept()
-        print("Connected to:", addr)
-        # id = int(''.join(str(e) for e in [randint(0,9) for x in range(6)]))
-        id = len(USERS)
-        USERS.append([conn, addr, id])
-        thread = threading.Thread(
-            group=None,
-            target=threaded_client,
-            name=f"Player{id}",
-            args=(conn, id),
-            kwargs={},
-        )
-        thread.start()
+    try:
+        if len(USERS) <= 20:
+            conn, addr = s.accept()
+            print("Connected to:", addr)
+            # id = int(''.join(str(e) for e in [randint(0,9) for x in range(6)]))
+            id = len(USERS)
+            USERS.append([conn, addr, id])
+            thread = threading.Thread(
+                group=None,
+                target=threaded_client,
+                name=f"Player{id}",
+                args=(conn, id),
+                kwargs={},
+            )
+            thread.start()
+    except KeyboardInterrupt:
+        print("\nClosing server")
+        s.close()
+        break

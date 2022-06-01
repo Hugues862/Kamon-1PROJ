@@ -42,9 +42,9 @@ class rootWindow:
             self.__game = pickle.loads(self.s.recv(TB)).game
             logging.info(f"Received self.__game from server | {self.__game}")
 
-        # create server listening threading
-        self.listeningThread = threading.Thread(target=self.listeningThreadFunction)
-        self.listeningThread.start()
+            # create server listening threading
+            self.listeningThread = threading.Thread(target=self.listeningThreadFunction)
+            self.listeningThread.start()
 
         # main loop
         self.updateDisplay()
@@ -352,10 +352,12 @@ class rootWindow:
                 # not loaded
 
                 if imagePath not in self.hexImages.keys():
-                    image = Image.open(str(str(WorkingDirectory) + imagePath))
+                    imgUrl = str(str(WorkingDirectory) + imagePath)
+                    image = Image.open(imgUrl)
+                    mult = 1.2
+                    ns = (round(xSpace * mult), round(ySpace * mult * 2))
                     image = image.resize(
-                        (round(xSpace * 1.5), round(ySpace * 3)),
-                        Image.Resampling.LANCZOS,
+                        ns,
                     )
                     img = ImageTk.PhotoImage(image)
                     self.hexImages[imagePath] = img
@@ -412,14 +414,14 @@ class rootWindow:
         # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
         self.updateDisplay()
-        self.__game.mouseClick(self.__indexx, self.__indexy)
-        if self.version == "v2":
+        selected = self.__game.mouseClick(self.__indexx, self.__indexy)
+        if self.version == "v2" and selected == True:
             data = pickle.dumps(self.__game)
             send_data(self.s, data)
         self.updateDisplay()
 
-        if self.__game.getWin():
-            self.win()
+        """  if self.__game.getWin():
+            self.win() """
 
     def findPointsInsidePolygon(self, x, y, poly):
         n = len(poly)
@@ -452,7 +454,7 @@ def gameRun(version):
         game = rootWindow(version)
 
     if version == "v2":
-        HOST = "127.0.0.1"
+        HOST = "localhost"
         PORT = 56669
         # creating client
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
