@@ -11,6 +11,22 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": ["-B"]
+        },
+        {
+            "name": "Python: Server",
+            "type": "python",
+            "request": "launch",
+            "program": "src/server.py",
+            "console": "integratedTerminal",
+            "args": ["-B", "--port 56669"]
+        },
+        {
+            "name": "Python: Client",
+            "type": "python",
+            "request": "launch",
+            "program": "src/game.py",
+            "console": "integratedTerminal",
+            "args": ["-B"]
         }
     ]
 }

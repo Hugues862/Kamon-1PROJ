@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 
 
+
 class Table:
     def __init__(self, theme="original"):
 
@@ -199,6 +200,12 @@ class Table:
         tmp = self.getGridSide()
         res = pd.DataFrame(tmp).fillna(value="")
         return res
+
+    def isPossible(self,x, y, lastColor, lastLogo):
+        if self.getGridSide(x,y) == lastColor or self.getGridSide(x,y) == lastLogo:
+            return True
+        else:
+            return False
 
 
 # t = Table()

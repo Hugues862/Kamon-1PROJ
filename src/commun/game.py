@@ -1,4 +1,5 @@
 import commun.table
+
 # import win
 
 
@@ -17,10 +18,10 @@ class Game:
 
     def getTable(self):
         return self.__table
-    
+
     def getTurn(self):
         return self.__turn
-    
+
     def getWin(self):
         return self.__win
 
@@ -28,16 +29,16 @@ class Game:
     #     pass
 
     def mouseClick(self, x, y):
-        
+
         grid = self.__table.getGrid()
-        
+
         if self.__table.getLastCoord() != None:
             lastX, lastY = self.__table.getLastCoord()
-        
+
         # if grid[y][x].getPlayer() == 0:
         #     if not grid[y][x].getSelected():
-        #         grid[y][x].setSelected()       
-        
+        #         grid[y][x].setSelected()
+
         if grid[y][x].getState() != 0 and grid[y][x].getPlayer() == 0:
             if not grid[y][x].getSelected():
                 grid[y][x].setSelected()
@@ -46,27 +47,35 @@ class Game:
                     selectX, selectY = self.__table.getSelectedCoord()
                     grid[selectY][selectX].setSelected()
                 self.__table.setSelectedCoord(x, y)
-                
+                return False
+
             elif grid[y][x].getSelected() and grid[y][x].getState() != -1:
-                
-                if self.__table.getLastCoord() == None or grid[lastY][lastX].getColor() == grid[y][x].getColor() or grid[lastY][lastX].getImage() == grid[y][x].getImage():
+
+                if (
+                    self.__table.getLastCoord() == None
+                    or grid[lastY][lastX].getColor() == grid[y][x].getColor()
+                    or grid[lastY][lastX].getImage() == grid[y][x].getImage()
+                ):
                     grid[y][x].setSelected()
                     grid[y][x].setLast()
                     grid[y][x].setPlayer(self.__turn + 1)
-                    
-                    if self.__table.getLastCoord() != None :
-                        grid[lastY][lastX].setLast() # Removes Lest status from last ring
-                        
+
+                    if self.__table.getLastCoord() != None:
+                        grid[lastY][
+                            lastX
+                        ].setLast()  # Removes Lest status from last ring
+
                     self.__table.setLastCoord(x, y)
                     if self.checkWin(x, y) == True:
                         self.__win = True
-                    else:    
+                    else:
                         self.turnChange()
-                
+                return True
+        return False
+
     def turnChange(self):
-        self.__turn = (self.__turn + 1)  % 2
-           
-            
+        self.__turn = (self.__turn + 1) % 2
+
     def checkWin(self, x, y):
         
         side = self.__table.checkNeighbors(x, y, self.__turn, [], [])[1]
@@ -74,7 +83,7 @@ class Game:
         print(side)
         grid = self.__table.getGrid()
 
-        #Check if the 2 side colours exists
+        # Check if the 2 side colours exists
         # if self.__turn == 0  or self.__turn == 1 :
 
         if ("G1" in side or "B1&G1" in side or "G1&Y2" in side) and ("G2" in side or "B2&G2" in side or "G2&Y1" in side):
@@ -124,9 +133,9 @@ class Game:
             if all(side is None for side in winSides):
                 print("surround6")
                 return True
-            
+
         return False
 
-            
+
 def createGame():
     return Game()
