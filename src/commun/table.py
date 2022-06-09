@@ -60,37 +60,37 @@ class Table:
 
                 if i == 0:
                     if j == 0:
-                        side = "G1&Y1"
+                        side = "B1&Y1"
                     elif j == 7 - abs(3 - i) - 1:
-                        side = "G1&B1"
+                        side = "B1&G1"
                     else:
-                        side = "G1"
+                        side = "B1"
 
                 elif i == 6:
                     if j == 0:
-                        side = "G2&B2"
+                        side = "B2&G2"
                     elif j == 7 - abs(3 - i) - 1:
-                        side = "G2&Y2"
+                        side = "B2&Y2"
                     else:
-                        side = "G2"
+                        side = "B2"
 
                 elif i == 1 or i == 2:
                     if j == 0:
                         side = "Y1"
                     elif j == 7 - abs(3 - i) - 1:
-                        side = "B1"
+                        side = "G1"
 
                 elif i == 4 or i == 5:
                     if j == 0:
-                        side = "B2"
+                        side = "G2"
                     elif j == 7 - abs(3 - i) - 1:
                         side = "Y2"
 
                 elif i == 3:
                     if j == 0:
-                        side = "B2&Y1"
+                        side = "G2&Y1"
                     elif j == 7 - abs(3 - i) - 1:
-                        side = "B1&Y2"
+                        side = "G1&Y2"
 
                 tmp.append(hexa(rdmValue, theme, side))
                 tmp.append(hexa(0))
@@ -102,7 +102,12 @@ class Table:
 
         return grid
 
-    def checkNeighbors(self, x, y, turn, neighbors = [], sides = []):
+    def checkNeighbors(self, x, y, turn, neighbors, sides):
+        
+        print("tableCheck")
+        print(neighbors)
+        print(sides)
+        
         
         if (x, y) in neighbors:
             return neighbors, sides
@@ -133,8 +138,10 @@ class Table:
         
         return neighbors, sides
         
-    def checkWinNeighbors(self, x, y, turn, neighbors = [], sides = []):
-            
+    def checkWinNeighbors(self, x, y, turn, neighbors, sides):
+        
+        print(sides)
+        
         if len(sides) <= 1 and (all(side is None for side in sides) or (x, y) not in neighbors):
             
             neighbors.append((x, y))
@@ -159,8 +166,6 @@ class Table:
                 
             if y != 6 and self.__grid[y + 1][x - 1].getState() != 0 and (self.__grid[y + 1][x - 1].getPlayer() == 2 - turn or self.__grid[y + 1][x - 1].getPlayer() == 0):
                 neighbors, sides = self.checkWinNeighbors(x - 1, y + 1, turn, neighbors, sides)
-            
-            return neighbors, sides
         
         return neighbors, sides
 

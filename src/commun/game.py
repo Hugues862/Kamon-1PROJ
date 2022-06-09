@@ -69,49 +69,60 @@ class Game:
             
     def checkWin(self, x, y):
         
-        sides = self.__table.checkNeighbors(x, y, self.__turn)[1]
+        side = self.__table.checkNeighbors(x, y, self.__turn, [], [])[1]
+        print("gameCheck")
+        print(side)
         grid = self.__table.getGrid()
 
         #Check if the 2 side colours exists
         # if self.__turn == 0  or self.__turn == 1 :
 
-        if ("G1" or "G1&Y1" or "G1&B1") and ("G2" or "G2&Y2" or "G2&B2") in sides:
-             return True
-
-        elif ("Y1" or "B2&Y1" or "G1&Y1") and ("Y2" or "B1&Y2" or "G2&Y2") in sides:
+        if ("G1" in side or "B1&G1" in side or "G1&Y2" in side) and ("G2" in side or "B2&G2" in side or "G2&Y1" in side):
+            print("color1")
             return True
 
-        elif ("B1" or "G1&B1" or"B1&Y2") and ("B2" or "B2&Y1" or "G2&B2") in sides:
+        elif ("Y1" in side or "B1&Y1" in side or "G2&Y1" in side) and ("Y2" in side or "B2&Y2" in side or "G1&Y2" in side):
+            print("color2")
+            return True
+
+        elif ("B1" in side or "G1&B1" in side or"B1&G1" in side) and ("B2" in side or "B2&G2" in side or "B2&Y2" in side):
+            print("color3")
             return True
         
         if x != 0 and grid[y][x - 2].getState() != 0 and (grid[y][x - 2].getPlayer() == 2 - self.__turn or grid[y][x - 2].getPlayer() == 0):
-            winSides = self.__table.checkWinNeighbors(x - 2, y, self.__turn)[1]
+            winSides = self.__table.checkWinNeighbors(x - 2, y, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
+                print("surround1")
                 return True
                 
         if x != 12 and grid[y][x + 2].getState() != 0 and (grid[y][x + 2].getPlayer() == 2 - self.__turn or grid[y][x + 2].getPlayer() == 0):
-            winSides = self.__table.checkWinNeighbors(x + 2, y, self.__turn)[1]
+            winSides = self.__table.checkWinNeighbors(x + 2, y, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
+                print("surround2")
                 return True
                 
         if y != 0 and grid[y - 1][x + 1].getState() != 0 and (grid[y - 1][x + 1].getPlayer() == 2 - self.__turn or grid[y - 1][x + 1].getPlayer() == 0):
-            winSides = self.__table.checkWinNeighbors(x + 1, y - 1, self.__turn)[1]
+            winSides = self.__table.checkWinNeighbors(x + 1, y - 1, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
+                print("surround3")
                 return True
             
         if y != 0 and grid[y - 1][x - 1].getState() != 0 and (grid[y - 1][x - 1].getPlayer() == 2 - self.__turn or grid[y - 1][x - 1].getPlayer() == 0):
-            winSides = self.__table.checkWinNeighbors(x - 1, y - 1, self.__turn)[1]
+            winSides = self.__table.checkWinNeighbors(x - 1, y - 1, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
+                print("surround4")
                 return True
             
         if y != 6 and grid[y + 1][x + 1].getState() != 0 and (grid[y + 1][x + 1].getPlayer() == 2 - self.__turn or grid[y + 1][x + 1].getPlayer() == 0):
-            winSides = self.__table.checkWinNeighbors(x + 1, y + 1, self.__turn)[1]
+            winSides = self.__table.checkWinNeighbors(x + 1, y + 1, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
+                print("surround5")
                 return True
             
         if y != 6 and grid[y + 1][x - 1].getState() != 0 and (grid[y + 1][x - 1].getPlayer() == 2 - self.__turn or grid[y + 1][x - 1].getPlayer() == 0):
-            winSides = self.__table.checkWinNeighbors(x - 1, y + 1, self.__turn)[1]
+            winSides = self.__table.checkWinNeighbors(x - 1, y + 1, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
+                print("surround6")
                 return True
             
         return False
