@@ -98,13 +98,13 @@ class Game:
             print("color3")
             return True
         
-        if x != 0 and grid[y][x - 2].getState() != 0 and (grid[y][x - 2].getPlayer() == 2 - self.__turn or grid[y][x - 2].getPlayer() == 0):
+        if x != abs(3 - y) and grid[y][x - 2].getState() != 0 and (grid[y][x - 2].getPlayer() == 2 - self.__turn or grid[y][x - 2].getPlayer() == 0):
             winSides = self.__table.checkWinNeighbors(x - 2, y, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
                 print("surround1")
                 return True
                 
-        if x != 12 and grid[y][x + 2].getState() != 0 and (grid[y][x + 2].getPlayer() == 2 - self.__turn or grid[y][x + 2].getPlayer() == 0):
+        if x != 12 - abs(3 - y) and grid[y][x + 2].getState() != 0 and (grid[y][x + 2].getPlayer() == 2 - self.__turn or grid[y][x + 2].getPlayer() == 0):
             winSides = self.__table.checkWinNeighbors(x + 2, y, self.__turn, [], [])[1]
             if all(side is None for side in winSides):
                 print("surround2")
