@@ -201,12 +201,10 @@ class Table:
         res = pd.DataFrame(tmp).fillna(value="")
         return res
 
-    def isPossible(self,x, y, lastColor, lastLogo):
-        if self.getGridSide(x,y) == lastColor or self.getGridSide(x,y) == lastLogo:
-            return True
-        else:
-            return False
-
+    def isPossible(self, x, y):
+        
+        return self.__lastCoord == None or self.__grid[y][x].getColor() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getColor() or self.__grid[y][x].getImage() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getImage()
+        
 
 t = Table()
 print(t.printSide())

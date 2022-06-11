@@ -1,4 +1,5 @@
 import commun.table
+import random as rd
 
 # import win
 
@@ -29,12 +30,28 @@ class Game:
     # def updateGame(self):
     #     pass
 
-    def mouseClick(self, x, y):
-
+    def place(self, x, y):
+        
         grid = self.__table.getGrid()
+        
+        grid[y][x].setLast()
+        self.__players[self.__turn].playerLast = (x, y)
+        grid[y][x].setPlayer(self.__turn + 1)
 
         if self.__table.getLastCoord() != None:
             lastX, lastY = self.__table.getLastCoord()
+            grid[lastY][lastX].setLast()  # Removes Last status from last ring
+
+        self.__table.setLastCoord(x, y)
+        
+        if self.checkWin(x, y) == True:
+            self.__win = True
+        else:
+            self.turnChange()
+    
+    def mouseClick(self, x, y, version):
+
+        grid = self.__table.getGrid()
 
         # if grid[y][x].getPlayer() == 0:
         #     if not grid[y][x].getSelected():
@@ -52,26 +69,13 @@ class Game:
 
             elif grid[y][x].getSelected() and grid[y][x].getState() != -1:
 
-                if (
-                    self.__table.getLastCoord() == None
-                    or grid[lastY][lastX].getColor() == grid[y][x].getColor()
-                    or grid[lastY][lastX].getImage() == grid[y][x].getImage()
-                ):
+                if self.__table.isPossible(x, y):
                     grid[y][x].setSelected()
-                    grid[y][x].setLast()
-                    self.__players[self.__turn].playerLast = (x, y)
-                    grid[y][x].setPlayer(self.__turn + 1)
-
-                    if self.__table.getLastCoord() != None:
-                        grid[lastY][
-                            lastX
-                        ].setLast()  # Removes Last status from last ring
-
-                    self.__table.setLastCoord(x, y)
-                    if self.checkWin(x, y) == True:
-                        self.__win = True
-                    else:
-                        self.turnChange()
+                    self.place(x, y)
+                        
+                if version == "bot" and self.__win == False:
+                    self.aiBot()
+                    
                 return True
         return False
 
@@ -79,6 +83,9 @@ class Game:
         self.__turn = (self.__turn + 1) % 2
 
     def checkWin(self, x, y):
+        
+        if self.allPossible() == []:
+            return True
         
         side = self.__table.checkNeighbors(x, y, self.__turn, [], [])[1]
         print("gameCheck")
@@ -137,7 +144,70 @@ class Game:
                 return True
 
         return False
+    
+    # AI BOT
+    
+    def allPossible(self):
+    
+        res = []
+        
+        for y in range (7):
+            for x in range (7 - abs(3 - y)):
+                
+                if self.__table.isPossible(x * 2, y):
+                    res.append((x, y))
+                
+        return res
 
+    def aiBot(self):
+        
+        available = self.allPossible()
+        
+        pos = None # (x, y) used by the AI bot
+        nbrNeighbors = 0
+        
+        # Try to put next to ally pieces
+        for idx in range (len(available)):
+            
+            tmp = len(self.__table.checkNeighbors(available[idx][0], available[idx][1], self.__turn, [], [])[0])
+            
+            if tmp > nbrNeighbors:
+                nbrNeighbors = tmp
+                pos = available[idx]
+        
+        # If ally pieces not enough, try to put next to enemy last piece    
+        if nbrNeighbors <= 3 and self.__table.getLastCoord() != None:
+            
+            lastX, lastY = self.__table.getLastCoord()
+            
+            if (lastX - 2, lastY) in available:
+                pos = (lastX - 2, lastY)
+                
+            elif (lastX + 2, lastY) in available:
+                pos = (lastX + 2, lastY)
+                
+            elif (lastX - 1, lastY - 1) in available:
+                pos = (lastX - 1, lastY - 1)
+                
+            elif (lastX + 1, lastY - 1) in available:
+                pos = (lastX + 1, lastY - 1)
+                
+            elif (lastX - 1, lastY + 1) in available:
+                pos = (lastX - 1, lastY + 1)
+                
+            elif (lastX + 1, lastY + 1) in available:
+                pos = (lastX + 1, lastY + 1)
+                
+            else:
+                pos = available[rd.randint(0, len(available) - 1)]
+        
+        # If no previous piece, play random
+        else:
+            pos = available[rd.randint(0, len(available) - 1)]
+        
+        # Place piece on posX, posY
+        self.place(pos[0], pos[1])
+            
 
 def createGame():
     return Game()
