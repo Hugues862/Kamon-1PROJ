@@ -203,7 +203,7 @@ class Table:
 
     def isPossible(self, x, y):
         
-        return self.__lastCoord == None or self.__grid[y][x].getColor() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getColor() or self.__grid[y][x].getImage() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getImage()
+        return (self.__lastCoord == None or self.__grid[y][x].getColor() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getColor() or self.__grid[y][x].getImage() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getImage()) and (self.__grid[y][x].getPlayer() == 0)
         
 
 t = Table()

@@ -158,7 +158,7 @@ class Game:
                     res.append((x, y))
                 
         return res
-
+    
     def aiBot(self):
         
         available = self.allPossible()

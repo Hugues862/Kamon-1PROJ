@@ -18,7 +18,7 @@ TB = 2048 * 4
 
 class rootWindow:
     def __init__(self, version, s=None, conn=None, addr=None):
-        self.version = version  # solo, server, v3
+        self.version = version  # solo (v1), server (v2), bot (v3)
         self.s = s
         self.conn = conn
         self.addr = addr
@@ -36,7 +36,7 @@ class rootWindow:
         self.tkInit()
 
         # Generate new table
-        if self.version == "solo":
+        if self.version == "solo" or self.version == "bot":
             self.__game = commun.game.createGame()
         elif self.version == "server":
             self.__game = pickle.loads(self.s.recv(TB)).game
@@ -414,7 +414,7 @@ class rootWindow:
         # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
         self.updateDisplay()
-        selected = self.__game.mouseClick(self.__indexx, self.__indexy)
+        selected = self.__game.mouseClick(self.__indexx, self.__indexy, self.version)
         if self.version == "server" and selected == True:
             data = pickle.dumps(self.__game)
             send_data(self.s, data)
@@ -450,7 +450,7 @@ class rootWindow:
 
 
 def gameRun(version):
-    if version == "solo":
+    if version == "solo" or version == "bot":
         game = rootWindow(version)
 
     if version == "server":
@@ -466,3 +466,4 @@ def gameRun(version):
 
 # gameRun("solo")
 # gameRun("server")
+gameRun("bot")
