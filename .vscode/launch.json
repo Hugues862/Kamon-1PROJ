@@ -24,7 +24,7 @@
             "name": "Python: Client",
             "type": "python",
             "request": "launch",
-            "program": "src/game.py",
+            "program": "src/displayGame.py",
             "console": "integratedTerminal",
             "args": ["-B"]
         }

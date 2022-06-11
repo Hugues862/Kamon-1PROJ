@@ -141,13 +141,13 @@ class Table:
         
     def checkWinNeighbors(self, x, y, turn, neighbors, sides):
         
-        print(sides)
         
-        if len(sides) <= 1 and (all(side is None for side in sides) or (x, y) not in neighbors):
+        if len(sides) == 0 or (all(side is None for side in sides) and (x, y) not in neighbors):
             
             neighbors.append((x, y))
             
             if self.__grid[y][x].getSide() not in sides:
+                print(sides)
                 sides.append(self.__grid[y][x].getSide())
                 
             if x != abs(3 - y) and self.__grid[y][x - 2].getState() != 0 and (self.__grid[y][x - 2].getPlayer() == 2 - turn or self.__grid[y][x - 2].getPlayer() == 0):
@@ -208,5 +208,5 @@ class Table:
             return False
 
 
-# t = Table()
-# print(t.printSide())
+t = Table()
+print(t.printSide())

@@ -1,5 +1,5 @@
 from tkinter import *
-import game
+import displayGame
 import main
 from tkinter import font
 import pathlib
@@ -30,14 +30,14 @@ class win:
         # Text
         winnerText = Label(
             self.window,
-            text="Player " + str(1 + winner) + " won the game !",
+            text="Player " + str(1 + winner) + " won the displayGame !",
             font=("Courrier", 60),
             fg="black",
         )
 
         texte1 = Label(
             self.window,
-            text="Do you want to restart the game",
+            text="Do you want to restart the displayGame",
             font=("Courrier", 40),
             fg="black",
         )
@@ -77,7 +77,7 @@ class win:
 
     def restart(self):
         self.window.destroy()
-        game.gameRun()
+        displayGame.gameRun()
 
     def quit(self):
         self.window.destroy()

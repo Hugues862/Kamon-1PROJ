@@ -18,11 +18,11 @@ TB = 2048 * 4
 
 class rootWindow:
     def __init__(self, version, s=None, conn=None, addr=None):
-        self.version = version  # v1, v2, v3
+        self.version = version  # solo, server, v3
         self.s = s
         self.conn = conn
         self.addr = addr
-        if self.version == "v2":
+        if self.version == "server":
             self.id = pickle.loads(self.s.recv(TB))
             logging.info(f"Received ID from server | {self.id}")
 
@@ -36,9 +36,9 @@ class rootWindow:
         self.tkInit()
 
         # Generate new table
-        if self.version == "v1":
+        if self.version == "solo":
             self.__game = commun.game.createGame()
-        elif self.version == "v2":
+        elif self.version == "server":
             self.__game = pickle.loads(self.s.recv(TB)).game
             logging.info(f"Received self.__game from server | {self.__game}")
 
@@ -415,7 +415,7 @@ class rootWindow:
         # print(event.x, event.y)
         self.updateDisplay()
         selected = self.__game.mouseClick(self.__indexx, self.__indexy)
-        if self.version == "v2" and selected == True:
+        if self.version == "server" and selected == True:
             data = pickle.dumps(self.__game)
             send_data(self.s, data)
         self.updateDisplay()
@@ -450,10 +450,10 @@ class rootWindow:
 
 
 def gameRun(version):
-    if version == "v1":
+    if version == "solo":
         game = rootWindow(version)
 
-    if version == "v2":
+    if version == "server":
         HOST = "localhost"
         PORT = 56669
         # creating client
@@ -464,5 +464,5 @@ def gameRun(version):
             game = rootWindow(version=version, s=s)
 
 
-gameRun("v1")
-# gameRun("v2")
+# gameRun("solo")
+# gameRun("server")
