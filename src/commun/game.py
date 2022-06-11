@@ -7,6 +7,7 @@ class Player:
     def __init__(self, color):
         self.kamons = 18
         self.color = color
+        self.playerLast = None
 
 
 class Game:
@@ -58,12 +59,13 @@ class Game:
                 ):
                     grid[y][x].setSelected()
                     grid[y][x].setLast()
+                    self.__players[self.__turn].playerLast = (x, y)
                     grid[y][x].setPlayer(self.__turn + 1)
 
                     if self.__table.getLastCoord() != None:
                         grid[lastY][
                             lastX
-                        ].setLast()  # Removes Lest status from last ring
+                        ].setLast()  # Removes Last status from last ring
 
                     self.__table.setLastCoord(x, y)
                     if self.checkWin(x, y) == True:
