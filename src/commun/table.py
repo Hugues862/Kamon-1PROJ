@@ -105,9 +105,9 @@ class Table:
 
     def checkNeighbors(self, x, y, turn, neighbors, sides):
         
-        print("tableCheck")
-        print(neighbors)
-        print(sides)
+        # print("tableCheck")
+        # print(neighbors)
+        # print(sides)
         
         
         if (x, y) in neighbors:
@@ -147,7 +147,7 @@ class Table:
             neighbors.append((x, y))
             
             if self.__grid[y][x].getSide() not in sides:
-                print(sides)
+                # print(sides)
                 sides.append(self.__grid[y][x].getSide())
                 
             if x != abs(3 - y) and self.__grid[y][x - 2].getState() != 0 and (self.__grid[y][x - 2].getPlayer() == 2 - turn or self.__grid[y][x - 2].getPlayer() == 0):
