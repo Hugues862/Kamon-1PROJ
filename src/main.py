@@ -66,10 +66,10 @@ def singleplayer():
 
 def multiplayer():
     f1.destroy()
-    f2 = Frame(w, width=900, height=455, bg="white")
+    f2 = Frame(w, width=900, height=455, bg="#262626")
     f2.place(x=0, y=45)
-    l2 = Label(f2, text="Multiplayer", fg="black", bg="white")
-    l2.config(font=("Comic Sans MS", 90))
+    l2 = Label(f2, text=" YOU CHOOSE THE MULTIPLAYER MODE", fg="#8A2BE2", bg="#262626")
+    l2.config(font=("Comic Sans MS", 30))
     l2.place(x=10, y=150 - 45)
     toggle_win()
 
@@ -80,7 +80,7 @@ def option():
     f2.place(x=0, y=45)
     l2 = Label(f2, text="Option", fg="black", bg="white")
     l2.config(font=("Comic Sans MS", 90))
-    l2.place(x=10, y=150 - 45)
+    l2.place(x=30, y=150 - 45)
     toggle_win()
 
 
