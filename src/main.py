@@ -1,15 +1,28 @@
-import displayGame as game
+import displayGame
 from tkinter import *
 from PIL import ImageTk, Image
 import pathlib
 
 WorkingDirectory = pathlib.Path().resolve()
 
-w = Tk()
-w.geometry("900x500")
-w.configure(bg="#262626")
-w.resizable(0, 0)
-w.title("KAMON")
+
+def localMode():
+    w.destroy()
+    displayGame.gameRun("solo")
+
+
+def singlePlayerMode():
+    w.destroy()
+    displayGame.gameRun("bot")
+
+
+def multiPlayerMode():
+    w.destroy()
+    displayGame.gameRun("server")
+
+
+def menuRun():
+    start = Menus()
 
 
 def default_home():
@@ -23,6 +36,11 @@ def default_home():
     l3 = Label(f3, text="KAMON", fg="white", bg="#262626")
     l3.config(font=("Comic Sans MS", 50))
     l3.place(x=250, y=1)
+    bouton4 = Button(
+        w, text="QUICK PLAY ", font=30, fg="#8A2BE2", bg="#262626", command=localMode
+    )
+    bouton4.pack(side="right", ipadx=20, padx=30, pady=20)
+    bouton4.place(x=350, y=400)
 
 
 def singleplayer():
@@ -32,7 +50,7 @@ def singleplayer():
     l2 = Label(f2, text="YOU CHOOSE SINGLEPLAYER MODE ", fg="#8A2BE2", bg="#262626")
     l2.config(font=("Comic Sans MS", 35))
     l2.place(x=40, y=150 - 45)
-    bouton2 = Button(w, text="CLICK TO PLAY ", font=20)
+    bouton2 = Button(w, text="CLICK TO PLAY ", font=20, command=singlePlayerMode)
     bouton2.pack(side="right", ipadx=20, padx=30, pady=20)
     bouton2.place(x=350, y=400)
 
@@ -73,6 +91,16 @@ def multiplayer():
     l2 = Label(f2, text=" YOU CHOOSE THE MULTIPLAYER MODE", fg="#8A2BE2", bg="#262626")
     l2.config(font=("Comic Sans MS", 30))
     l2.place(x=10, y=150 - 45)
+    bouton6 = Button(
+        w,
+        text="QUICK PLAY ",
+        font=30,
+        fg="#8A2BE2",
+        bg="#262626",
+        command=multiPlayerMode(),
+    )
+    bouton6.pack(side="right", ipadx=20, padx=30, pady=20)
+    bouton6.place(x=350, y=400)
     toggle_win()
 
 
@@ -138,43 +166,50 @@ def toggle_win():
         b2.place(x=5, y=8)
 
     global img2
-    img2 = ImageTk.PhotoImage(Image.open(str(WorkingDirectory) + "/src/assets/menu/close.png"))
+    img2 = ImageTk.PhotoImage(
+        Image.open(str(WorkingDirectory) + "/src/assets/menu/close.png")
+    )
 
     Button(
         f1, image=img2, border=0, command=dele, bg="#8A2BE2", activebackground="#8A2BE2"
     ).place(x=5, y=10)
 
 
-default_home()
+def start():
+    global w
+    w = Tk()
+    w.geometry("900x500")
+    w.configure(bg="#262626")
+    w.resizable(0, 0)
+    w.title("KAMON")
 
-img1 = ImageTk.PhotoImage(Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png"))
+    default_home()
 
-global b2
-b2 = Button(
-    w,
-    image=img1,
-    command=toggle_win,
-    border=0,
-    bg="#8A2BE2",
-    activebackground="#262626",
-)
-b2.place(x=5, y=8)
+    img1 = ImageTk.PhotoImage(
+        Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png")
+    )
+
+    global b2
+    b2 = Button(
+        w,
+        image=img1,
+        command=toggle_win,
+        border=0,
+        bg="#8A2BE2",
+        activebackground="#262626",
+    )
+    b2.place(x=5, y=8)
+
+    w.mainloop()
 
 
-w.mainloop()
+if __name__ == "__main__":
+    start()
 
 
-def localMode():
-    w.destroy()
-    game.gameRun("solo")
+# Ip du serveur : Non défini
+# Boutton Start Serveur
+#
 
-def singlePlayerMode():
-    w.destroy()
-    game.gameRun("bot")
-
-def multiPlayerMode():
-    w.destroy()
-    game.gameRun("server")
-
-def menuRun():
-    start = Menus()
+# Ip du serveur : ""
+# Boutton Se connecter au serveur

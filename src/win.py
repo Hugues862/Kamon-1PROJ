@@ -1,6 +1,5 @@
 from tkinter import *
 import displayGame
-import main
 from tkinter import font
 import pathlib
 

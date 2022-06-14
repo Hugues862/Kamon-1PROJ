@@ -449,13 +449,13 @@ class rootWindow:
         # self.__root.destroy() # For debug and understanding win conditions
 
 
-def gameRun(version, s = None, conn = None, addr = None):
-    
+def gameRun(version, s=None, conn=None, addr=None):
+
     if version == "solo" or version == "bot":
         game = rootWindow(version)
 
     if version == "server":
-        
+
         HOST = "localhost"
         PORT = 56669
         # creating client
