@@ -1,4 +1,4 @@
-import displayGame
+import displayGame, server
 from tkinter import *
 from PIL import ImageTk, Image
 import pathlib
@@ -22,8 +22,11 @@ def singlePlayerMode():
     displayGame.gameRun("bot")
 
 
-def onlineMode():
+def onlineMode(ip, create = False):
     w.destroy()
+    if create:
+        server.runServer()
+    
     displayGame.gameRun("server")
 
 
@@ -31,102 +34,153 @@ def menuRun():
     start = Menus()
 
 
-def default_home():
-    f2 = Frame(w, width=900, height=455, bg="#262626")
-    f2.place(x=0, y=45)
-    l2 = Label(f2, text="BIENVENUE SUR LE JEU", fg="#8A2BE2", bg="#262626")
+def default_home(first = True):
+    
+    global subFrame
+    
+    if not first:
+        dropFrame.destroy()
+        subFrame.destroy()
+        
+    subFrame = Frame(w, width=900, height=455, bg="#262626")
+    subFrame.pack(side=TOP)
+    
+    l2 = Label(subFrame, text="BIENVENUE SUR LE JEU", fg="#8A2BE2", bg="#262626")
     l2.config(font=("Comic Sans MS", 50))
-    l2.place(x=20, y=150 - 80)
-    f3 = Frame(w, width=900, height=455, bg="#262626")
-    f3.place(x=0, y=200)
+    l2.pack(side=TOP)
+    
+    f3 = Frame(subFrame, width=900, height=455, bg="#262626")
+    f3.pack(side=TOP)
+    
     l3 = Label(f3, text="KAMON", fg="white", bg="#262626")
     l3.config(font=("Comic Sans MS", 50))
-    l3.place(x=250, y=1)
+    l3.pack(side=TOP)
+    
     bouton4 = Button(
-        w, text="QUICK PLAY ", font=30, fg="#8A2BE2", bg="#262626", command=singlePlayerMode
+        subFrame, text="QUICK PLAY ", font=30, fg="#8A2BE2", bg="#262626", command=singlePlayerMode
     )
-    bouton4.pack(side="right", ipadx=20, padx=30, pady=20)
-    bouton4.place(x=350, y=400)
-
+    bouton4.pack(side=TOP, ipadx=20, padx=30, pady=20)
+    
 
 def multiplayer():
-    f1.destroy()
-    f2 = Frame(w, width=900, height=455, bg="#262626")
-    f2.place(x=0, y=45)
-    l2 = Label(f2, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626")
+    
+    global subFrame
+        
+    dropFrame.destroy()
+    subFrame.destroy()
+    
+    subFrame = Frame(w, width=900, height=455, bg="#262626")
+    subFrame.pack(side=TOP)
+    
+    l2 = Label(subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626")
     l2.config(font=("Comic Sans MS", 35))
-    l2.place(x=40, y=150 - 45)
+    l2.pack(side=TOP)
     
     # Player's name label
 
     # Player 1
     cadre1 = LabelFrame(
-        w, text="Joueur 1", font=("Comic Sans MS", 30), bg="#262626", fg="#8A2BE2"
+        subFrame, text="Joueur 1", font=("Comic Sans MS", 30), bg="#262626", fg="#8A2BE2"
     )
-    cadre1.pack(padx=5, pady=5)
+    cadre1.pack(side=TOP)
+    
     Label1 = Label(
         cadre1, text=" Pseudo :", fg="red", bg="yellow", font=("Comic Sans MS", 12)
     )
-    cadre1.place(x=100, y=250)
     Label1.pack(padx=10, pady=10, side=LEFT)
+    
     E1 = Entry(cadre1)
     E1.pack(padx=5, pady=5, side=LEFT)
 
     # Player 2
     cadre2 = LabelFrame(
-        w, text="Joueur 2", font=("Comic Sans MS", 30), bg="#262626", fg="#8A2BE2"
+        subFrame, text="Joueur 2", font=("Comic Sans MS", 30), bg="#262626", fg="#8A2BE2"
     )
-    cadre2.pack(padx=5, pady=5)
+    cadre2.pack(side=TOP)
     Label2 = Label(
         cadre2, text="Pseudo :", fg="black", bg="yellow", font=("Comic Sans MS", 12)
     )
-    cadre2.place(x=500, y=250)
     Label2.pack(padx=10, pady=10, side=LEFT)
+    
     E2 = Entry(cadre2)
     E2.pack(padx=5, pady=5, side=LEFT)
-    toggle_win()
     
-    bouton2 = Button(w, text="CLICK TO PLAY ", font=20, command= lambda: multiPlayerMode(p1 = E1.get(), p2 = E2.get()))
-    bouton2.pack(side="right", ipadx=20, padx=30, pady=20)
-    bouton2.place(x=350, y=400)
-
+    bouton2 = Button(subFrame, text="CLICK TO PLAY ", font=20, command= lambda: multiPlayerMode(p1 = E1.get(), p2 = E2.get()))
+    bouton2.pack(side=TOP, ipadx=20, padx=30, pady=20)
     
-
-
+    
 def online():
-    f1.destroy()
-    f2 = Frame(w, width=900, height=455, bg="#262626")
-    f2.place(x=0, y=45)
-    l2 = Label(f2, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626")
+    
+    global subFrame
+        
+    dropFrame.destroy()
+    subFrame.destroy()
+        
+    subFrame = Frame(w, width=900, height=455, bg="#262626")
+    subFrame.pack(side=TOP)
+    
+    l2 = Label(subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626")
     l2.config(font=("Comic Sans MS", 30))
-    l2.place(x=10, y=150 - 45)
-    bouton6 = Button(
-        w,
-        text="QUICK PLAY ",
+    l2.pack(side=TOP)
+    
+    
+    ipFrame = LabelFrame(
+        subFrame, text="CONNECT TO PLAYER", font=("Comic Sans MS", 30), bg="#262626", fg="#8A2BE2"
+    )
+    ipFrame.pack(padx=5, pady=5, side=TOP)
+    
+    ipAdrr = Label(
+        ipFrame, text=" Server IP :", fg="red", bg="yellow", font=("Comic Sans MS", 12)
+    )
+    ipAdrr.pack(padx=10, pady=10, side=LEFT)
+    
+    ipEntry = Entry(ipFrame)
+    ipEntry.pack(padx=5, pady=5, side=LEFT)
+    
+
+    connButt = Button(
+        subFrame,
+        text="CONNECT",
         font=30,
         fg="#8A2BE2",
         bg="#262626",
-        command=onlineMode,
+        command= lambda: onlineMode(ip = ipEntry.get()),
     )
-    bouton6.pack(side="right", ipadx=20, padx=30, pady=20)
-    bouton6.place(x=350, y=400)
-    toggle_win()
-
-
+    
+    connButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
+    # connButt.place(x=350, y=400)
+    
+    createButt = Button(
+        subFrame,
+        text="CREATE GAME",
+        font=30,
+        fg="#8A2BE2",
+        bg="#262626",
+        command= lambda: onlineMode(create = True),
+    )
+    
+    createButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
+    
 def option():
-    f1.destroy()
-    f2 = Frame(w, width=900, height=455, bg="white")
-    f2.place(x=0, y=45)
-    l2 = Label(f2, text="Option", fg="black", bg="white")
+    
+    global subFrame
+        
+    dropFrame.destroy()
+    subFrame.destroy()
+    
+    subFrame = Frame(w, width=900, height=455, bg="white")
+    subFrame.pack(side=TOP)
+    
+    l2 = Label(subFrame, text="Option", fg="black", bg="white")
     l2.config(font=("Comic Sans MS", 90))
-    l2.place(x=30, y=150 - 45)
-    toggle_win()
+    l2.pack(side=TOP)
 
 
 def toggle_win():
-    global f1
-    f1 = Frame(w, width=300, height=500, bg="#8A2BE2")
-    f1.place(x=0, y=0)
+    
+    global dropFrame
+    dropFrame = Frame(w, width=300, height=500, bg="#8A2BE2")
+    dropFrame.place(x=0, y=0)
 
     # buttons
     def bttn(x, y, text, bcolor, fcolor, cmd):
@@ -139,7 +193,7 @@ def toggle_win():
             myButton1["foreground"] = "#262626"
 
         myButton1 = Button(
-            f1,
+            dropFrame,
             text=text,
             width=42,
             height=2,
@@ -156,15 +210,15 @@ def toggle_win():
 
         myButton1.place(x=x, y=y)
 
-    bttn(0, 50, "H O M E", "#FFFAF0", "#8A2BE2", default_home)
+    bttn(0, 50, "H O M E", "#FFFAF0", "#8A2BE2", lambda: default_home(False))
     bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", "#8A2BE2", multiplayer)
     bttn(0, 117, "O N L I N E", "#FFFAF0", "#8A2BE2", online)
     bttn(0, 154, "O P T I O N", "#FFFAF0", "#8A2BE2", option)
 
     #
     def dele():
-        f1.destroy()
-        b2 = Button(
+        dropFrame.destroy()
+        dropMenu = Button(
             w,
             image=img1,
             command=toggle_win,
@@ -172,7 +226,7 @@ def toggle_win():
             bg="#8A2BE2",
             activebackground="#FFFAF0",
         )
-        b2.place(x=5, y=8)
+        dropMenu.place(x=5, y=8)
 
     global img2
     img2 = ImageTk.PhotoImage(
@@ -180,7 +234,7 @@ def toggle_win():
     )
 
     Button(
-        f1, image=img2, border=0, command=dele, bg="#8A2BE2", activebackground="#8A2BE2"
+        dropFrame, image=img2, border=0, command=dele, bg="#8A2BE2", activebackground="#8A2BE2"
     ).place(x=5, y=10)
 
 
@@ -191,15 +245,15 @@ def start():
     w.configure(bg="#262626")
     w.resizable(0, 0)
     w.title("KAMON")
-
+    
     default_home()
 
     img1 = ImageTk.PhotoImage(
         Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png")
     )
 
-    global b2
-    b2 = Button(
+    global dropMenu
+    dropMenu = Button(
         w,
         image=img1,
         command=toggle_win,
@@ -207,7 +261,7 @@ def start():
         bg="#8A2BE2",
         activebackground="#262626",
     )
-    b2.place(x=5, y=8)
+    dropMenu.place(x=5, y=8)
 
     w.mainloop()
 
