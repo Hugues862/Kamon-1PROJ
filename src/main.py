@@ -6,9 +6,15 @@ import pathlib
 WorkingDirectory = pathlib.Path().resolve()
 
 
-def localMode():
+def multiPlayerMode(p1, p2):
+    
+    if len(p1) == 0:
+        p1 = "Player 1"
+    if len(p2) == 0:
+        p2 = "Player 2"
+        
     w.destroy()
-    displayGame.gameRun("solo")
+    displayGame.gameRun("solo", p1 = p1, p2 = p2)
 
 
 def singlePlayerMode():
@@ -16,7 +22,7 @@ def singlePlayerMode():
     displayGame.gameRun("bot")
 
 
-def multiPlayerMode():
+def onlineMode():
     w.destroy()
     displayGame.gameRun("server")
 
@@ -37,23 +43,20 @@ def default_home():
     l3.config(font=("Comic Sans MS", 50))
     l3.place(x=250, y=1)
     bouton4 = Button(
-        w, text="QUICK PLAY ", font=30, fg="#8A2BE2", bg="#262626", command=localMode
+        w, text="QUICK PLAY ", font=30, fg="#8A2BE2", bg="#262626", command=singlePlayerMode
     )
     bouton4.pack(side="right", ipadx=20, padx=30, pady=20)
     bouton4.place(x=350, y=400)
 
 
-def singleplayer():
+def multiplayer():
     f1.destroy()
     f2 = Frame(w, width=900, height=455, bg="#262626")
     f2.place(x=0, y=45)
-    l2 = Label(f2, text="YOU CHOOSE SINGLEPLAYER MODE ", fg="#8A2BE2", bg="#262626")
+    l2 = Label(f2, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626")
     l2.config(font=("Comic Sans MS", 35))
     l2.place(x=40, y=150 - 45)
-    bouton2 = Button(w, text="CLICK TO PLAY ", font=20, command=singlePlayerMode)
-    bouton2.pack(side="right", ipadx=20, padx=30, pady=20)
-    bouton2.place(x=350, y=400)
-
+    
     # Player's name label
 
     # Player 1
@@ -82,13 +85,19 @@ def singleplayer():
     E2 = Entry(cadre2)
     E2.pack(padx=5, pady=5, side=LEFT)
     toggle_win()
+    
+    bouton2 = Button(w, text="CLICK TO PLAY ", font=20, command= lambda: multiPlayerMode(p1 = E1.get(), p2 = E2.get()))
+    bouton2.pack(side="right", ipadx=20, padx=30, pady=20)
+    bouton2.place(x=350, y=400)
+
+    
 
 
-def multiplayer():
+def online():
     f1.destroy()
     f2 = Frame(w, width=900, height=455, bg="#262626")
     f2.place(x=0, y=45)
-    l2 = Label(f2, text=" YOU CHOOSE THE MULTIPLAYER MODE", fg="#8A2BE2", bg="#262626")
+    l2 = Label(f2, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626")
     l2.config(font=("Comic Sans MS", 30))
     l2.place(x=10, y=150 - 45)
     bouton6 = Button(
@@ -97,7 +106,7 @@ def multiplayer():
         font=30,
         fg="#8A2BE2",
         bg="#262626",
-        command=multiPlayerMode(),
+        command=onlineMode,
     )
     bouton6.pack(side="right", ipadx=20, padx=30, pady=20)
     bouton6.place(x=350, y=400)
@@ -148,8 +157,8 @@ def toggle_win():
         myButton1.place(x=x, y=y)
 
     bttn(0, 50, "H O M E", "#FFFAF0", "#8A2BE2", default_home)
-    bttn(0, 80, "S I N G L E P L A Y E R", "#FFFAF0", "#8A2BE2", singleplayer)
-    bttn(0, 117, "M U L T I P L A Y E R", "#FFFAF0", "#8A2BE2", multiplayer)
+    bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", "#8A2BE2", multiplayer)
+    bttn(0, 117, "O N L I N E", "#FFFAF0", "#8A2BE2", online)
     bttn(0, 154, "O P T I O N", "#FFFAF0", "#8A2BE2", option)
 
     #

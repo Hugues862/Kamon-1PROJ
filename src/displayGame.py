@@ -17,7 +17,7 @@ TB = 2048 * 4
 
 
 class rootWindow:
-    def __init__(self, version, s=None, conn=None, addr=None):
+    def __init__(self, version, s=None, conn=None, addr=None, p1 = "Player", p2 = "Bot"):
         self.version = version  # solo (v1), server (v2), bot (v3)
         self.s = s
         self.conn = conn
@@ -37,7 +37,7 @@ class rootWindow:
 
         # Generate new table
         if self.version == "solo" or self.version == "bot":
-            self.__game = commun.game.createGame()
+            self.__game = commun.game.createGame(p1, p2)
         elif self.version == "server":
             self.__game = pickle.loads(self.s.recv(TB)).game
             logging.info(f"Received self.__game from server | {self.__game}")
@@ -84,7 +84,9 @@ class rootWindow:
 
         # Display Game
         self.displayHex()
-
+        
+        # print(self.__game.getPlayer(2).name)
+        
         # Update Game
         # self.__game.updateGame()
 
@@ -449,10 +451,10 @@ class rootWindow:
         # self.__root.destroy() # For debug and understanding win conditions
 
 
-def gameRun(version, s=None, conn=None, addr=None):
+def gameRun(version, s=None, conn=None, addr=None, p1 = "Player", p2 = "Bot"):
 
     if version == "solo" or version == "bot":
-        game = rootWindow(version)
+        game = rootWindow(version = version, p1 = p1, p2 = p2)
 
     if version == "server":
 
@@ -463,7 +465,7 @@ def gameRun(version, s=None, conn=None, addr=None):
             logging.info(f"Attempting to connect to server {HOST}:{PORT}")
             s.connect((HOST, PORT))
             logging.info(f"Connected")
-            game = rootWindow(version=version, s=s)
+            game = rootWindow(version = version, s = s)
 
 
 # gameRun("solo")

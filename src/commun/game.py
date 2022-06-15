@@ -5,16 +5,17 @@ import random as rd
 
 
 class Player:
-    def __init__(self, color):
+    def __init__(self, color, name):
+        self.name = name
         self.kamons = 18
         self.color = color
         self.playerLast = None
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, p1, p2):
         self.__table = commun.table.Table()
-        self.__players = [Player("black"), Player("white")]
+        self.__players = [Player("black", p1), Player("white", p2)]
         self.__turn = 0  # Black starts
         self.__win = False
 
@@ -26,6 +27,10 @@ class Game:
 
     def getWin(self):
         return self.__win
+    
+    def getPlayer(self, player):
+        
+        return self.__players[player - 1]
 
     # def updateGame(self):
     #     pass
@@ -209,5 +214,5 @@ class Game:
         self.place(pos[0], pos[1])
             
 
-def createGame():
-    return Game()
+def createGame(p1, p2):
+    return Game(p1, p2)
