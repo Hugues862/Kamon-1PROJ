@@ -1,16 +1,27 @@
+import os
 import pickle
+import shlex
 import socket
+import subprocess
 import threading
 from commun.serverData import serverData
 from commun.network import *
+import dotenv
 
 
 def runServer():
-    
+
     TB = 2048 * 2
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    server = "localhost"
+    server = socket.gethostbyname(socket.gethostname())
+
+    dotenv_file = dotenv.find_dotenv()
+    dotenv.load_dotenv(dotenv_file)
+
+    os.environ["SERVER_IP"] = server
+    dotenv.set_key(dotenv_file, "SERVER_IP", os.environ["SERVER_IP"])
+
     port = 56669
     try:
         s.bind((server, port))
@@ -18,13 +29,11 @@ def runServer():
     except socket.error as e:
         str(e)
 
-
     s.listen()
 
     SRVDATA = serverData()
 
     USERS = []
-
 
     def threaded_client(conn, id):
         # Connection started
@@ -53,7 +62,6 @@ def runServer():
         USERS[id] == None
         conn.close()
         print("Connection closed")
-
 
     while True:
         try:

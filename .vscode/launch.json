@@ -8,25 +8,10 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "src/main.py",
             "console": "integratedTerminal",
-            "args": ["-B"]
-        },
-        {
-            "name": "Python: Server",
-            "type": "python",
-            "request": "launch",
-            "program": "src/server.py",
-            "console": "integratedTerminal",
-            "args": ["-B", "--port 56669"]
-        },
-        {
-            "name": "Python: Client",
-            "type": "python",
-            "request": "launch",
-            "program": "src/displayGame.py",
-            "console": "integratedTerminal",
-            "args": ["-B"]
+            "justMyCode": true,
+            "subProcess": true
         }
     ]
 }

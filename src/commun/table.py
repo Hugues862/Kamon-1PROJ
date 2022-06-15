@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 
 
-
 class Table:
     def __init__(self, theme="original"):
 
@@ -104,72 +103,149 @@ class Table:
         return grid
 
     def checkNeighbors(self, x, y, turn, neighbors, sides):
-        
+
         # print("tableCheck")
         # print(neighbors)
         # print(sides)
-        
-        
+
         if (x, y) in neighbors:
             return neighbors, sides
-        
+
         if self.__grid[y][x].getSide() not in sides:
             sides.append(self.__grid[y][x].getSide())
-            
+
         if (x, y) not in neighbors:
             neighbors.append((x, y))
-            
-        if x != abs(3 - y) and self.__grid[y][x - 2].getState() != 0 and self.__grid[y][x - 2].getPlayer() == 1 + turn:
+
+        if (
+            x != abs(3 - y)
+            and self.__grid[y][x - 2].getState() != 0
+            and self.__grid[y][x - 2].getPlayer() == 1 + turn
+        ):
             neighbors, sides = self.checkNeighbors(x - 2, y, turn, neighbors, sides)
-            
-        if x != 12 - abs(3 - y) and self.__grid[y][x + 2].getState() != 0 and self.__grid[y][x + 2].getPlayer() == 1 + turn:
+
+        if (
+            x != 12 - abs(3 - y)
+            and self.__grid[y][x + 2].getState() != 0
+            and self.__grid[y][x + 2].getPlayer() == 1 + turn
+        ):
             neighbors, sides = self.checkNeighbors(x + 2, y, turn, neighbors, sides)
-                
-        if y != 0 and self.__grid[y - 1][x + 1].getState() != 0 and self.__grid[y - 1][x + 1].getPlayer() == 1 + turn:
+
+        if (
+            y != 0
+            and self.__grid[y - 1][x + 1].getState() != 0
+            and self.__grid[y - 1][x + 1].getPlayer() == 1 + turn
+        ):
             neighbors, sides = self.checkNeighbors(x + 1, y - 1, turn, neighbors, sides)
-            
-        if y != 0 and self.__grid[y - 1][x - 1].getState() != 0 and self.__grid[y - 1][x - 1].getPlayer() == 1 + turn:
+
+        if (
+            y != 0
+            and self.__grid[y - 1][x - 1].getState() != 0
+            and self.__grid[y - 1][x - 1].getPlayer() == 1 + turn
+        ):
             neighbors, sides = self.checkNeighbors(x - 1, y - 1, turn, neighbors, sides)
-            
-        if y != 6 and self.__grid[y + 1][x + 1].getState() != 0 and self.__grid[y + 1][x + 1].getPlayer() == 1 + turn:
+
+        if (
+            y != 6
+            and self.__grid[y + 1][x + 1].getState() != 0
+            and self.__grid[y + 1][x + 1].getPlayer() == 1 + turn
+        ):
             neighbors, sides = self.checkNeighbors(x + 1, y + 1, turn, neighbors, sides)
-            
-        if y != 6 and self.__grid[y + 1][x - 1].getState() != 0 and self.__grid[y + 1][x - 1].getPlayer() == 1 + turn:
+
+        if (
+            y != 6
+            and self.__grid[y + 1][x - 1].getState() != 0
+            and self.__grid[y + 1][x - 1].getPlayer() == 1 + turn
+        ):
             neighbors, sides = self.checkNeighbors(x - 1, y + 1, turn, neighbors, sides)
-        
+
         return neighbors, sides
-        
+
     def checkWinNeighbors(self, x, y, turn, neighbors, sides):
-        
-        
-        if len(sides) == 0 or (all(side is None for side in sides) and (x, y) not in neighbors):
-            
+
+        if len(sides) == 0 or (
+            all(side is None for side in sides) and (x, y) not in neighbors
+        ):
+
             neighbors.append((x, y))
-            
+
             if self.__grid[y][x].getSide() not in sides:
                 # print(sides)
                 sides.append(self.__grid[y][x].getSide())
-                
-            if x != abs(3 - y) and self.__grid[y][x - 2].getState() != 0 and (self.__grid[y][x - 2].getPlayer() == 2 - turn or self.__grid[y][x - 2].getPlayer() == 0):
-                neighbors, sides = self.checkWinNeighbors(x - 2, y, turn, neighbors, sides)
-                
-            if x != 12 - abs(3 - y) and self.__grid[y][x + 2].getState() != 0 and (self.__grid[y][x + 2].getPlayer() == 2 - turn or self.__grid[y][x + 2].getPlayer() == 0):
-                neighbors, sides = self.checkWinNeighbors(x + 2, y, turn, neighbors, sides)
-                    
-            if y != 0 and self.__grid[y - 1][x + 1].getState() != 0 and (self.__grid[y - 1][x + 1].getPlayer() == 2 - turn or self.__grid[y - 1][x + 1].getPlayer() == 0):
-                neighbors, sides = self.checkWinNeighbors(x + 1, y - 1, turn, neighbors, sides)
-                
-            if y != 0 and self.__grid[y - 1][x - 1].getState() != 0 and (self.__grid[y - 1][x - 1].getPlayer() == 2 - turn or self.__grid[y - 1][x - 1].getPlayer() == 0):
-                neighbors, sides = self.checkWinNeighbors(x - 1, y - 1, turn, neighbors, sides)
-                
-            if y != 6 and self.__grid[y + 1][x + 1].getState() != 0 and (self.__grid[y + 1][x + 1].getPlayer() == 2 - turn or self.__grid[y + 1][x + 1].getPlayer() == 0):
-                neighbors, sides = self.checkWinNeighbors(x + 1, y + 1, turn, neighbors, sides)
-                
-            if y != 6 and self.__grid[y + 1][x - 1].getState() != 0 and (self.__grid[y + 1][x - 1].getPlayer() == 2 - turn or self.__grid[y + 1][x - 1].getPlayer() == 0):
-                neighbors, sides = self.checkWinNeighbors(x - 1, y + 1, turn, neighbors, sides)
-        
-        return neighbors, sides
 
+            if (
+                x != abs(3 - y)
+                and self.__grid[y][x - 2].getState() != 0
+                and (
+                    self.__grid[y][x - 2].getPlayer() == 2 - turn
+                    or self.__grid[y][x - 2].getPlayer() == 0
+                )
+            ):
+                neighbors, sides = self.checkWinNeighbors(
+                    x - 2, y, turn, neighbors, sides
+                )
+
+            if (
+                x != 12 - abs(3 - y)
+                and self.__grid[y][x + 2].getState() != 0
+                and (
+                    self.__grid[y][x + 2].getPlayer() == 2 - turn
+                    or self.__grid[y][x + 2].getPlayer() == 0
+                )
+            ):
+                neighbors, sides = self.checkWinNeighbors(
+                    x + 2, y, turn, neighbors, sides
+                )
+
+            if (
+                y != 0
+                and self.__grid[y - 1][x + 1].getState() != 0
+                and (
+                    self.__grid[y - 1][x + 1].getPlayer() == 2 - turn
+                    or self.__grid[y - 1][x + 1].getPlayer() == 0
+                )
+            ):
+                neighbors, sides = self.checkWinNeighbors(
+                    x + 1, y - 1, turn, neighbors, sides
+                )
+
+            if (
+                y != 0
+                and self.__grid[y - 1][x - 1].getState() != 0
+                and (
+                    self.__grid[y - 1][x - 1].getPlayer() == 2 - turn
+                    or self.__grid[y - 1][x - 1].getPlayer() == 0
+                )
+            ):
+                neighbors, sides = self.checkWinNeighbors(
+                    x - 1, y - 1, turn, neighbors, sides
+                )
+
+            if (
+                y != 6
+                and self.__grid[y + 1][x + 1].getState() != 0
+                and (
+                    self.__grid[y + 1][x + 1].getPlayer() == 2 - turn
+                    or self.__grid[y + 1][x + 1].getPlayer() == 0
+                )
+            ):
+                neighbors, sides = self.checkWinNeighbors(
+                    x + 1, y + 1, turn, neighbors, sides
+                )
+
+            if (
+                y != 6
+                and self.__grid[y + 1][x - 1].getState() != 0
+                and (
+                    self.__grid[y + 1][x - 1].getPlayer() == 2 - turn
+                    or self.__grid[y + 1][x - 1].getPlayer() == 0
+                )
+            ):
+                neighbors, sides = self.checkWinNeighbors(
+                    x - 1, y + 1, turn, neighbors, sides
+                )
+
+        return neighbors, sides
 
     def printGrid(self):
         """Prints a pretty version of the grid, instead of having :
@@ -202,9 +278,15 @@ class Table:
         return res
 
     def isPossible(self, x, y):
-        
-        return (self.__lastCoord == None or self.__grid[y][x].getColor() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getColor() or self.__grid[y][x].getImage() == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getImage()) and (self.__grid[y][x].getPlayer() == 0)
-        
+
+        return (
+            self.__lastCoord == None
+            or self.__grid[y][x].getColor()
+            == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getColor()
+            or self.__grid[y][x].getImage()
+            == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getImage()
+        ) and (self.__grid[y][x].getPlayer() == 0)
+
 
 t = Table()
-print(t.printSide())
+# print(t.printSide())
