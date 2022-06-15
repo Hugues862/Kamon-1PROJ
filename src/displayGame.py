@@ -84,6 +84,7 @@ class rootWindow:
 
         # Display Game
         self.displayHex()
+        self.displayTurn()
         
         # print(self.__game.getPlayer(2).name)
         
@@ -412,6 +413,21 @@ class rootWindow:
 
         borders(topLeftCoords, xSpace, ySpace)
 
+    def displayTurn(self):
+        
+        game = self.__game
+        turn = game.getTurn()
+        
+        print(turn)
+        
+        self.__turnFrame = tk.Frame(self.__frame, bg="white", width=100, height=100)
+        self.__turnFrame.place(x=5, y=5)
+        turnLabel = tk.Label(self.__turnFrame, text = game.getPlayer(turn + 1).name + "'s turn", bg="white")
+        turnLabel.config(font=("Comic Sans MS", 15))
+        turnLabel.pack()
+        
+        
+    
     def mouseClick(self, event):
         # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
