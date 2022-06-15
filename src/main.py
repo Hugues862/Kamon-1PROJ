@@ -45,21 +45,18 @@ def default_home(first = True):
     subFrame = Frame(w, width=900, height=455, bg="#262626")
     subFrame.pack(side=TOP)
     
-    l2 = Label(subFrame, text="BIENVENUE SUR LE JEU", fg="#8A2BE2", bg="#262626")
-    l2.config(font=("Comic Sans MS", 50))
-    l2.pack(side=TOP)
+    title = Label(subFrame, text="BIENVENUE SUR LE JEU", fg="#8A2BE2", bg="#262626")
+    title.config(font=("Comic Sans MS", 50))
+    title.pack(side=TOP)
     
-    f3 = Frame(subFrame, width=900, height=455, bg="#262626")
-    f3.pack(side=TOP)
+    subTitle = Label(subFrame, text="KAMON", fg="white", bg="#262626")
+    subTitle.config(font=("Comic Sans MS", 50))
+    subTitle.pack(side=TOP)
     
-    l3 = Label(f3, text="KAMON", fg="white", bg="#262626")
-    l3.config(font=("Comic Sans MS", 50))
-    l3.pack(side=TOP)
-    
-    bouton4 = Button(
-        subFrame, text="QUICK PLAY ", font=30, fg="#8A2BE2", bg="#262626", command=singlePlayerMode
+    soloButt = Button(
+        subFrame, text="Start Against Bot", font=30, fg="#8A2BE2", bg="#262626", command=singlePlayerMode
     )
-    bouton4.pack(side=TOP, ipadx=20, padx=30, pady=20)
+    soloButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
     
 
 def multiplayer():
@@ -72,41 +69,43 @@ def multiplayer():
     subFrame = Frame(w, width=900, height=455, bg="#262626")
     subFrame.pack(side=TOP)
     
-    l2 = Label(subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626")
-    l2.config(font=("Comic Sans MS", 35))
-    l2.pack(side=TOP)
+    title = Label(subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626")
+    title.config(font=("Comic Sans MS", 35))
+    title.pack(side=TOP)
     
     # Player's name label
 
     # Player 1
-    cadre1 = LabelFrame(
+    
+    playerOne = LabelFrame(
         subFrame, text="Joueur 1", font=("Comic Sans MS", 30), bg="#262626", fg="#8A2BE2"
     )
-    cadre1.pack(side=TOP)
+    playerOne.pack(side=TOP)
     
-    Label1 = Label(
-        cadre1, text=" Pseudo :", fg="red", bg="yellow", font=("Comic Sans MS", 12)
+    player1Name = Label(
+        playerOne, text=" Nom :", fg="black", bg="yellow", font=("Comic Sans MS", 12)
     )
-    Label1.pack(padx=10, pady=10, side=LEFT)
+    player1Name.pack(padx=10, pady=10, side=LEFT)
     
-    E1 = Entry(cadre1)
-    E1.pack(padx=5, pady=5, side=LEFT)
+    player1Entry = Entry(playerOne)
+    player1Entry.pack(padx=5, pady=5, side=LEFT)
 
     # Player 2
-    cadre2 = LabelFrame(
+    playerTwo = LabelFrame(
         subFrame, text="Joueur 2", font=("Comic Sans MS", 30), bg="#262626", fg="#8A2BE2"
     )
-    cadre2.pack(side=TOP)
-    Label2 = Label(
-        cadre2, text="Pseudo :", fg="black", bg="yellow", font=("Comic Sans MS", 12)
+    playerTwo.pack(side=TOP)
+    
+    player2Name = Label(
+        playerTwo, text="Nom :", fg="black", bg="yellow", font=("Comic Sans MS", 12)
     )
-    Label2.pack(padx=10, pady=10, side=LEFT)
+    player2Name.pack(padx=10, pady=10, side=LEFT)
     
-    E2 = Entry(cadre2)
-    E2.pack(padx=5, pady=5, side=LEFT)
+    player2Entry = Entry(playerTwo)
+    player2Entry.pack(padx=5, pady=5, side=LEFT)
     
-    bouton2 = Button(subFrame, text="CLICK TO PLAY ", font=20, command= lambda: multiPlayerMode(p1 = E1.get(), p2 = E2.get()))
-    bouton2.pack(side=TOP, ipadx=20, padx=30, pady=20)
+    multiButt = Button(subFrame, text="Start Game", font=20, command= lambda: multiPlayerMode(p1 = player1Entry.get(), p2 = player2Entry.get()))
+    multiButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
     
     
 def online():
@@ -119,9 +118,9 @@ def online():
     subFrame = Frame(w, width=900, height=455, bg="#262626")
     subFrame.pack(side=TOP)
     
-    l2 = Label(subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626")
-    l2.config(font=("Comic Sans MS", 30))
-    l2.pack(side=TOP)
+    title = Label(subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626")
+    title.config(font=("Comic Sans MS", 30))
+    title.pack(side=TOP)
     
     
     ipFrame = LabelFrame(
@@ -171,9 +170,9 @@ def option():
     subFrame = Frame(w, width=900, height=455, bg="white")
     subFrame.pack(side=TOP)
     
-    l2 = Label(subFrame, text="Option", fg="black", bg="white")
-    l2.config(font=("Comic Sans MS", 90))
-    l2.pack(side=TOP)
+    title = Label(subFrame, text="Option", fg="black", bg="white")
+    title.config(font=("Comic Sans MS", 90))
+    title.pack(side=TOP)
 
 
 def toggle_win():
@@ -185,14 +184,14 @@ def toggle_win():
     # buttons
     def bttn(x, y, text, bcolor, fcolor, cmd):
         def on_entera(e):
-            myButton1["background"] = bcolor  # ffcc66
-            myButton1["foreground"] = "#262626"  # 000d33
+            newButton["background"] = bcolor  # ffcc66
+            newButton["foreground"] = "#262626"  # 000d33
 
         def on_leavea(e):
-            myButton1["background"] = fcolor
-            myButton1["foreground"] = "#262626"
+            newButton["background"] = fcolor
+            newButton["foreground"] = "#262626"
 
-        myButton1 = Button(
+        newButton = Button(
             dropFrame,
             text=text,
             width=42,
@@ -205,10 +204,10 @@ def toggle_win():
             command=cmd,
         )
 
-        myButton1.bind("<Enter>", on_entera)
-        myButton1.bind("<Leave>", on_leavea)
+        newButton.bind("<Enter>", on_entera)
+        newButton.bind("<Leave>", on_leavea)
 
-        myButton1.place(x=x, y=y)
+        newButton.place(x=x, y=y)
 
     bttn(0, 50, "H O M E", "#FFFAF0", "#8A2BE2", lambda: default_home(False))
     bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", "#8A2BE2", multiplayer)
@@ -220,7 +219,7 @@ def toggle_win():
         dropFrame.destroy()
         dropMenu = Button(
             w,
-            image=img1,
+            image=openImg,
             command=toggle_win,
             border=0,
             bg="#8A2BE2",
@@ -228,13 +227,13 @@ def toggle_win():
         )
         dropMenu.place(x=5, y=8)
 
-    global img2
-    img2 = ImageTk.PhotoImage(
+    global closeImg
+    closeImg = ImageTk.PhotoImage(
         Image.open(str(WorkingDirectory) + "/src/assets/menu/close.png")
     )
 
     Button(
-        dropFrame, image=img2, border=0, command=dele, bg="#8A2BE2", activebackground="#8A2BE2"
+        dropFrame, image=closeImg, border=0, command=dele, bg="#8A2BE2", activebackground="#8A2BE2"
     ).place(x=5, y=10)
 
 
@@ -248,14 +247,15 @@ def start():
     
     default_home()
 
-    img1 = ImageTk.PhotoImage(
+    global openImg
+    openImg = ImageTk.PhotoImage(
         Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png")
     )
 
     global dropMenu
     dropMenu = Button(
         w,
-        image=img1,
+        image=openImg,
         command=toggle_win,
         border=0,
         bg="#8A2BE2",

@@ -78,8 +78,8 @@ class Game:
                     grid[y][x].setSelected()
                     self.place(x, y)
                         
-                if version == "bot" and self.__win == False:
-                    self.aiBot()
+                    if version == "bot" and self.__win == False:
+                        self.aiBot()
                     
                 return True
         return False
@@ -93,12 +93,11 @@ class Game:
             return True
         
         side = self.__table.checkNeighbors(x, y, self.__turn, [], [])[1]
-        # print("gameCheck")
-        # print(side)
+        print(side)
+        
         grid = self.__table.getGrid()
 
         # Check if the 2 side colours exists
-        # if self.__turn == 0  or self.__turn == 1 :
 
         if ("G1" in side or "B1&G1" in side or "G1&Y2" in side) and ("G2" in side or "B2&G2" in side or "G2&Y1" in side):
             # print("color1")

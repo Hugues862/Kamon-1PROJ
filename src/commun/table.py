@@ -131,10 +131,10 @@ class Table:
         if y != 0 and self.__grid[y - 1][x - 1].getState() != 0 and self.__grid[y - 1][x - 1].getPlayer() == 1 + turn:
             neighbors, sides = self.checkNeighbors(x - 1, y - 1, turn, neighbors, sides)
             
-        if y != 6 and self.__grid[y + 1][x + 1].getState() != 0 and self.__grid[y - 1][x + 1].getPlayer() == 1 + turn:
+        if y != 6 and self.__grid[y + 1][x + 1].getState() != 0 and self.__grid[y + 1][x + 1].getPlayer() == 1 + turn:
             neighbors, sides = self.checkNeighbors(x + 1, y + 1, turn, neighbors, sides)
             
-        if y != 6 and self.__grid[y + 1][x - 1].getState() != 0 and self.__grid[y - 1][x - 1].getPlayer() == 1 + turn:
+        if y != 6 and self.__grid[y + 1][x - 1].getState() != 0 and self.__grid[y + 1][x - 1].getPlayer() == 1 + turn:
             neighbors, sides = self.checkNeighbors(x - 1, y + 1, turn, neighbors, sides)
         
         return neighbors, sides
