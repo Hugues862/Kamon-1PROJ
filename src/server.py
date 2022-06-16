@@ -30,7 +30,7 @@ def runServer():
         str(e)
 
     s.listen()
-
+    global SRVDATA
     SRVDATA = serverData()
 
     USERS = []

@@ -17,7 +17,7 @@ TB = 2048 * 4
 
 
 class rootWindow:
-    def __init__(self, version, s=None, conn=None, addr=None, p1 = "Player", p2 = "Bot"):
+    def __init__(self, version, s=None, conn=None, addr=None, p1="Player", p2="Bot"):
         self.version = version  # solo (v1), server (v2), bot (v3)
         self.s = s
         self.conn = conn
@@ -62,6 +62,7 @@ class rootWindow:
         Init of tkinter elements
         """
         self.__root = tk.Tk()
+        self.__root.title("KAMON")
         self.__width = self.__root.winfo_screenwidth()
         self.__height = self.__root.winfo_screenheight()
         self.__root.config(width=self.__width, height=self.__height)
@@ -85,9 +86,9 @@ class rootWindow:
         # Display Game
         self.displayHex()
         self.displayTurn()
-        
+
         # print(self.__game.getPlayer(2).name)
-        
+
         # Update Game
         # self.__game.updateGame()
 
@@ -414,20 +415,20 @@ class rootWindow:
         borders(topLeftCoords, xSpace, ySpace)
 
     def displayTurn(self):
-        
+
         game = self.__game
         turn = game.getTurn()
-        
+
         print(turn)
-        
+
         self.__turnFrame = tk.Frame(self.__frame, bg="white", width=100, height=100)
         self.__turnFrame.place(x=5, y=5)
-        turnLabel = tk.Label(self.__turnFrame, text = game.getPlayer(turn + 1).name + "'s turn", bg="white")
+        turnLabel = tk.Label(
+            self.__turnFrame, text=game.getPlayer(turn + 1).name + "'s turn", bg="white"
+        )
         turnLabel.config(font=("Comic Sans MS", 15))
         turnLabel.pack()
-        
-        
-    
+
     def mouseClick(self, event):
         # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
@@ -467,21 +468,21 @@ class rootWindow:
         # self.__root.destroy() # For debug and understanding win conditions
 
 
-def gameRun(version, s=None, conn=None, addr=None, p1 = "Player", p2 = "Bot"):
+def gameRun(version, s=None, server_ip="localhost", p1="Player", p2="Bot"):
 
     if version == "solo" or version == "bot":
-        game = rootWindow(version = version, p1 = p1, p2 = p2)
+        game = rootWindow(version=version, p1=p1, p2=p2)
 
     if version == "server":
 
-        HOST = "localhost"
+        HOST = server_ip
         PORT = 56669
         # creating client
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             logging.info(f"Attempting to connect to server {HOST}:{PORT}")
             s.connect((HOST, PORT))
             logging.info(f"Connected")
-            game = rootWindow(version = version, s = s)
+            game = rootWindow(version=version, s=s)
 
 
 # gameRun("solo")

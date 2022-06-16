@@ -47,9 +47,9 @@ def onlineMode(ip=None, create=False):
 
         serverThread.start()
         while True:
-            time.sleep(1)
-            dotenv_file = dotenv.find_dotenv()
-            dotenv.load_dotenv(dotenv_file)
+            time.sleep(0.5)
+            # dotenv_file = dotenv.find_dotenv()
+            # dotenv.load_dotenv(dotenv_file)
 
             serverip = os.getenv("SERVER_IP")
 
@@ -59,9 +59,11 @@ def onlineMode(ip=None, create=False):
         ipEntry.delete(0, END)
         ipEntry.insert(0, serverip)
     else:
-        w.destroy()
         # TODO PASS IP ADDR
-        displayGame.gameRun("server")
+        ip = ipEntry.get()
+        print(ip)
+        w.destroy()
+        displayGame.gameRun("server", server_ip=ip)
 
 
 def menuRun():
