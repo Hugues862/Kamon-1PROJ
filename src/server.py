@@ -3,24 +3,25 @@ import pickle
 import shlex
 import socket
 import subprocess
+import sys
 import threading
 from commun.serverData import serverData
 from commun.network import *
 import dotenv
 
 
-def runServer(theme = "original"):
+def runServer(theme="original"):
+
+    dotenv_file = dotenv.find_dotenv()
+    dotenv.load_dotenv(dotenv_file)
+
+    os.environ["SERVER_IP"] = "None"
+    dotenv.set_key(dotenv_file, "SERVER_IP", os.environ["SERVER_IP"])
 
     TB = 2048 * 2
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     server = socket.gethostbyname(socket.gethostname())
-
-    dotenv_file = dotenv.find_dotenv()
-    dotenv.load_dotenv(dotenv_file)
-
-    os.environ["SERVER_IP"] = server
-    dotenv.set_key(dotenv_file, "SERVER_IP", os.environ["SERVER_IP"])
 
     port = 56669
     try:
@@ -64,6 +65,12 @@ def runServer(theme = "original"):
         conn.close()
         print("Connection closed")
 
+    dotenv_file = dotenv.find_dotenv()
+    dotenv.load_dotenv(dotenv_file)
+
+    os.environ["SERVER_IP"] = server
+    dotenv.set_key(dotenv_file, "SERVER_IP", os.environ["SERVER_IP"])
+
     while True:
         try:
             if len(USERS) <= 2:
@@ -84,3 +91,7 @@ def runServer(theme = "original"):
             print("\nClosing server")
             s.close()
             break
+
+
+if __name__ == "__main__":
+    runServer()

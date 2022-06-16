@@ -21,23 +21,23 @@ def multiPlayerMode(p1, p2):
         p2 = "Player 2"
 
     w.destroy()
-    displayGame.gameRun("solo", p1=p1, p2=p2, theme = theme)
+    displayGame.gameRun("solo", p1=p1, p2=p2, theme=theme)
 
 
 def singlePlayerMode():
     w.destroy()
-    displayGame.gameRun("bot", theme = theme)
+    displayGame.gameRun("bot", theme=theme)
 
 
 def thread_function(theme):
-    
+
     server.runServer(theme)
 
 
 def onlineMode(ip=None, create=False):
 
     if create:
-        
+
         global serverThread
         if serverThread.is_alive() == 1:
             print("Server already running")
@@ -50,28 +50,31 @@ def onlineMode(ip=None, create=False):
             )
 
         serverThread.start()
-        while True:
-            time.sleep(0.5)
-            # dotenv_file = dotenv.find_dotenv()
-            # dotenv.load_dotenv(dotenv_file)
 
-            serverip = os.getenv("SERVER_IP")
-
-            if serverip != None:
-                break
         # ipEntry.delete(0, END)
+
         # ipEntry.insert(0, serverip)
-        
+
         w.destroy()
-        displayGame.gameRun("server", server_ip=serverip, theme = theme)
-        
-        
+        while True:
+            time.sleep(1)
+            try:
+                dotenv_file = dotenv.find_dotenv()
+                dotenv.load_dotenv(dotenv_file)
+
+                serverip = os.getenv("SERVER_IP")
+                displayGame.gameRun("server", server_ip=serverip, theme=theme)
+            except:
+                pass
+            finally:
+                break
+
     else:
         # TODO PASS IP ADDR
         ip = ipEntry.get()
         print(ip)
         w.destroy()
-        displayGame.gameRun("server", server_ip=ip, theme = theme)
+        displayGame.gameRun("server", server_ip=ip, theme=theme)
 
 
 def menuRun():
@@ -314,10 +317,10 @@ def toggle_win():
 
 
 def start():
-    
+
     global theme
     theme = "original"
-    
+
     global w
     w = Tk()
     w.geometry("900x500")
