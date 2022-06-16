@@ -54,35 +54,37 @@ class Game:
         else:
             self.turnChange()
 
-    def mouseClick(self, x, y, version):
+    def mouseClick(self, x, y, version, playerId = None):
+        
+        if playerId == self.__turn or playerId == None:
+            
+            grid = self.__table.getGrid()
 
-        grid = self.__table.getGrid()
+            # if grid[y][x].getPlayer() == 0:
+            #     if not grid[y][x].getSelected():
+            #         grid[y][x].setSelected()
 
-        # if grid[y][x].getPlayer() == 0:
-        #     if not grid[y][x].getSelected():
-        #         grid[y][x].setSelected()
-
-        if grid[y][x].getState() != 0 and grid[y][x].getPlayer() == 0:
-            if not grid[y][x].getSelected():
-                grid[y][x].setSelected()
-
-                if self.__table.getSelectedCoord() != None:
-                    selectX, selectY = self.__table.getSelectedCoord()
-                    grid[selectY][selectX].setSelected()
-                self.__table.setSelectedCoord(x, y)
-                return False
-
-            elif grid[y][x].getSelected() and grid[y][x].getState() != -1:
-
-                if self.__table.isPossible(x, y):
+            if grid[y][x].getState() != 0 and grid[y][x].getPlayer() == 0:
+                if not grid[y][x].getSelected():
                     grid[y][x].setSelected()
-                    self.place(x, y)
 
-                    if version == "bot" and self.__win == False:
-                        self.aiBot()
+                    if self.__table.getSelectedCoord() != None:
+                        selectX, selectY = self.__table.getSelectedCoord()
+                        grid[selectY][selectX].setSelected()
+                    self.__table.setSelectedCoord(x, y)
+                    # return False
 
-                return True
-        return False
+                elif grid[y][x].getSelected() and grid[y][x].getState() != -1:
+
+                    if self.__table.isPossible(x, y):
+                        grid[y][x].setSelected()
+                        self.place(x, y)
+
+                        if version == "bot" and self.__win == False:
+                            self.aiBot()
+
+                    # return True
+            # return False
 
     def turnChange(self):
         self.__turn = (self.__turn + 1) % 2

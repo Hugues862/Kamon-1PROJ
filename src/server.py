@@ -65,7 +65,7 @@ def runServer():
 
     while True:
         try:
-            if len(USERS) <= 20:
+            if len(USERS) <= 2:
                 conn, addr = s.accept()
                 print("Connected to:", addr)
                 # id = int(''.join(str(e) for e in [randint(0,9) for x in range(6)]))

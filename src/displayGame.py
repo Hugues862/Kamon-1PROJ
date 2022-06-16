@@ -22,6 +22,7 @@ class rootWindow:
         self.s = s
         self.conn = conn
         self.addr = addr
+        
         if self.version == "server":
             self.id = pickle.loads(self.s.recv(TB))
             logging.info(f"Received ID from server | {self.id}")
@@ -36,6 +37,7 @@ class rootWindow:
         self.tkInit()
 
         # Generate new table
+        
         if self.version == "solo" or self.version == "bot":
             self.__game = commun.game.createGame(p1, p2)
         elif self.version == "server":
@@ -419,8 +421,6 @@ class rootWindow:
         game = self.__game
         turn = game.getTurn()
 
-        print(turn)
-
         self.__turnFrame = tk.Frame(self.__frame, bg="white", width=100, height=100)
         self.__turnFrame.place(x=5, y=5)
         turnLabel = tk.Label(
@@ -433,10 +433,15 @@ class rootWindow:
         # x, y = self.pixelToIndex(event.x, event.y)
         # print(event.x, event.y)
         self.updateDisplay()
-        selected = self.__game.mouseClick(self.__indexx, self.__indexy, self.version)
-        if self.version == "server" and selected == True:
+        
+        if self.version == "server":
+            self.__game.mouseClick(self.__indexx, self.__indexy, self.version, playerId = self.id)
             data = pickle.dumps(self.__game)
             send_data(self.s, data)
+        
+        else:
+            self.__game.mouseClick(self.__indexx, self.__indexy, self.version)
+            
         self.updateDisplay()
 
         """  if self.__game.getWin():

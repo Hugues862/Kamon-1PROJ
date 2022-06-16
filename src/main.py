@@ -34,6 +34,7 @@ def thread_function():
 def onlineMode(ip=None, create=False):
 
     if create:
+        
         global serverThread
         if serverThread.is_alive() == 1:
             print("Server already running")
@@ -55,9 +56,13 @@ def onlineMode(ip=None, create=False):
 
             if serverip != None:
                 break
-
-        ipEntry.delete(0, END)
-        ipEntry.insert(0, serverip)
+        # ipEntry.delete(0, END)
+        # ipEntry.insert(0, serverip)
+        
+        w.destroy()
+        displayGame.gameRun("server", server_ip=serverip)
+        
+        
     else:
         # TODO PASS IP ADDR
         ip = ipEntry.get()
