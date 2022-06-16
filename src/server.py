@@ -33,6 +33,7 @@ def runServer():
     global SRVDATA
     SRVDATA = serverData()
 
+    global USERS
     USERS = []
 
     def threaded_client(conn, id):
@@ -52,7 +53,7 @@ def runServer():
             ##print(data)
             # print("recieved")
             SRVDATA.game = stock
-            SRVDATA.game.turnChange()
+            # SRVDATA.game.turnChange()
             data = pickle.dumps(SRVDATA)
             for user in USERS:
                 send_data(user[0], data)
