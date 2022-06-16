@@ -45,7 +45,7 @@ def onlineMode(ip=None, create=False):
             serverThread = multiprocessing.Process(
                 target=thread_function,
                 name="Server Thread",
-                args=(theme),
+                args=(theme,),
                 kwargs={},
             )
 
@@ -329,7 +329,7 @@ def start():
     serverThread = multiprocessing.Process(
         target=thread_function,
         name="Server Thread",
-        args=(theme),
+        args=(theme,),
         kwargs={},
     )
 
