@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Table:
-    def __init__(self, theme="original"):
+    def __init__(self, theme):
 
         self.__grid = self.initGrid(theme)
         self.__selectedCoord = None  # Used to remove red ring
@@ -45,7 +45,7 @@ class Table:
             tmp = []
 
             for j in range(abs(3 - i)):
-                tmp.append(hexa(0))
+                tmp.append(hexa(0, theme))
 
             for j in range(7 - abs(3 - i)):
 
@@ -93,10 +93,10 @@ class Table:
                         side = "G1&Y2"
 
                 tmp.append(hexa(rdmValue, theme, side))
-                tmp.append(hexa(0))
+                tmp.append(hexa(0, theme))
 
             for j in range(abs(3 - i)):
-                tmp.append(hexa(0))
+                tmp.append(hexa(0, theme))
 
             grid.append(tmp)
 
@@ -288,5 +288,3 @@ class Table:
         ) and (self.__grid[y][x].getPlayer() == 0)
 
 
-t = Table()
-# print(t.printSide())

@@ -1,5 +1,5 @@
 class hexa:
-    def __init__(self, set, theme="original", side=None):
+    def __init__(self, set, theme, side=None):
 
         self.__state = set
         self.changeColor()

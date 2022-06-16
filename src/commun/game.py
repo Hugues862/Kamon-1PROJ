@@ -13,8 +13,8 @@ class Player:
 
 
 class Game:
-    def __init__(self, p1, p2):
-        self.__table = commun.table.Table()
+    def __init__(self, p1, p2, theme):
+        self.__table = commun.table.Table(theme)
         self.__players = [Player("black", p1), Player("white", p2)]
         self.__turn = 0  # Black starts
         self.__win = False
@@ -275,5 +275,5 @@ class Game:
         self.place(pos[0], pos[1])
 
 
-def createGame(p1="Player1", p2="Player2"):
-    return Game(p1, p2)
+def createGame(p1="Player1", p2="Player2", theme = "original"):
+    return Game(p1, p2, theme)

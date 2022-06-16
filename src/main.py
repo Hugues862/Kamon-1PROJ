@@ -2,6 +2,8 @@ import multiprocessing
 import os
 import subprocess
 import time
+
+from pygame_menu import Theme
 import displayGame, server
 from tkinter import *
 from PIL import ImageTk, Image
@@ -19,16 +21,17 @@ def multiPlayerMode(p1, p2):
         p2 = "Player 2"
 
     w.destroy()
-    displayGame.gameRun("solo", p1=p1, p2=p2)
+    displayGame.gameRun("solo", p1=p1, p2=p2, theme = theme)
 
 
 def singlePlayerMode():
     w.destroy()
-    displayGame.gameRun("bot")
+    displayGame.gameRun("bot", theme = theme)
 
 
-def thread_function():
-    server.runServer()
+def thread_function(theme):
+    
+    server.runServer(theme)
 
 
 def onlineMode(ip=None, create=False):
@@ -42,7 +45,7 @@ def onlineMode(ip=None, create=False):
             serverThread = multiprocessing.Process(
                 target=thread_function,
                 name="Server Thread",
-                args=(),
+                args=(theme),
                 kwargs={},
             )
 
@@ -60,7 +63,7 @@ def onlineMode(ip=None, create=False):
         # ipEntry.insert(0, serverip)
         
         w.destroy()
-        displayGame.gameRun("server", server_ip=serverip)
+        displayGame.gameRun("server", server_ip=serverip, theme = theme)
         
         
     else:
@@ -68,7 +71,7 @@ def onlineMode(ip=None, create=False):
         ip = ipEntry.get()
         print(ip)
         w.destroy()
-        displayGame.gameRun("server", server_ip=ip)
+        displayGame.gameRun("server", server_ip=ip, theme = theme)
 
 
 def menuRun():
@@ -311,6 +314,10 @@ def toggle_win():
 
 
 def start():
+    
+    global theme
+    theme = "original"
+    
     global w
     w = Tk()
     w.geometry("900x500")
@@ -322,7 +329,7 @@ def start():
     serverThread = multiprocessing.Process(
         target=thread_function,
         name="Server Thread",
-        args=(),
+        args=(theme),
         kwargs={},
     )
 

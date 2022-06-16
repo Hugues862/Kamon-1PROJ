@@ -9,7 +9,7 @@ from commun.network import *
 import dotenv
 
 
-def runServer():
+def runServer(theme = "original"):
 
     TB = 2048 * 2
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -31,7 +31,7 @@ def runServer():
 
     s.listen()
     global SRVDATA
-    SRVDATA = serverData()
+    SRVDATA = serverData(theme)
 
     global USERS
     USERS = []
