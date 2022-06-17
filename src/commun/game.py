@@ -30,7 +30,7 @@ class Game:
 
     def getPlayer(self, player):
 
-        return self.__players[player - 1]
+        return self.__players[player]
 
     # def updateGame(self):
     #     pass

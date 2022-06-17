@@ -424,9 +424,9 @@ class rootWindow:
         self.__turnFrame = tk.Frame(self.__frame, bg="white", width=100, height=100)
         self.__turnFrame.place(x=5, y=5)
         turnLabel = tk.Label(
-            self.__turnFrame, text=game.getPlayer(turn + 1).name + "'s turn", bg="white"
+            self.__turnFrame, text=game.getPlayer(turn).name + "'s turn", bg="white"
         )
-        turnLabel.config(font=("Comic Sans MS", 15))
+        turnLabel.config(font=("Big John PRO", 15))
         turnLabel.pack()
 
     def mouseClick(self, event):
@@ -444,8 +444,8 @@ class rootWindow:
             
         self.updateDisplay()
 
-        """  if self.__game.getWin():
-            self.win() """
+        if self.__game.getWin():
+            self.win()
 
     def findPointsInsidePolygon(self, x, y, poly):
         n = len(poly)
@@ -468,12 +468,14 @@ class rootWindow:
     # return 3, 6
 
     def win(self):
+        
         self.__root.destroy()
-        win.winRun(self.__game.getTurn())
+        winner = self.__game.getTurn()
+        win.startWin(self.__game.getPlayer(winner).name)
         # self.__root.destroy() # For debug and understanding win conditions
 
 
-def gameRun(version, s=None, server_ip="localhost", p1="Player", p2="Bot", theme = "original"):
+def startGame(version, s=None, server_ip="localhost", p1="Player", p2="Bot", theme = "original"):
 
     if version == "solo" or version == "bot":
         game = rootWindow(version=version, p1=p1, p2=p2, theme = theme)
@@ -490,6 +492,6 @@ def gameRun(version, s=None, server_ip="localhost", p1="Player", p2="Bot", theme
             game = rootWindow(version=version, s=s, theme = theme)
 
 
-# gameRun("solo")
-# gameRun("server")
-# gameRun("bot")
+# startGame("solo")
+# startGame("server")
+# startGame("bot")

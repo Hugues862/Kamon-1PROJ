@@ -21,12 +21,12 @@ def multiPlayerMode(p1, p2):
         p2 = "Player 2"
 
     w.destroy()
-    displayGame.gameRun("solo", p1=p1, p2=p2, theme=theme)
+    displayGame.startGame("solo", p1=p1, p2=p2, theme=theme)
 
 
 def singlePlayerMode():
     w.destroy()
-    displayGame.gameRun("bot", theme=theme)
+    displayGame.startGame("bot", theme=theme)
 
 
 def thread_function(theme):
@@ -63,7 +63,7 @@ def onlineMode(ip=None, create=False):
                 dotenv.load_dotenv(dotenv_file)
 
                 serverip = os.getenv("SERVER_IP")
-                displayGame.gameRun("server", server_ip=serverip, theme=theme)
+                displayGame.startGame("server", server_ip=serverip, theme=theme)
             except:
                 pass
             finally:
@@ -74,11 +74,7 @@ def onlineMode(ip=None, create=False):
         ip = ipEntry.get()
         print(ip)
         w.destroy()
-        displayGame.gameRun("server", server_ip=ip, theme=theme)
-
-
-def menuRun():
-    start = Menus()
+        displayGame.startGame("server", server_ip=ip, theme=theme)
 
 
 def default_home(first=True):
@@ -93,17 +89,17 @@ def default_home(first=True):
     subFrame.pack(side=TOP)
 
     title = Label(subFrame, text="BIENVENUE SUR LE JEU", fg="#8A2BE2", bg="#262626")
-    title.config(font=("Comic Sans MS", 50))
+    title.config(font=("Big John PRO", 50))
     title.pack(side=TOP)
 
     subTitle = Label(subFrame, text="KAMON", fg="white", bg="#262626")
-    subTitle.config(font=("Comic Sans MS", 50))
+    subTitle.config(font=("Big John PRO", 50))
     subTitle.pack(side=TOP)
 
     soloButt = Button(
         subFrame,
         text="Start Against Bot",
-        font=30,
+        font=("Big John PRO", 30),
         fg="#8A2BE2",
         bg="#262626",
         command=singlePlayerMode,
@@ -124,7 +120,7 @@ def multiplayer():
     title = Label(
         subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626"
     )
-    title.config(font=("Comic Sans MS", 35))
+    title.config(font=("Big John PRO", 35))
     title.pack(side=TOP)
 
     # Player's name label
@@ -134,14 +130,14 @@ def multiplayer():
     playerOne = LabelFrame(
         subFrame,
         text="Joueur 1",
-        font=("Comic Sans MS", 30),
+        font=("Big John PRO", 30),
         bg="#262626",
         fg="#8A2BE2",
     )
     playerOne.pack(side=TOP)
 
     player1Name = Label(
-        playerOne, text=" Nom :", fg="black", bg="yellow", font=("Comic Sans MS", 12)
+        playerOne, text=" Nom :", fg="black", bg="yellow", font=("Big John PRO", 12)
     )
     player1Name.pack(padx=10, pady=10, side=LEFT)
 
@@ -152,14 +148,14 @@ def multiplayer():
     playerTwo = LabelFrame(
         subFrame,
         text="Joueur 2",
-        font=("Comic Sans MS", 30),
+        font=("Big John PRO", 30),
         bg="#262626",
         fg="#8A2BE2",
     )
     playerTwo.pack(side=TOP)
 
     player2Name = Label(
-        playerTwo, text="Nom :", fg="black", bg="yellow", font=("Comic Sans MS", 12)
+        playerTwo, text="Nom :", fg="black", bg="yellow", font=("Big John PRO", 12)
     )
     player2Name.pack(padx=10, pady=10, side=LEFT)
 
@@ -169,7 +165,7 @@ def multiplayer():
     multiButt = Button(
         subFrame,
         text="Start Game",
-        font=20,
+        font=("Big John PRO", 20),
         command=lambda: multiPlayerMode(p1=player1Entry.get(), p2=player2Entry.get()),
     )
     multiButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
@@ -188,20 +184,20 @@ def online():
     title = Label(
         subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626"
     )
-    title.config(font=("Comic Sans MS", 30))
+    title.config(font=("Big John PRO", 30))
     title.pack(side=TOP)
 
     ipFrame = LabelFrame(
         subFrame,
         text="CONNECT TO PLAYER",
-        font=("Comic Sans MS", 30),
+        font=("Big John PRO", 30),
         bg="#262626",
         fg="#8A2BE2",
     )
     ipFrame.pack(padx=5, pady=5, side=TOP)
 
     ipAdrr = Label(
-        ipFrame, text=" Server IP :", fg="red", bg="yellow", font=("Comic Sans MS", 12)
+        ipFrame, text=" Server IP :", fg="red", bg="yellow", font=("Big John PRO", 12)
     )
     ipAdrr.pack(padx=10, pady=10, side=LEFT)
 
@@ -213,7 +209,7 @@ def online():
     connButt = Button(
         subFrame,
         text="CONNECT",
-        font=30,
+        font=("Big John PRO", 30),
         fg="#8A2BE2",
         bg="#262626",
         command=lambda: onlineMode(ip=ipEntry.get()),
@@ -225,7 +221,7 @@ def online():
     createButt = Button(
         subFrame,
         text="CREATE GAME",
-        font=30,
+        font=("Big John PRO", 30),
         fg="#8A2BE2",
         bg="#262626",
         command=lambda: onlineMode(create=True),
@@ -237,6 +233,7 @@ def online():
 def option():
 
     global subFrame
+    global theme
 
     dropFrame.destroy()
     subFrame.destroy()
@@ -244,9 +241,77 @@ def option():
     subFrame = Frame(w, width=900, height=455, bg="white")
     subFrame.pack(side=TOP)
 
-    title = Label(subFrame, text="Option", fg="black", bg="white")
-    title.config(font=("Comic Sans MS", 90))
+    # buttons
+    
+    title = Label(
+        subFrame, text="CHOOSE YOUR THEME", fg="#8A2BE2", bg="#262626"
+    )
+    title.config(font=("Big John PRO", 30))
     title.pack(side=TOP)
+    
+    buttFrame = Frame(subFrame, bg="#262626")
+    buttFrame.pack(padx=5, pady=5, side=TOP)
+    
+    originalButt = Button(
+        buttFrame,
+        font=("Big John PRO", 15),
+        text = "Original",
+        fg = "#8A2BE2",
+        bg = "#262626",
+        command = lambda: change_theme(0)
+    )
+
+    carsButt = Button(
+        buttFrame,
+        font=("Big John PRO", 15),
+        text = "Cars",
+        fg = "#8A2BE2",
+        bg = "#262626",
+        command = lambda: change_theme(1)
+    )
+
+    animeButt = Button(
+        buttFrame,
+        font=("Big John PRO", 15),
+        text = "Anime",
+        fg = "#8A2BE2",
+        bg = "#262626",
+        command = lambda: change_theme(2)
+    )
+    
+    superheroButt = Button(
+        buttFrame, 
+        font=("Big John PRO", 15),
+        text = "Super Hero",
+        fg = "#8A2BE2",
+        bg = "#262626",
+        command = lambda: change_theme(3)
+    )
+
+    trollButt = Button(
+        buttFrame,
+        font=("Big John PRO", 15),
+        text = "Surprise !",
+        fg = "#8A2BE2",
+        bg = "#262626",
+        command = lambda: change_theme(4)
+    )
+
+    originalButt.pack(side=TOP, pady=15)
+    carsButt.pack(side=TOP,pady=15)
+    animeButt.pack(side=TOP,pady=15)
+    superheroButt.pack(side=TOP,pady=15)
+    trollButt.pack(side=TOP,pady=15)
+
+def change_theme(change):
+    
+    global theme
+    
+    if change == 1:
+        theme = "cars"
+        
+    elif change == 0:
+        theme = "original"
 
 
 def toggle_win():
@@ -316,7 +381,7 @@ def toggle_win():
     ).place(x=5, y=10)
 
 
-def start():
+def startMenu():
 
     global theme
     theme = "original"
@@ -358,7 +423,7 @@ def start():
 
 
 if __name__ == "__main__":
-    start()
+    startMenu()
 
 
 # Ip du serveur : Non défini
