@@ -191,26 +191,26 @@ def online():
     ipFrame = LabelFrame(
         subFrame,
         text="CONNECT TO PLAYER",
-        font=("Big John PRO", 30),
+        font=("Big John PRO", 25),
         bg="#262626",
         fg="#8A2BE2",
     )
     ipFrame.pack(padx=5, pady=5, side=TOP)
 
     ipAdrr = Label(
-        ipFrame, text=" Server IP :", fg="red", bg="yellow", font=("Big John PRO", 12)
+        ipFrame, text=" Server IP :", fg="red", bg="yellow", font=("Big John PRO", 20)
     )
-    ipAdrr.pack(padx=10, pady=10, side=LEFT)
+    ipAdrr.pack(padx=10, pady=10, anchor=CENTER)
 
     global ipEntry
 
     ipEntry = Entry(ipFrame)
-    ipEntry.pack(padx=5, pady=5, side=LEFT)
+    ipEntry.pack(padx=5, pady=5, anchor=CENTER)
 
     connButt = Button(
         subFrame,
         text="CONNECT",
-        font=("Big John PRO", 30),
+        font=("Big John PRO", 15),
         fg="#8A2BE2",
         bg="#262626",
         command=lambda: onlineMode(ip=ipEntry.get()),
@@ -222,7 +222,7 @@ def online():
     createButt = Button(
         subFrame,
         text="CREATE GAME",
-        font=("Big John PRO", 30),
+        font=("Big John PRO", 15),
         fg="#8A2BE2",
         bg="#262626",
         command=lambda: onlineMode(create=True),
