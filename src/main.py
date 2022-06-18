@@ -87,7 +87,7 @@ def default_home(first=True):
         subFrame.destroy()
 
     subFrame = Frame(w, width=900, height=455, bg="#262626")
-    subFrame.pack(side=TOP)
+    subFrame.pack(anchor=CENTER, expand=True)
 
     title = Label(subFrame, text="BIENVENUE SUR LE JEU", fg="#8A2BE2", bg="#262626")
     title.config(font=("Big John PRO", 50))
@@ -116,7 +116,7 @@ def multiplayer():
     subFrame.destroy()
 
     subFrame = Frame(w, width=900, height=455, bg="#262626")
-    subFrame.pack(side=TOP)
+    subFrame.pack(anchor=CENTER, expand=True)
 
     title = Label(
         subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626"
@@ -180,7 +180,7 @@ def online():
     subFrame.destroy()
 
     subFrame = Frame(w, width=900, height=455, bg="#262626")
-    subFrame.pack(side=TOP)
+    subFrame.pack(anchor=CENTER, expand=True)
 
     title = Label(
         subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626"
@@ -240,7 +240,7 @@ def option():
     subFrame.destroy()
 
     subFrame = Frame(w, width=900, height=455, bg="white")
-    subFrame.pack(side=TOP)
+    subFrame.pack(anchor=CENTER, expand=True)
 
     # buttons
     

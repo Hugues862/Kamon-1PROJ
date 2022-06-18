@@ -17,11 +17,11 @@ def startWin(name):
     # Text
     
     mainFrame = Frame(w)
-    mainFrame.place(x= 0, y = 0)
+    mainFrame.pack(anchor=CENTER, expand=True)
     
     winnerText = Label(
         mainFrame,
-        text= name + " won the displayGame !",
+        text= name + " won the Game !",
         font=("Big John PRO", 60),
         fg="black",
     )
