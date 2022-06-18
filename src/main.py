@@ -1,5 +1,6 @@
 import multiprocessing
 import os
+from re import T
 import subprocess
 import time
 
@@ -296,22 +297,44 @@ def option():
         bg = "#262626",
         command = lambda: change_theme(4)
     )
-
+    
+    trueTrollButt = Button(
+        buttFrame,
+        font=("Big John PRO", 15),
+        text = "Even more Surprise !",
+        fg = "#8A2BE2",
+        bg = "#262626",
+        command = lambda: change_theme(5)
+    )
+    
     originalButt.pack(side=TOP, pady=15)
     carsButt.pack(side=TOP,pady=15)
     animeButt.pack(side=TOP,pady=15)
     superheroButt.pack(side=TOP,pady=15)
     trollButt.pack(side=TOP,pady=15)
+    trueTrollButt.pack(side=TOP,pady=15)
 
 def change_theme(change):
     
     global theme
     
-    if change == 1:
+    if change == 0:
+        theme = "original"
+        
+    elif change == 1:
         theme = "cars"
         
-    elif change == 0:
-        theme = "original"
+    elif change == 2:
+        theme = "anime"
+        
+    elif change == 3:
+        theme = "heros"
+        
+    elif change == 4:
+        theme = "surprise"
+        
+    elif change == 5:
+        theme = "surprise++"
 
 
 def toggle_win():
