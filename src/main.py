@@ -239,7 +239,7 @@ def option():
     dropFrame.destroy()
     subFrame.destroy()
 
-    subFrame = Frame(w, width=900, height=455, bg="white")
+    subFrame = Frame(w, width=900, height=455, bg="#262626")
     subFrame.pack(anchor=CENTER, expand=True)
 
     # buttons
@@ -248,10 +248,13 @@ def option():
         subFrame, text="CHOOSE YOUR THEME", fg="#8A2BE2", bg="#262626"
     )
     title.config(font=("Big John PRO", 30))
-    title.pack(side=TOP)
+    title.pack(side=TOP, pady=15)
     
     buttFrame = Frame(subFrame, bg="#262626")
-    buttFrame.pack(padx=5, pady=5, side=TOP)
+    buttFrame.pack(padx=5, pady=15, side=TOP)
+    
+    buttFrame2 = Frame(subFrame, bg="#262626")
+    buttFrame2.pack(padx=5, pady=15, side=TOP)
     
     originalButt = Button(
         buttFrame,
@@ -281,7 +284,7 @@ def option():
     )
     
     superheroButt = Button(
-        buttFrame, 
+        buttFrame2, 
         font=("Big John PRO", 15),
         text = "Super Hero",
         fg = "#8A2BE2",
@@ -290,7 +293,7 @@ def option():
     )
 
     trollButt = Button(
-        buttFrame,
+        buttFrame2,
         font=("Big John PRO", 15),
         text = "Surprise !",
         fg = "#8A2BE2",
@@ -299,7 +302,7 @@ def option():
     )
     
     trueTrollButt = Button(
-        buttFrame,
+        buttFrame2,
         font=("Big John PRO", 15),
         text = "Even more Surprise !",
         fg = "#8A2BE2",
@@ -307,12 +310,12 @@ def option():
         command = lambda: change_theme(5)
     )
     
-    originalButt.pack(side=TOP, pady=15)
-    carsButt.pack(side=TOP,pady=15)
-    animeButt.pack(side=TOP,pady=15)
-    superheroButt.pack(side=TOP,pady=15)
-    trollButt.pack(side=TOP,pady=15)
-    trueTrollButt.pack(side=TOP,pady=15)
+    originalButt.pack(side=LEFT, pady=15, padx=25)
+    carsButt.pack(side=LEFT,pady=15, padx=25)
+    animeButt.pack(side=LEFT,pady=15, padx=25)
+    superheroButt.pack(side=LEFT,pady=15, padx=25)
+    trollButt.pack(side=LEFT,pady=15, padx=25)
+    trueTrollButt.pack(side=LEFT,pady=15, padx=25)
 
 def change_theme(change):
     
