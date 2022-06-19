@@ -111,6 +111,17 @@ Cela fonctionne avec la modification des booléens 'selected' et 'last' propre �
 
 En ligne, le clique ne sera pas possible si ce n'est pas le tour du joueur en question.
 
+### Le fonctionnement de l'A.I.
+
+L'AI qui va jouer avec le joueur procède avec une logique à trois étapes.
+Afin de pouvoir jouer, L'AI va d'abord récupérer une liste des hexagones jouables et à partir de cette liste jouer en suivant cette logique:
+
+* L'AI va premièrement essayer de jouer autour du dernier hexagone séléctionner par l'enemi.
+
+* Sinon l'AI va essayer de sélectionner un hexagone qui serait proche d'un cluster d'au moins 3 hexagones alliés.
+
+* Finalement, si les deux options précédentes ne sont pas possible alors l'AI jouera alétoirement parmi les hexagones jouables.
+
 ---
 ## Algorithmes implémentant les trois fins de partie possibles.
 
