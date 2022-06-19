@@ -16,20 +16,19 @@ MAINFONTCOLOR = "#8A2BE2"
 
 
 def startMenu():
-    """ Main Menu Function Initializing global variables and starting the window with the Home Menu as default.
-    """
+    """Main Menu Function Initializing global variables and starting the window with the Home Menu as default."""
 
-    global theme # ! Variable responsible for the used theme
-    theme = "original" 
+    global theme  # ! Variable responsible for the used theme
+    theme = "original"
 
-    global w # ! Main window variable
+    global w  # ! Main window variable
     w = Tk()
     w.geometry("900x500")
     w.configure(bg=BACKGROUNDCOLOR)
     w.resizable(0, 0)
     w.title("KAMON")
 
-    global serverThread # ! Thread responsible for running the server in onlineMode
+    global serverThread  # ! Thread responsible for running the server in onlineMode
     serverThread = multiprocessing.Process(
         target=thread_function,
         name="Server Thread",
@@ -39,18 +38,18 @@ def startMenu():
 
     # * Calls the Home Menu
     default_home()
-    
-    global openImg # ? Image variable to open the drop down menu
+
+    global openImg  # ? Image variable to open the drop down menu
     openImg = ImageTk.PhotoImage(
         Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png")
     )
-    
-    global closeImg # ? Image variable to close the drop down menu
+
+    global closeImg  # ? Image variable to close the drop down menu
     closeImg = ImageTk.PhotoImage(
         Image.open(str(WorkingDirectory) + "/src/assets/menu/close.png")
     )
 
-    global dropMenu # ! Variable to use the Drop down menu 
+    global dropMenu  # ! Variable to use the Drop down menu
     dropMenu = Button(
         w,
         image=openImg,
@@ -66,16 +65,17 @@ def startMenu():
 
 # * Switch / Start Windows & Server Fuctions
 
+
 def multiPlayerMode(p1, p2):
     """Will destroy the current window and launch the game loop without an AI player.
 
     Args:
         p1 (str): Name used for Player 1.
         p2 (str): Name used for Player 2.
-    """    
+    """
 
     # ? If any of the players did not input any name, then assign default
-    
+
     if len(p1) == 0:
         p1 = "Player 1"
     if len(p2) == 0:
@@ -84,12 +84,13 @@ def multiPlayerMode(p1, p2):
     w.destroy()
     displayGame.startGame("solo", p1=p1, p2=p2, theme=theme)
 
+
 def singlePlayerMode():
-    """Will destroy the current window and launch the game loop with an AI player.
-    """
-        
+    """Will destroy the current window and launch the game loop with an AI player."""
+
     w.destroy()
     displayGame.startGame("bot", theme=theme)
+
 
 def onlineMode(ip=None, create=False):
     """Will destroy the current window and launch the game and connect it to a server.
@@ -98,14 +99,14 @@ def onlineMode(ip=None, create=False):
     Args:
         ip (str, optional): Ip address to which the game will connect to. Defaults to None.
         create (bool, optional): If True, start the server thread and launch the game connected to same server. Defaults to False.
-    """    
+    """
 
-    if create: # ! If user is asking to Start Server
+    if create:  # ! If user is asking to Start Server
 
         global serverThread
-        
+
         # ? Kills the server if already running
-        
+
         if serverThread.is_alive() == 1:
             print("Server already running")
             serverThread.terminate()
@@ -116,10 +117,10 @@ def onlineMode(ip=None, create=False):
                 kwargs={},
             )
 
-        serverThread.start() # ? Start server
+        serverThread.start()  # ? Start server
 
         # ? Destroy Window and start game connected to the server
-        
+
         w.destroy()
         while True:
             time.sleep(1)
@@ -134,12 +135,13 @@ def onlineMode(ip=None, create=False):
             finally:
                 break
 
-    else: # ! If user is asking to connect to server (IP)
-        
+    else:  # ! If user is asking to connect to server (IP)
+
         # ? Destroy Window and start game connected to the server
-        
+
         w.destroy()
         displayGame.startGame("server", server_ip=ip, theme=theme)
+
 
 def thread_function(theme):
     """Function used in ServerThread to run the server in a separate thread.
@@ -153,6 +155,7 @@ def thread_function(theme):
 
 # * Init functions of different menus
 
+
 def default_home(first=True):
     """(Re)draws the default home menu.
 
@@ -163,17 +166,19 @@ def default_home(first=True):
     global subFrame
 
     # ? Reset the canvas
-    
-    if not first: 
+
+    if not first:
         dropFrame.destroy()
         subFrame.destroy()
-    
+
     # ? Draws the Menu
-    
+
     subFrame = Frame(w, width=900, height=455, bg=BACKGROUNDCOLOR)
     subFrame.pack(anchor=CENTER, expand=True)
 
-    title = Label(subFrame, text="BIENVENUE SUR LE JEU", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR)
+    title = Label(
+        subFrame, text="BIENVENUE SUR LE JEU", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR
+    )
     title.config(font=("Big John PRO", 50))
     title.pack(side=TOP)
 
@@ -191,14 +196,14 @@ def default_home(first=True):
     )
     soloButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
 
+
 def multiplayer():
-    """Draws the multiplayer menu.
-    """    
+    """Draws the multiplayer menu."""
 
     global subFrame
 
     # ? Reset the canvas
-    
+
     dropFrame.destroy()
     subFrame.destroy()
 
@@ -208,13 +213,16 @@ def multiplayer():
     subFrame.pack(anchor=CENTER, expand=True)
 
     title = Label(
-        subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR
+        subFrame,
+        text="YOU CHOOSE MULTIPLAYER MODE ",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
     )
     title.config(font=("Big John PRO", 35))
     title.pack(side=TOP)
 
     # ? Player Name
-    
+
     # * Player One
     playerOne = LabelFrame(
         subFrame,
@@ -230,10 +238,9 @@ def multiplayer():
     )
     player1Name.pack(padx=10, pady=10, side=LEFT)
 
-    # ? Player Name Input    
+    # ? Player Name Input
     player1Entry = Entry(playerOne)
     player1Entry.pack(padx=5, pady=5, side=LEFT)
-
 
     # * Player Two
     playerTwo = LabelFrame(
@@ -254,7 +261,6 @@ def multiplayer():
     player2Entry = Entry(playerTwo)
     player2Entry.pack(padx=5, pady=5, side=LEFT)
 
-
     multiButt = Button(
         subFrame,
         text="Start Game",
@@ -263,14 +269,14 @@ def multiplayer():
     )
     multiButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
 
+
 def online():
-    """Draws the online menu.
-    """    
+    """Draws the online menu."""
 
     global subFrame
 
     # ? Reset the canvas
-    
+
     dropFrame.destroy()
     subFrame.destroy()
 
@@ -280,13 +286,16 @@ def online():
     subFrame.pack(anchor=CENTER, expand=True)
 
     title = Label(
-        subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR
+        subFrame,
+        text=" YOU CHOOSE THE ONLINE MODE",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
     )
     title.config(font=("Big John PRO", 30))
     title.pack(side=TOP)
 
     # ? IP Address to Connect to
-    
+
     ipFrame = LabelFrame(
         subFrame,
         text="CONNECT TO PLAYER",
@@ -300,7 +309,6 @@ def online():
         ipFrame, text=" Server IP :", fg="red", bg="yellow", font=("Big John PRO", 20)
     )
     ipAdrr.pack(padx=10, pady=10, anchor=CENTER)
-
 
     # ? IP Address Input
     ipEntry = Entry(ipFrame)
@@ -326,10 +334,10 @@ def online():
     )
     createButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
 
+
 def option():
-    """Draws the option menu.
-    """
-        
+    """Draws the option menu."""
+
     global subFrame
     global theme
 
@@ -348,22 +356,22 @@ def option():
     )
     title.config(font=("Big John PRO", 30))
     title.pack(side=TOP, pady=15)
-    
+
     # ? Theme Buttons
-    
+
     buttFrame = Frame(subFrame, bg=BACKGROUNDCOLOR)
     buttFrame.pack(padx=5, pady=15, side=TOP)
-    
+
     buttFrame2 = Frame(subFrame, bg=BACKGROUNDCOLOR)
     buttFrame2.pack(padx=5, pady=15, side=TOP)
-    
+
     originalButt = Button(
         buttFrame,
         font=("Big John PRO", 15),
         text="Original",
         fg=MAINFONTCOLOR,
         bg=BACKGROUNDCOLOR,
-        command=lambda: change_theme(0)
+        command=lambda: change_theme(0),
     )
 
     carsButt = Button(
@@ -372,7 +380,7 @@ def option():
         text="Cars",
         fg=MAINFONTCOLOR,
         bg=BACKGROUNDCOLOR,
-        command=lambda: change_theme(1)
+        command=lambda: change_theme(1),
     )
 
     animeButt = Button(
@@ -381,16 +389,16 @@ def option():
         text="Anime",
         fg=MAINFONTCOLOR,
         bg=BACKGROUNDCOLOR,
-        command=lambda: change_theme(2)
+        command=lambda: change_theme(2),
     )
-    
+
     superheroButt = Button(
-        buttFrame2, 
+        buttFrame2,
         font=("Big John PRO", 15),
         text="Super Hero",
         fg=MAINFONTCOLOR,
         bg=BACKGROUNDCOLOR,
-        command=lambda: change_theme(3)
+        command=lambda: change_theme(3),
     )
 
     trollButt = Button(
@@ -399,59 +407,66 @@ def option():
         text="Surprise !",
         fg=MAINFONTCOLOR,
         bg=BACKGROUNDCOLOR,
-        command=lambda: change_theme(4)
+        command=lambda: change_theme(4),
     )
-    
+
     trueTrollButt = Button(
         buttFrame2,
         font=("Big John PRO", 15),
         text="Even more Surprise !",
         fg=MAINFONTCOLOR,
         bg=BACKGROUNDCOLOR,
-        command=lambda: change_theme(5)
+        command=lambda: change_theme(5),
     )
-    
+
     originalButt.pack(side=LEFT, pady=15, padx=25)
-    carsButt.pack(side=LEFT,pady=15, padx=25)
-    animeButt.pack(side=LEFT,pady=15, padx=25)
-    superheroButt.pack(side=LEFT,pady=15, padx=25)
-    trollButt.pack(side=LEFT,pady=15, padx=25)
-    trueTrollButt.pack(side=LEFT,pady=15, padx=25)
+    carsButt.pack(side=LEFT, pady=15, padx=25)
+    animeButt.pack(side=LEFT, pady=15, padx=25)
+    superheroButt.pack(side=LEFT, pady=15, padx=25)
+    trollButt.pack(side=LEFT, pady=15, padx=25)
+    trueTrollButt.pack(side=LEFT, pady=15, padx=25)
+
 
 def change_theme(change):
     """Change the theme to the asked theme.
 
     Args:
         change (int): Value assigned to different themes (0 - 5).
-    """    
-    
-    global theme
-    
-    if change == 0: theme = "original"
-        
-    elif change == 1: theme = "cars"
-        
-    elif change == 2: theme = "anime"
-        
-    elif change == 3: theme = "heros"
-        
-    elif change == 4: theme = "surprise"
-        
-    elif change == 5: theme = "surprise++"
-
-def toggle_win():
-    """Create or delete the drop down menu.
     """
 
+    global theme
+
+    if change == 0:
+        theme = "original"
+
+    elif change == 1:
+        theme = "cars"
+
+    elif change == 2:
+        theme = "anime"
+
+    elif change == 3:
+        theme = "heros"
+
+    elif change == 4:
+        theme = "surprise"
+
+    elif change == 5:
+        theme = "surprise++"
+
+
+def toggle_win():
+    """Create or delete the drop down menu."""
+
     # ? Creates the Drop Down Menu and its Buttons
-    
+
     global dropFrame
     dropFrame = Frame(w, width=300, height=500, bg=MAINFONTCOLOR)
     dropFrame.place(x=0, y=0)
 
     # * Create button function, specific to the drop down menu
     def bttn(x, y, text, bcolor, fcolor, cmd):
-        
+
         # ? While Hover
         def on_entera(e):
             newButton["background"] = bcolor  # ffcc66
@@ -492,7 +507,7 @@ def toggle_win():
             activebackground="#FFFAF0",
         )
         dropMenu.place(x=5, y=8)
-    
+
     # * Drop down menu buttons define
     bttn(0, 50, "H O M E", "#FFFAF0", MAINFONTCOLOR, lambda: default_home(False))
     bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", MAINFONTCOLOR, multiplayer)
@@ -507,7 +522,6 @@ def toggle_win():
         bg=MAINFONTCOLOR,
         activebackground=MAINFONTCOLOR,
     ).place(x=5, y=10)
-
 
 
 if __name__ == "__main__":
