@@ -6,10 +6,10 @@ import displayGame
 
 
 def startWin(name):
-    """ Initialization of the win window with the name of the winning player
+    """ Initialization of the win window 
 
     Args:
-        name (string): current player's name
+        name (str): winning player's name
     """    
     global w
     
@@ -23,7 +23,8 @@ def startWin(name):
     mainFrame = Frame(w)
     mainFrame.pack(anchor=CENTER, expand=True)
      
-    winnerText = Label(  # Creation of the label (Player name + text)
+    # Creation of the label (Player name + text)
+    winnerText = Label(  
         mainFrame,
         text= name + " won the Game !",
         font=("Big John PRO", 60),
@@ -32,8 +33,8 @@ def startWin(name):
     
     winnerText.pack(side=TOP)
 
-    # Button
-    returnButt = Button( # Creation of the ""back to menus""" button
+    # Creation of the ""back to menus""" button
+    returnButt = Button( 
         mainFrame,
         text="Return To Menu",
         font=("Big John PRO", 20),
@@ -48,9 +49,6 @@ def startWin(name):
     w.mainloop()
 
 def returnToMenu():
-    """Return to menu Function
-    """    
-    
     w.destroy()
     main.startMenu()
 
