@@ -14,20 +14,22 @@ WorkingDirectory = pathlib.Path().resolve()
 BACKGROUNDCOLOR = "#262626"
 MAINFONTCOLOR = "#8A2BE2"
 
-# ! Main Fuction Running Intializing global variables
+
 def startMenu():
+    """ Main Menu Function Initializing global variables and starting the window with the Home Menu as default.
+    """
 
-    global theme
-    theme = "original"
+    global theme # ! Variable responsible for the used theme
+    theme = "original" 
 
-    global w
+    global w # ! Main window variable
     w = Tk()
     w.geometry("900x500")
     w.configure(bg=BACKGROUNDCOLOR)
     w.resizable(0, 0)
     w.title("KAMON")
 
-    global serverThread
+    global serverThread # ! Thread responsible for running the server in onlineMode
     serverThread = multiprocessing.Process(
         target=thread_function,
         name="Server Thread",
@@ -35,14 +37,20 @@ def startMenu():
         kwargs={},
     )
 
+    # * Calls the Home Menu
     default_home()
-
-    global openImg
+    
+    global openImg # ? Image variable to open the drop down menu
     openImg = ImageTk.PhotoImage(
         Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png")
     )
+    
+    global closeImg # ? Image variable to close the drop down menu
+    closeImg = ImageTk.PhotoImage(
+        Image.open(str(WorkingDirectory) + "/src/assets/menu/close.png")
+    )
 
-    global dropMenu
+    global dropMenu # ! Variable to use the Drop down menu 
     dropMenu = Button(
         w,
         image=openImg,
@@ -55,10 +63,19 @@ def startMenu():
 
     w.mainloop()
 
+
 # * Switch / Start Windows & Server Fuctions
 
 def multiPlayerMode(p1, p2):
+    """Will destroy the current window and launch the game loop without an AI player.
 
+    Args:
+        p1 (str): Name used for Player 1.
+        p2 (str): Name used for Player 2.
+    """    
+
+    # ? If any of the players did not input any name, then assign default
+    
     if len(p1) == 0:
         p1 = "Player 1"
     if len(p2) == 0:
@@ -68,10 +85,20 @@ def multiPlayerMode(p1, p2):
     displayGame.startGame("solo", p1=p1, p2=p2, theme=theme)
 
 def singlePlayerMode():
+    """Will destroy the current window and launch the game loop with an AI player.
+    """
+        
     w.destroy()
     displayGame.startGame("bot", theme=theme)
 
 def onlineMode(ip=None, create=False):
+    """Will destroy the current window and launch the game and connect it to a server.
+    Will start server before launching the game if asked.
+
+    Args:
+        ip (str, optional): Ip address to which the game will connect to. Defaults to None.
+        create (bool, optional): If True, start the server thread and launch the game connected to same server. Defaults to False.
+    """    
 
     if create: # ! If user is asking to Start Server
 
@@ -115,6 +142,11 @@ def onlineMode(ip=None, create=False):
         displayGame.startGame("server", server_ip=ip, theme=theme)
 
 def thread_function(theme):
+    """Function used in ServerThread to run the server in a separate thread.
+
+    Args:
+        theme (str): Theme of the game.
+    """
 
     server.runServer(theme)
 
@@ -122,6 +154,11 @@ def thread_function(theme):
 # * Init functions of different menus
 
 def default_home(first=True):
+    """(Re)draws the default home menu.
+
+    Args:
+        first (bool, optional): If False, clear the canvas. Defaults to True.
+    """
 
     global subFrame
 
@@ -155,6 +192,8 @@ def default_home(first=True):
     soloButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
 
 def multiplayer():
+    """Draws the multiplayer menu.
+    """    
 
     global subFrame
 
@@ -225,6 +264,8 @@ def multiplayer():
     multiButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
 
 def online():
+    """Draws the online menu.
+    """    
 
     global subFrame
 
@@ -286,7 +327,9 @@ def online():
     createButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
 
 def option():
-
+    """Draws the option menu.
+    """
+        
     global subFrame
     global theme
 
@@ -376,28 +419,29 @@ def option():
     trueTrollButt.pack(side=LEFT,pady=15, padx=25)
 
 def change_theme(change):
+    """Change the theme to the asked theme.
+
+    Args:
+        change (int): Value assigned to different themes (0 - 5).
+    """    
     
     global theme
     
-    if change == 0:
-        theme = "original"
+    if change == 0: theme = "original"
         
-    elif change == 1:
-        theme = "cars"
+    elif change == 1: theme = "cars"
         
-    elif change == 2:
-        theme = "anime"
+    elif change == 2: theme = "anime"
         
-    elif change == 3:
-        theme = "heros"
+    elif change == 3: theme = "heros"
         
-    elif change == 4:
-        theme = "surprise"
+    elif change == 4: theme = "surprise"
         
-    elif change == 5:
-        theme = "surprise++"
+    elif change == 5: theme = "surprise++"
 
 def toggle_win():
+    """Create or delete the drop down menu.
+    """
 
     # ? Creates the Drop Down Menu and its Buttons
     
@@ -454,11 +498,6 @@ def toggle_win():
     bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", MAINFONTCOLOR, multiplayer)
     bttn(0, 117, "O N L I N E", "#FFFAF0", MAINFONTCOLOR, online)
     bttn(0, 154, "O P T I O N", "#FFFAF0", MAINFONTCOLOR, option)
-
-    global closeImg
-    closeImg = ImageTk.PhotoImage(
-        Image.open(str(WorkingDirectory) + "/src/assets/menu/close.png")
-    )
 
     Button(
         dropFrame,
