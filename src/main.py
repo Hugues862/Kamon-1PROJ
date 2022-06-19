@@ -1,18 +1,61 @@
-import multiprocessing
 import os
-from re import T
-import subprocess
-import time
-
-from pygame_menu import Theme
-import displayGame, server
-from tkinter import *
-from PIL import ImageTk, Image
 import pathlib
 import dotenv
 
-WorkingDirectory = pathlib.Path().resolve()
+import multiprocessing
 
+import time
+from tkinter import *
+from PIL import ImageTk, Image
+
+import displayGame, server
+
+WorkingDirectory = pathlib.Path().resolve()
+BACKGROUNDCOLOR = "#262626"
+MAINFONTCOLOR = "#8A2BE2"
+
+# ! Main Fuction Running Intializing global variables
+def startMenu():
+
+    global theme
+    theme = "original"
+
+    global w
+    w = Tk()
+    w.geometry("900x500")
+    w.configure(bg=BACKGROUNDCOLOR)
+    w.resizable(0, 0)
+    w.title("KAMON")
+
+    global serverThread
+    serverThread = multiprocessing.Process(
+        target=thread_function,
+        name="Server Thread",
+        args=(theme,),
+        kwargs={},
+    )
+
+    default_home()
+
+    global openImg
+    openImg = ImageTk.PhotoImage(
+        Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png")
+    )
+
+    global dropMenu
+    dropMenu = Button(
+        w,
+        image=openImg,
+        command=toggle_win,
+        border=0,
+        bg=MAINFONTCOLOR,
+        activebackground=BACKGROUNDCOLOR,
+    )
+    dropMenu.place(x=5, y=8)
+
+    w.mainloop()
+
+# * Switch / Start Windows & Server Fuctions
 
 def multiPlayerMode(p1, p2):
 
@@ -24,22 +67,18 @@ def multiPlayerMode(p1, p2):
     w.destroy()
     displayGame.startGame("solo", p1=p1, p2=p2, theme=theme)
 
-
 def singlePlayerMode():
     w.destroy()
     displayGame.startGame("bot", theme=theme)
 
-
-def thread_function(theme):
-
-    server.runServer(theme)
-
-
 def onlineMode(ip=None, create=False):
 
-    if create:
+    if create: # ! If user is asking to Start Server
 
         global serverThread
+        
+        # ? Kills the server if already running
+        
         if serverThread.is_alive() == 1:
             print("Server already running")
             serverThread.terminate()
@@ -50,12 +89,10 @@ def onlineMode(ip=None, create=False):
                 kwargs={},
             )
 
-        serverThread.start()
+        serverThread.start() # ? Start server
 
-        # ipEntry.delete(0, END)
-
-        # ipEntry.insert(0, serverip)
-
+        # ? Destroy Window and start game connected to the server
+        
         w.destroy()
         while True:
             time.sleep(1)
@@ -70,30 +107,40 @@ def onlineMode(ip=None, create=False):
             finally:
                 break
 
-    else:
-        # TODO PASS IP ADDR
-        ip = ipEntry.get()
-        print(ip)
+    else: # ! If user is asking to connect to server (IP)
+        
+        # ? Destroy Window and start game connected to the server
+        
         w.destroy()
         displayGame.startGame("server", server_ip=ip, theme=theme)
 
+def thread_function(theme):
+
+    server.runServer(theme)
+
+
+# * Init functions of different menus
 
 def default_home(first=True):
 
     global subFrame
 
-    if not first:
+    # ? Reset the canvas
+    
+    if not first: 
         dropFrame.destroy()
         subFrame.destroy()
-
-    subFrame = Frame(w, width=900, height=455, bg="#262626")
+    
+    # ? Draws the Menu
+    
+    subFrame = Frame(w, width=900, height=455, bg=BACKGROUNDCOLOR)
     subFrame.pack(anchor=CENTER, expand=True)
 
-    title = Label(subFrame, text="BIENVENUE SUR LE JEU", fg="#8A2BE2", bg="#262626")
+    title = Label(subFrame, text="BIENVENUE SUR LE JEU", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR)
     title.config(font=("Big John PRO", 50))
     title.pack(side=TOP)
 
-    subTitle = Label(subFrame, text="KAMON", fg="white", bg="#262626")
+    subTitle = Label(subFrame, text="KAMON", fg="white", bg=BACKGROUNDCOLOR)
     subTitle.config(font=("Big John PRO", 50))
     subTitle.pack(side=TOP)
 
@@ -101,39 +148,41 @@ def default_home(first=True):
         subFrame,
         text="Start Against Bot",
         font=("Big John PRO", 30),
-        fg="#8A2BE2",
-        bg="#262626",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
         command=singlePlayerMode,
     )
     soloButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
-
 
 def multiplayer():
 
     global subFrame
 
+    # ? Reset the canvas
+    
     dropFrame.destroy()
     subFrame.destroy()
 
-    subFrame = Frame(w, width=900, height=455, bg="#262626")
+    # ? Draws the Menu
+
+    subFrame = Frame(w, width=900, height=455, bg=BACKGROUNDCOLOR)
     subFrame.pack(anchor=CENTER, expand=True)
 
     title = Label(
-        subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg="#8A2BE2", bg="#262626"
+        subFrame, text="YOU CHOOSE MULTIPLAYER MODE ", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR
     )
     title.config(font=("Big John PRO", 35))
     title.pack(side=TOP)
 
-    # Player's name label
-
-    # Player 1
-
+    # ? Player Name
+    
+    # * Player One
     playerOne = LabelFrame(
         subFrame,
         text="Joueur 1",
         font=("Big John PRO", 30),
-        bg="#262626",
-        fg="#8A2BE2",
+        bg=BACKGROUNDCOLOR,
+        fg=MAINFONTCOLOR,
     )
     playerOne.pack(side=TOP)
 
@@ -142,16 +191,18 @@ def multiplayer():
     )
     player1Name.pack(padx=10, pady=10, side=LEFT)
 
+    # ? Player Name Input    
     player1Entry = Entry(playerOne)
     player1Entry.pack(padx=5, pady=5, side=LEFT)
 
-    # Player 2
+
+    # * Player Two
     playerTwo = LabelFrame(
         subFrame,
         text="Joueur 2",
         font=("Big John PRO", 30),
-        bg="#262626",
-        fg="#8A2BE2",
+        bg=BACKGROUNDCOLOR,
+        fg=MAINFONTCOLOR,
     )
     playerTwo.pack(side=TOP)
 
@@ -160,8 +211,10 @@ def multiplayer():
     )
     player2Name.pack(padx=10, pady=10, side=LEFT)
 
+    # ? Player Name Input
     player2Entry = Entry(playerTwo)
     player2Entry.pack(padx=5, pady=5, side=LEFT)
+
 
     multiButt = Button(
         subFrame,
@@ -171,29 +224,34 @@ def multiplayer():
     )
     multiButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
 
-
 def online():
 
     global subFrame
 
+    # ? Reset the canvas
+    
     dropFrame.destroy()
     subFrame.destroy()
 
-    subFrame = Frame(w, width=900, height=455, bg="#262626")
+    # ? Draws the Menu
+
+    subFrame = Frame(w, width=900, height=455, bg=BACKGROUNDCOLOR)
     subFrame.pack(anchor=CENTER, expand=True)
 
     title = Label(
-        subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg="#8A2BE2", bg="#262626"
+        subFrame, text=" YOU CHOOSE THE ONLINE MODE", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR
     )
     title.config(font=("Big John PRO", 30))
     title.pack(side=TOP)
 
+    # ? IP Address to Connect to
+    
     ipFrame = LabelFrame(
         subFrame,
         text="CONNECT TO PLAYER",
         font=("Big John PRO", 25),
-        bg="#262626",
-        fg="#8A2BE2",
+        bg=BACKGROUNDCOLOR,
+        fg=MAINFONTCOLOR,
     )
     ipFrame.pack(padx=5, pady=5, side=TOP)
 
@@ -202,8 +260,8 @@ def online():
     )
     ipAdrr.pack(padx=10, pady=10, anchor=CENTER)
 
-    global ipEntry
 
+    # ? IP Address Input
     ipEntry = Entry(ipFrame)
     ipEntry.pack(padx=5, pady=5, anchor=CENTER)
 
@@ -211,103 +269,103 @@ def online():
         subFrame,
         text="CONNECT",
         font=("Big John PRO", 15),
-        fg="#8A2BE2",
-        bg="#262626",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
         command=lambda: onlineMode(ip=ipEntry.get()),
     )
-
     connButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
-    # connButt.place(x=350, y=400)
 
     createButt = Button(
         subFrame,
         text="CREATE GAME",
         font=("Big John PRO", 15),
-        fg="#8A2BE2",
-        bg="#262626",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
         command=lambda: onlineMode(create=True),
     )
-
     createButt.pack(side=TOP, ipadx=20, padx=30, pady=20)
-
 
 def option():
 
     global subFrame
     global theme
 
+    # ? Reset the canvas
+
     dropFrame.destroy()
     subFrame.destroy()
 
-    subFrame = Frame(w, width=900, height=455, bg="#262626")
+    # ? Draws the Menu
+
+    subFrame = Frame(w, width=900, height=455, bg=BACKGROUNDCOLOR)
     subFrame.pack(anchor=CENTER, expand=True)
 
-    # buttons
-    
     title = Label(
-        subFrame, text="CHOOSE YOUR THEME", fg="#8A2BE2", bg="#262626"
+        subFrame, text="CHOOSE YOUR THEME", fg=MAINFONTCOLOR, bg=BACKGROUNDCOLOR
     )
     title.config(font=("Big John PRO", 30))
     title.pack(side=TOP, pady=15)
     
-    buttFrame = Frame(subFrame, bg="#262626")
+    # ? Theme Buttons
+    
+    buttFrame = Frame(subFrame, bg=BACKGROUNDCOLOR)
     buttFrame.pack(padx=5, pady=15, side=TOP)
     
-    buttFrame2 = Frame(subFrame, bg="#262626")
+    buttFrame2 = Frame(subFrame, bg=BACKGROUNDCOLOR)
     buttFrame2.pack(padx=5, pady=15, side=TOP)
     
     originalButt = Button(
         buttFrame,
         font=("Big John PRO", 15),
-        text = "Original",
-        fg = "#8A2BE2",
-        bg = "#262626",
-        command = lambda: change_theme(0)
+        text="Original",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
+        command=lambda: change_theme(0)
     )
 
     carsButt = Button(
         buttFrame,
         font=("Big John PRO", 15),
-        text = "Cars",
-        fg = "#8A2BE2",
-        bg = "#262626",
-        command = lambda: change_theme(1)
+        text="Cars",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
+        command=lambda: change_theme(1)
     )
 
     animeButt = Button(
         buttFrame,
         font=("Big John PRO", 15),
-        text = "Anime",
-        fg = "#8A2BE2",
-        bg = "#262626",
-        command = lambda: change_theme(2)
+        text="Anime",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
+        command=lambda: change_theme(2)
     )
     
     superheroButt = Button(
         buttFrame2, 
         font=("Big John PRO", 15),
-        text = "Super Hero",
-        fg = "#8A2BE2",
-        bg = "#262626",
-        command = lambda: change_theme(3)
+        text="Super Hero",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
+        command=lambda: change_theme(3)
     )
 
     trollButt = Button(
         buttFrame2,
         font=("Big John PRO", 15),
-        text = "Surprise !",
-        fg = "#8A2BE2",
-        bg = "#262626",
-        command = lambda: change_theme(4)
+        text="Surprise !",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
+        command=lambda: change_theme(4)
     )
     
     trueTrollButt = Button(
         buttFrame2,
         font=("Big John PRO", 15),
-        text = "Even more Surprise !",
-        fg = "#8A2BE2",
-        bg = "#262626",
-        command = lambda: change_theme(5)
+        text="Even more Surprise !",
+        fg=MAINFONTCOLOR,
+        bg=BACKGROUNDCOLOR,
+        command=lambda: change_theme(5)
     )
     
     originalButt.pack(side=LEFT, pady=15, padx=25)
@@ -339,32 +397,36 @@ def change_theme(change):
     elif change == 5:
         theme = "surprise++"
 
-
 def toggle_win():
 
+    # ? Creates the Drop Down Menu and its Buttons
+    
     global dropFrame
-    dropFrame = Frame(w, width=300, height=500, bg="#8A2BE2")
+    dropFrame = Frame(w, width=300, height=500, bg=MAINFONTCOLOR)
     dropFrame.place(x=0, y=0)
 
-    # buttons
+    # * Create button function, specific to the drop down menu
     def bttn(x, y, text, bcolor, fcolor, cmd):
+        
+        # ? While Hover
         def on_entera(e):
             newButton["background"] = bcolor  # ffcc66
-            newButton["foreground"] = "#262626"  # 000d33
+            newButton["foreground"] = BACKGROUNDCOLOR  # 000d33
 
+        # ? While Not Hover
         def on_leavea(e):
             newButton["background"] = fcolor
-            newButton["foreground"] = "#262626"
+            newButton["foreground"] = BACKGROUNDCOLOR
 
         newButton = Button(
             dropFrame,
             text=text,
             width=42,
             height=2,
-            fg="#262626",
+            fg=BACKGROUNDCOLOR,
             border=0,
             bg=fcolor,
-            activeforeground="#262626",
+            activeforeground=BACKGROUNDCOLOR,
             activebackground=bcolor,
             command=cmd,
         )
@@ -374,12 +436,7 @@ def toggle_win():
 
         newButton.place(x=x, y=y)
 
-    bttn(0, 50, "H O M E", "#FFFAF0", "#8A2BE2", lambda: default_home(False))
-    bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", "#8A2BE2", multiplayer)
-    bttn(0, 117, "O N L I N E", "#FFFAF0", "#8A2BE2", online)
-    bttn(0, 154, "O P T I O N", "#FFFAF0", "#8A2BE2", option)
-
-    #
+    # * Handles the Close button for the drop down menu
     def dele():
         dropFrame.destroy()
         dropMenu = Button(
@@ -387,10 +444,16 @@ def toggle_win():
             image=openImg,
             command=toggle_win,
             border=0,
-            bg="#8A2BE2",
+            bg=MAINFONTCOLOR,
             activebackground="#FFFAF0",
         )
         dropMenu.place(x=5, y=8)
+    
+    # * Drop down menu buttons define
+    bttn(0, 50, "H O M E", "#FFFAF0", MAINFONTCOLOR, lambda: default_home(False))
+    bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", MAINFONTCOLOR, multiplayer)
+    bttn(0, 117, "O N L I N E", "#FFFAF0", MAINFONTCOLOR, online)
+    bttn(0, 154, "O P T I O N", "#FFFAF0", MAINFONTCOLOR, option)
 
     global closeImg
     closeImg = ImageTk.PhotoImage(
@@ -402,50 +465,10 @@ def toggle_win():
         image=closeImg,
         border=0,
         command=dele,
-        bg="#8A2BE2",
-        activebackground="#8A2BE2",
+        bg=MAINFONTCOLOR,
+        activebackground=MAINFONTCOLOR,
     ).place(x=5, y=10)
 
-
-def startMenu():
-
-    global theme
-    theme = "original"
-
-    global w
-    w = Tk()
-    w.geometry("900x500")
-    w.configure(bg="#262626")
-    w.resizable(0, 0)
-    w.title("KAMON")
-
-    global serverThread
-    serverThread = multiprocessing.Process(
-        target=thread_function,
-        name="Server Thread",
-        args=(theme,),
-        kwargs={},
-    )
-
-    default_home()
-
-    global openImg
-    openImg = ImageTk.PhotoImage(
-        Image.open(str(WorkingDirectory) + "/src/assets/menu/open.png")
-    )
-
-    global dropMenu
-    dropMenu = Button(
-        w,
-        image=openImg,
-        command=toggle_win,
-        border=0,
-        bg="#8A2BE2",
-        activebackground="#262626",
-    )
-    dropMenu.place(x=5, y=8)
-
-    w.mainloop()
 
 
 if __name__ == "__main__":
