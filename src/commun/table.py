@@ -1,7 +1,6 @@
 from .hexagone import hexa
 from random import *
 import pandas as pd
-import numpy as np
 
 
 class Table:
@@ -317,5 +316,3 @@ class Table:
             or self.__grid[y][x].getImage()
             == self.__grid[self.__lastCoord[1]][self.__lastCoord[0]].getImage()
         ) and (self.__grid[y][x].getPlayer() == 0)
-
-

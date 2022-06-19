@@ -130,14 +130,3 @@ class hexa:
         if (tmp - 1) % 6 == 5:
 
             self.__src = "/src/assets/" + theme + "/6.png"
-
-    # def changeBorder(self): # Not needed ?
-
-    #     if self.__last:
-    #         self.__border = "Red"
-
-    #     elif self.__player == 1:
-    #         self.__border = "Blue"
-
-    #     elif self.__player == 2:
-    #         self.__border = "Green"

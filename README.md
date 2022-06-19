@@ -11,8 +11,7 @@
 - Pour installer le framework Pillow mis à jour sur votre machine Windows, exécutez le code suivant dans votre ligne de commande ou dans Powershell :
 
       -python3 -m pip install --upgrade pip
-      -python3 -m pip install --upgrade Pillow
-      -pip install Pillow
+      -pip install -r requirements.txt
 
 ## Mac :
 
@@ -21,7 +20,7 @@
         -xcode-select -install
         -sudo easy_install pip
         -sudo pip install pillow
-        -pip install pillow
+        -pip install -r requirements.txt
 
 ## Présentation des différents modes de jeu :
 

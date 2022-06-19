@@ -1,14 +1,18 @@
-import pickle
+import pathlib
+import logging
 import threading
+
+import tkinter as tk
+from PIL import Image, ImageTk
+
+import socket
+import pickle
+from commun.network import *
+
 import commun.table
 import commun.game
 import win
-import socket
-import tkinter as tk
-from PIL import Image, ImageTk
-import pathlib
-import logging
-from commun.network import *
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,42 +21,66 @@ TB = 2048 * 4
 
 
 class rootWindow:
-    def __init__(self, version, s=None, conn=None, addr=None, p1="Player", p2="Bot", theme = "original"):
-        self.version = version  # solo (v1), server (v2), bot (v3)
+    def __init__(
+        self,
+        version,
+        s=None,
+        conn=None,
+        addr=None,
+        p1="Player",
+        p2="Bot",
+        theme="original",
+    ):
+        """Initialize a new window to display the game.
+
+        Args:
+            version (str): solo, bot or server. Game will act differently depending on the version.
+            s (socket, optional): Socket to connect to. Defaults to None.
+            conn (str, optional): Ip of the server. Defaults to None.
+            addr (str, optional): Ip of the client. Defaults to None.
+            p1 (str, optional): Name of Player 1. Defaults to "Player".
+            p2 (str, optional): Name of Player 2. Defaults to "Bot".
+            theme (str, optional): Theme of the game. Defaults to "original".
+        """
+
+        self.version = version  # ? solo (v1), server (v2), bot (v3)
         self.s = s
         self.conn = conn
         self.addr = addr
-        
+
+        # ! Window receives an ID from the server if version == server
         if self.version == "server":
             self.id = pickle.loads(self.s.recv(TB))
             logging.info(f"Received ID from server | {self.id}")
 
-        # Default cell size
         self.__cellSize = 60
 
         self.__indexx = 0
         self.__indexy = 0
 
-        # Init tkinter stuff
+        # ! Initialize the window
         self.tkInit()
 
-        # Generate new table
-        
+        # ! Generate a new game object or receives the game object from the server
+
         if self.version == "solo" or self.version == "bot":
             self.__game = commun.game.createGame(p1, p2, theme)
         elif self.version == "server":
             self.__game = pickle.loads(self.s.recv(TB)).game
             logging.info(f"Received self.__game from server | {self.__game}")
 
-            # create server listening threading
+            # ! Creates a listening Thread to stay updated with the server
+
             self.listeningThread = threading.Thread(target=self.listeningThreadFunction)
             self.listeningThread.start()
 
-        # main loop
+        # ! Start the main loop of the game
         self.updateDisplay()
         self.__root.mainloop()
 
     def listeningThreadFunction(self):
+        """Listening thread constantly updating the display and self.__game with the server data."""
+
         while True:
             data = recv_data(self.s)
             stock = pickle.loads(data)
@@ -60,9 +88,8 @@ class rootWindow:
             self.updateDisplay()
 
     def tkInit(self):
-        """
-        Init of tkinter elements
-        """
+        """Initialize the tkinter base window."""
+
         self.__root = tk.Tk()
         self.__root.title("KAMON")
         self.__width = self.__root.winfo_screenwidth()
@@ -72,6 +99,8 @@ class rootWindow:
         self.__frame = tk.Frame(self.__root, background="black")
         self.__frame.config(width=self.__width, height=self.__height)
         self.__frame.grid(row=0, column=0)
+
+        # * Initialize the canvas to draw on
         self.__canvas = tk.Canvas(self.__frame)
         self.__canvas.config(
             width=(self.__cellSize * 16),
@@ -80,33 +109,33 @@ class rootWindow:
             bd=0,
             bg="white",
         )
+
+        # ! Binds the left mouse click to the mouseClick function
         self.__canvas.bind("<Button-1>", self.mouseClick)
         self.hexImages = {}
 
     def updateDisplay(self):
+        """_summary_"""
 
-        # Display Game
+        # * Display Game
         self.displayHex()
         self.displayTurn()
-
-        # print(self.__game.getPlayer(2).name)
-
-        # Update Game
-        # self.__game.updateGame()
 
         # TK packing
         self.__canvas.pack()
 
     def displayHex(self):
+        """Displays the entire grid of hexagons using local functions."""
+
         def hex(x, y, xSpace, ySpace, hexObject, col, row):
+
             color = hexObject.getColor()
             player = hexObject.getPlayer()
             last = hexObject.getLast()
             selected = hexObject.getSelected()
-            state = hexObject.getState()
             imagePath = hexObject.getImage()
 
-            """Displays Background Canvas and generates points"""
+            # * Generates points of the current hexagon
             points = [
                 (x, y),
                 (x + xSpace, y - ySpace),
@@ -122,6 +151,8 @@ class rootWindow:
                 self.__indexx = col
                 self.__indexy = row
 
+            # * Draws the current hexagon on the canvas depending on its variables
+
             if last:
                 mainHex(points, color, "gold", imagePath)
             elif player == 1:
@@ -136,20 +167,22 @@ class rootWindow:
                 )
 
         def mainHex(points, color, border, imagePath):
-            """Displays the hexagones on the cells ( basically displays the players )"""
-            # Polygon
-            # FILL WHITE = BORDER
+            """Draws a hexagon on the canvas with its properties"""
+
+            # ? Polygon
             self.__canvas.create_polygon(points, fill=border, outline="black", width=3)
-            # Rayon
+
+            # ? Radius
             rx = xSpace * 0.75
             ry = ySpace * 1.25
-            # Circle
+
+            # ? Circle
             xlist = [point[0] for point in points]
             ylist = [point[1] for point in points]
             x = (sum(xlist) / len(points)) - rx
             y = (sum(ylist) / len(points)) - ry
 
-            # FILL COLOR = Cell original color
+            # * Draws the "KAMON" on top of the hexagon
             self.__canvas.create_oval(
                 x,
                 y,
@@ -352,44 +385,55 @@ class rootWindow:
             bottomLeft(x, y)
 
         def images(x, y, xSpace, ySpace, gridElem):
+            """Display the image of current hexagon"""
+
             imagePath = gridElem.getImage()
 
+            # * If image not loaded yet
             if imagePath != None:
-                # not loaded
 
                 if imagePath not in self.hexImages.keys():
+
+                    #  ? Get the image path
                     imgUrl = str(str(WorkingDirectory) + imagePath)
                     image = Image.open(imgUrl)
+
+                    # ? Resize the image
                     mult = 1.2
                     ns = (round(xSpace * mult), round(ySpace * mult * 2))
                     image = image.resize(
                         ns,
                     )
+
+                    # ? Load the image
                     img = ImageTk.PhotoImage(image)
                     self.hexImages[imagePath] = img
                     self.__canvas.image_names = list(self.hexImages.values())
-                # loaded
+
+                # * If image already loaded
                 else:
                     img = self.hexImages[imagePath]
 
+                # ? Display the image on the canvas
                 self.__canvas.create_image(
                     x + xSpace,
                     y + ySpace,
                     image=img,
                 )
 
-        # Gets Grid
+        # * Get the game grid
         grid = self.__game.getTable().getGrid()
 
-        # Gets relative values for points generation
+        # * Gets relative values for points generation
         xSpace = self.__cellSize
         ySpace = xSpace / 2
         xCellSpace = xSpace
         yCellSpace = xSpace * 1.50
 
-        # Gets top left coords corner position, used to draw the border
+        # * Gets top left coords corner position, used to draw the border
         topLeftCoords = None
 
+        # ! For every cell in grid draw the hex accordingly if not empty cell (state == 0)
         for row in range(len(grid)):
             for col in range(len(grid[row])):
 
@@ -414,40 +458,64 @@ class rootWindow:
                         x=x, y=y, xSpace=xSpace, ySpace=ySpace, gridElem=grid[row][col]
                     )
 
+        # ? Draws the borders of the board
         borders(topLeftCoords, xSpace, ySpace)
 
     def displayTurn(self):
+        """Displays the name of the current player."""
 
+        # ? Get current player's name to display turn
         game = self.__game
         turn = game.getTurn()
+        turnText = game.getPlayer(turn).name + "'s turn"
 
         self.__turnFrame = tk.Frame(self.__frame, bg="white", width=100, height=100)
         self.__turnFrame.place(x=5, y=5)
-        turnLabel = tk.Label(
-            self.__turnFrame, text=game.getPlayer(turn).name + "'s turn", bg="white"
-        )
+
+        turnLabel = tk.Label(self.__turnFrame, text=turnText, bg="white")
         turnLabel.config(font=("Big John PRO", 15))
         turnLabel.pack()
 
     def mouseClick(self, event):
-        # x, y = self.pixelToIndex(event.x, event.y)
-        # print(event.x, event.y)
+        """Change the hex values according to the mouse position.
+
+        Args:
+            event (event): tkinter Event.
+        """
+
+        # ? Refresh canvas
         self.updateDisplay()
-        
+
+        # ! Change the board state then send data to server
         if self.version == "server":
-            self.__game.mouseClick(self.__indexx, self.__indexy, self.version, playerId = self.id)
+            self.__game.mouseClick(
+                self.__indexx, self.__indexy, self.version, playerId=self.id
+            )
             data = pickle.dumps(self.__game)
             send_data(self.s, data)
-        
+
+        # ! Change the board state
         else:
             self.__game.mouseClick(self.__indexx, self.__indexy, self.version)
-            
+
+        # ? Refresh the canvas again to see change
         self.updateDisplay()
 
         if self.__game.getWin():
             self.win()
 
     def findPointsInsidePolygon(self, x, y, poly):
+        """Checks if mouse is inside a polygon .
+
+        Args:
+            x (int): x index of the current point in array.
+            y (_type_): _description_
+            poly (_type_): _description_
+
+        Returns:
+            bool: If mouse is inside a polygon.
+        """
+
         n = len(poly)
         inside = False
 
@@ -468,17 +536,19 @@ class rootWindow:
     # return 3, 6
 
     def win(self):
-        
+
         self.__root.destroy()
         winner = self.__game.getTurn()
         win.startWin(self.__game.getPlayer(winner).name)
         # self.__root.destroy() # For debug and understanding win conditions
 
 
-def startGame(version, s=None, server_ip="localhost", p1="Player", p2="Bot", theme = "original"):
+def startGame(
+    version, s=None, server_ip="localhost", p1="Player", p2="Bot", theme="original"
+):
 
     if version == "solo" or version == "bot":
-        game = rootWindow(version=version, p1=p1, p2=p2, theme = theme)
+        game = rootWindow(version=version, p1=p1, p2=p2, theme=theme)
 
     if version == "server":
 
@@ -489,7 +559,7 @@ def startGame(version, s=None, server_ip="localhost", p1="Player", p2="Bot", the
             logging.info(f"Attempting to connect to server {HOST}:{PORT}")
             s.connect((HOST, PORT))
             logging.info(f"Connected")
-            game = rootWindow(version=version, s=s, theme = theme)
+            game = rootWindow(version=version, s=s, theme=theme)
 
 
 # startGame("solo")
