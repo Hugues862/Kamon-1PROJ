@@ -494,13 +494,14 @@ class rootWindow:
             data = pickle.dumps(self.__game)
             send_data(self.s, data)
 
-        # ! Change the board state
+        # ! Change the board state in singleplayer / multiplayer mode
         else:
             self.__game.mouseClick(self.__indexx, self.__indexy, self.version)
 
         # ? Refresh the canvas again to see change
         self.updateDisplay()
 
+        # ! If the game is over, destroy window and switch to the win window
         if self.__game.getWin():
             self.win()
 
@@ -508,9 +509,9 @@ class rootWindow:
         """Checks if mouse is inside a polygon .
 
         Args:
-            x (int): x index of the current point in array.
-            y (_type_): _description_
-            poly (_type_): _description_
+            x (int): mouseX position in window
+            y (int): mouseY position in window
+            poly (list): List of points of current polygon
 
         Returns:
             bool: If mouse is inside a polygon.
@@ -532,20 +533,31 @@ class rootWindow:
             p1x, p1y = p2x, p2y
         return inside
 
-    # def pixelToIndex(self, xPix, yPix):
-    # return 3, 6
-
     def win(self):
-
-        self.__root.destroy()
+        """ Destroys window and switch to the win window.
+        """
+        
+        # ? Get winner name
         winner = self.__game.getTurn()
-        win.startWin(self.__game.getPlayer(winner).name)
-        # self.__root.destroy() # For debug and understanding win conditions
+        winnerName = self.__game.getPlayer(winner).name
+        
+        self.__root.destroy()
+        win.startWin(winnerName)
 
 
 def startGame(
     version, s=None, server_ip="localhost", p1="Player", p2="Bot", theme="original"
 ):
+    """Starts the game according to the given version.
+
+    Args:
+        version (str): solo, bot or server version
+        s (socket, optional): Given Socket to connect to. Defaults to None.
+        server_ip (str, optional): Server IP to connect to. Defaults to "localhost".
+        p1 (str, optional): Player 1 Name. Defaults to "Player".
+        p2 (str, optional): Player 2 Name. Defaults to "Bot".
+        theme (str, optional): Theme used for Game. Defaults to "original".
+    """    
 
     if version == "solo" or version == "bot":
         game = rootWindow(version=version, p1=p1, p2=p2, theme=theme)
@@ -554,7 +566,8 @@ def startGame(
 
         HOST = server_ip
         PORT = 56669
-        # creating client
+        
+        # ! Creates a client connected to the given server
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             logging.info(f"Attempting to connect to server {HOST}:{PORT}")
             s.connect((HOST, PORT))
