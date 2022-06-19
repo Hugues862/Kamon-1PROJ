@@ -464,7 +464,7 @@ def toggle_win():
     dropFrame.place(x=0, y=0)
 
     # * Create button function, specific to the drop down menu
-    def bttn(x, y, text, bcolor, fcolor, cmd):
+    def bttn(y, text, bcolor, fcolor, cmd):
 
         # ? While Hover
         def on_entera(e):
@@ -492,8 +492,8 @@ def toggle_win():
         newButton.bind("<Enter>", on_entera)
         newButton.bind("<Leave>", on_leavea)
 
-        newButton.place(x=x, y=y)
-
+        #newButton.pack(fill = BOTH)
+        newButton.place(relx=0.5, rely=y, anchor=CENTER)
     # * Handles the Close button for the drop down menu
     def dele():
         dropFrame.destroy()
@@ -508,10 +508,10 @@ def toggle_win():
         dropMenu.place(x=5, y=8)
 
     # * Drop down menu buttons define
-    bttn(0, 50, "H O M E", "#FFFAF0", MAINFONTCOLOR, lambda: default_home(False))
-    bttn(0, 80, "M U L T I P L A Y E R", "#FFFAF0", MAINFONTCOLOR, multiplayer)
-    bttn(0, 117, "O N L I N E", "#FFFAF0", MAINFONTCOLOR, online)
-    bttn(0, 154, "O P T I O N", "#FFFAF0", MAINFONTCOLOR, option)
+    bttn(0.375, "H O M E", "#FFFAF0", MAINFONTCOLOR, lambda: default_home(False))
+    bttn(0.45, "M U L T I P L A Y E R", "#FFFAF0", MAINFONTCOLOR, multiplayer)
+    bttn(0.525, "O N L I N E", "#FFFAF0", MAINFONTCOLOR, online)
+    bttn(0.6, "O P T I O N", "#FFFAF0", MAINFONTCOLOR, option)
 
     Button(
         dropFrame,
