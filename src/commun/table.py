@@ -37,6 +37,14 @@ class Table:
     # Methods
 
     def initGrid(self, theme):
+        """Initialization of the game grid
+
+        Args:
+            theme (int): applied theme for the game
+
+        Returns:
+            matrix: applied grid for the game
+        """        
 
         inside = [0]
         grid = []
@@ -104,6 +112,12 @@ class Table:
 
     def checkNeighbors(self, x, y, turn, neighbors, sides):
 
+        """Function to check the boxes around the position x,y
+
+        Returns:
+            list[list[(x,y)],list[str]]: Return a list of position and a list of string (side)
+        """    
+
         # print("tableCheck")
         # print(neighbors)
         # print(sides)
@@ -117,12 +131,14 @@ class Table:
         if (x, y) not in neighbors:
             neighbors.append((x, y))
 
+        #Check if inside board the player can play and if the cells is blank
         if (
             x != abs(3 - y)
             and self.__grid[y][x - 2].getState() != 0
             and self.__grid[y][x - 2].getPlayer() == 1 + turn
         ):
-            neighbors, sides = self.checkNeighbors(x - 2, y, turn, neighbors, sides)
+            # Check the neighbors of the cells;if they are allied add it to neighbors and side
+            neighbors, sides = self.checkNeighbors(x - 2, y, turn, neighbors, sides) 
 
         if (
             x != 12 - abs(3 - y)
@@ -163,6 +179,11 @@ class Table:
 
     def checkWinNeighbors(self, x, y, turn, neighbors, sides):
 
+        """Function that checks the 3 win conditions
+
+        Returns:
+            list[list[(x,y)],list[str]]: Return a list of position and a list of string (side)
+        """    
         if len(sides) == 0 or (
             all(side is None for side in sides) and (x, y) not in neighbors
         ):
@@ -173,6 +194,7 @@ class Table:
                 # print(sides)
                 sides.append(self.__grid[y][x].getSide())
 
+            #Check if inside the board if the neighbors have the same state as the initial cell to verify a win condition
             if (
                 x != abs(3 - y)
                 and self.__grid[y][x - 2].getState() != 0
@@ -181,6 +203,7 @@ class Table:
                     or self.__grid[y][x - 2].getPlayer() == 0
                 )
             ):
+                # Check the  win condition of the neighbors of the cells;if they are allied add it to neighbors and side
                 neighbors, sides = self.checkWinNeighbors(
                     x - 2, y, turn, neighbors, sides
                 )
@@ -278,7 +301,15 @@ class Table:
         return res
 
     def isPossible(self, x, y):
+        """Checks if the position of our cursor during the click is possible to transform the box
 
+        Args:
+            x (int): position x of our cursor
+            y (int): position y of our cursor
+
+        Returns:
+             list[list[(x,y)], list[list[int]: Return the last coordinates and the player index
+        """        
         return (
             self.__lastCoord == None
             or self.__grid[y][x].getColor()
